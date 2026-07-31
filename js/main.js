@@ -237,6 +237,9 @@
           const card = this.el.closest('.feature');
           if (card) card.classList.add('is-playing');
           NowPlaying.attach(this);
+          // a featured card is a "listen to this now" moment — open the full
+          // player on every screen; rows just surface the mini bar
+          if (card) NowPlaying.open();
           this.frame();
         }).catch(() => { if (this.timeEl) this.timeEl.textContent = '—:—'; });
       } else {
@@ -334,10 +337,21 @@
     });
   });
 
+  // whole featured card acts as one big play/open target
+  $$('.feature').forEach(card => {
+    const btn = $('.player__btn', card);
+    if (!btn) return;
+    card.addEventListener('click', e => {
+      // leave the waveform (seek), the Spotify link and the button itself alone
+      if (e.target.closest('[data-wave], .feature__out, .player__btn')) return;
+      btn.click();
+    });
+  });
+
   /* ── mobile now-playing: mini bar + Apple-Music-style sheet ── */
   const NowPlaying = (() => {
     const mini = $('#mini'), np = $('#np');
-    if (!mini || !np) return { attach() {}, setPlaying() {}, progress() {}, advance() {} };
+    if (!mini || !np) return { attach() {}, setPlaying() {}, progress() {}, advance() {}, open() {}, close() {} };
 
     const el = {
       art: $('#miniArt'), title: $('#miniTitle'), artist: $('#miniArtist'), bar: $('#miniBar'),
@@ -407,12 +421,18 @@
         const next = queue[i + step];
         if (!next) { if (onlyIfPlaying) api.setPlaying(false); return; }
         next.toggle();
-      }
+      },
+
+      open() { setOpen(true); },
+      close() { setOpen(false); }
     };
 
     /* open / close */
     $('#miniOpen').addEventListener('click', () => setOpen(true));
     $('#npClose').addEventListener('click', () => setOpen(false));
+    $('#npX').addEventListener('click', () => setOpen(false));
+    // desktop: click the dark surround (outside the centred content) to dismiss
+    np.addEventListener('click', e => { if (e.target === np || e.target === el.npBg) setOpen(false); });
     addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
 
     /* transport */

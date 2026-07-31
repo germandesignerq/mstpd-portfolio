@@ -377,7 +377,9 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   grid-template-columns:.92fr 1.08fr;
   gap:clamp(28px,5vw,72px);
   align-items:center;
+  cursor:pointer;
 }
+.feature__out,.feature .player__wave{ cursor:default; }
 .feature--flip .feature__media{ order:2; }
 
 .feature__media{
@@ -703,7 +705,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .mini{
   position:fixed; z-index:150;
   left:10px; right:10px; bottom:10px;
-  display:none;                      /* enabled in the mobile query */
+  display:flex;
   align-items:center; gap:12px;
   padding:8px 10px;
   border-radius:14px;
@@ -764,7 +766,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 /* ── full-screen sheet ─────────────────────────────────── */
 .np{
   position:fixed; inset:0; z-index:200;
-  display:none;                      /* enabled in the mobile query */
+  display:flex;
   flex-direction:column; align-items:stretch;
   padding:10px clamp(22px,7vw,40px) calc(26px + env(safe-area-inset-bottom));
   background:#0B0B0C;
@@ -797,7 +799,23 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   background:rgba(242,240,236,.3);
 }
 
+/* corner close — desktop only (the grab handle is the mobile idiom) */
+.np__x{
+  position:absolute; top:20px; right:24px; z-index:3;
+  display:none; place-items:center;
+  width:44px; height:44px; border-radius:50%;
+  font-size:26px; line-height:1; color:var(--fg);
+  background:rgba(11,11,12,.4);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(242,240,236,.16);
+  transition:color .3s, background .3s, transform .3s var(--ease);
+}
+.np__x:hover{ color:var(--fg); background:rgba(11,11,12,.6); }
+.np__x:active{ transform:scale(.92); }
+
 .np__art{
+  flex:none;                          /* keep it a perfect square in the flex column */
   margin:0 auto;
   width:min(78vw,340px); aspect-ratio:1/1;
   border-radius:12px; overflow:hidden;
@@ -886,12 +904,31 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .np__out:active{ color:var(--fg); }
 
-/* the sheet only exists on touch-sized screens */
+/* the player exists on every screen now */
+body.np-open{ overflow:hidden; }
+
+/* phones: full-width pill + edge-to-edge sheet */
 @media (max-width:900px){
-  .mini{ display:flex; }
-  .np{ display:flex; }
   body.has-mini{ padding-bottom:74px; }
-  body.np-open{ overflow:hidden; }
+}
+
+/* desktop: centered floating pill + centered now-playing panel */
+@media (min-width:901px){
+  .mini{
+    left:50%; right:auto; bottom:20px;
+    width:min(460px,calc(100vw - 48px));
+    transform:translateX(-50%) translateY(calc(100% + 32px));
+  }
+  .mini.is-on{ transform:translateX(-50%); }
+  body.has-mini{ padding-bottom:104px; }
+
+  .np{ justify-content:center; align-items:center; padding:6vh 24px; }
+  .np__grab{ display:none; }
+  .np__x{ display:grid; }
+  .np__art{ width:min(46vh,340px); }
+  .np__meta{ margin-top:4vh; text-align:center; }
+  .np__meta,.np__scrub,.np__ctrl,.np__out{ width:100%; max-width:440px; margin-inline:auto; }
+  .np__ctrl{ margin-top:4vh; }        /* override the mobile margin-top:auto */
 }
 
 /* ── responsive ────────────────────────────────────────── */

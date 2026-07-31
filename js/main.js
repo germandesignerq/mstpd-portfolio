@@ -351,7 +351,7 @@
   /* ── mobile now-playing: mini bar + Apple-Music-style sheet ── */
   const NowPlaying = (() => {
     const mini = $('#mini'), np = $('#np');
-    if (!mini || !np) return { attach() {}, setPlaying() {}, progress() {}, advance() {}, open() {}, close() {} };
+    if (!mini || !np) return { attach() {}, setPlaying() {}, progress() {}, advance() {}, open() {}, close() {}, dismiss() {} };
 
     const el = {
       art: $('#miniArt'), title: $('#miniTitle'), artist: $('#miniArtist'), bar: $('#miniBar'),
@@ -424,11 +424,21 @@
       },
 
       open() { setOpen(true); },
-      close() { setOpen(false); }
+      close() { setOpen(false); },
+
+      // stop playback entirely and tuck the mini bar away
+      dismiss() {
+        if (active) active.stop();
+        setOpen(false);
+        mini.classList.remove('is-on');
+        document.body.classList.remove('has-mini');
+        active = null;
+      }
     };
 
     /* open / close */
     $('#miniOpen').addEventListener('click', () => setOpen(true));
+    $('#miniClose').addEventListener('click', e => { e.stopPropagation(); api.dismiss(); });
     $('#npClose').addEventListener('click', () => setOpen(false));
     $('#npX').addEventListener('click', () => setOpen(false));
     // desktop: click the dark surround (outside the centred content) to dismiss

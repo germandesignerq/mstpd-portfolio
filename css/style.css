@@ -784,17 +784,14 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 /* ── contact ───────────────────────────────────────────── */
 .contact{ border-top:1px solid var(--line-soft); }
 .contact__grid{ max-width:640px; }
-.contact__cta{ margin-top:clamp(36px,5vw,56px); }
-.contact__distro{
-  display:inline-flex; align-items:center; gap:8px;
-  margin-top:20px;
-  font-family:var(--mono); font-size:11px;
-  letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
-  transition:color .35s;
+.contact__actions{
+  display:flex; flex-wrap:wrap; gap:14px;
+  margin-top:clamp(36px,5vw,56px);
 }
-.contact__distro:hover{ color:var(--accent); }
-.contact__distro svg{ width:8px; height:10px; fill:currentColor; transition:transform .35s var(--ease); }
-.contact__distro:hover svg{ transform:translateX(3px); }
+@media (max-width:480px){
+  .contact__actions{ gap:12px; }
+  .contact__actions .btn{ flex:1 1 100%; justify-content:center; }
+}
 .contact__title{
   margin:0 0 clamp(28px,4vw,48px);
   font-size:clamp(38px,6vw,88px);

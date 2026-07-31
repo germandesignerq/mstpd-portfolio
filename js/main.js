@@ -497,9 +497,37 @@
     return api;
   })();
 
+  /* ── contact modal ─────────────────────────────────────── */
+  const modal = $('#contactModal');
+  if (modal) {
+    const panel = $('.modal__panel', modal);
+    const openModal = () => {
+      modal.classList.add('is-open');
+      modal.removeAttribute('aria-hidden');
+      document.body.classList.add('modal-open');
+      const first = $('#m-name', modal);
+      if (first) setTimeout(() => first.focus(), 350);
+    };
+    const closeModal = () => {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+
+    $$('[data-contact-modal]').forEach(el => el.addEventListener('click', e => {
+      e.preventDefault();
+      openModal();
+    }));
+    $('#modalClose').addEventListener('click', closeModal);
+    $('#modalBackdrop').addEventListener('click', closeModal);
+    addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  }
+
   /* ── contact form → mail client (swap for a real endpoint) ── */
-  const form = $('#form');
-  const note = $('#form-note');
+  const form = $('#modalForm');
+  const note = $('#modalFormNote');
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();

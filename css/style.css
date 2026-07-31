@@ -638,19 +638,54 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 
 .socials{
   list-style:none; margin:clamp(44px,6vw,72px) 0 0; padding:0;
-  display:grid; grid-template-columns:repeat(2,minmax(0,180px)); gap:2px;
+  display:flex; flex-wrap:wrap; gap:clamp(22px,3.4vw,36px);
 }
-.socials a{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid var(--line);
+.social{
+  display:flex; flex-direction:column; align-items:center; gap:13px;
+  text-align:center;
+}
+
+.social__icon{
+  position:relative;
+  width:60px; height:60px; border-radius:50%;
+  display:grid; place-items:center;
+  color:var(--muted);
+  border:1px solid var(--line);
+  transition:background .4s var(--ease), color .35s, border-color .4s,
+             transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.social__icon svg{
+  width:22px; height:22px;
+  transition:transform .45s var(--ease);
+}
+
+/* little accent badge that pops in on hover, like a notification */
+.social__arrow{
+  position:absolute; top:-3px; right:-3px;
+  width:18px; height:18px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--accent); color:#fff;
+  font-size:9px; line-height:1;
+  opacity:0; transform:scale(.3) rotate(-45deg);
+  transition:opacity .35s var(--ease), transform .45s var(--ease);
+}
+
+.social__label{
   font-family:var(--mono); font-size:11px;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
-  transition:color .35s, border-color .35s;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--faint);
+  transition:color .35s;
 }
-.socials a span{ opacity:0; transform:translate(-4px,4px); transition:all .4s var(--ease); }
-.socials a:hover{ color:var(--fg); border-color:var(--fg); }
-.socials a:hover span{ opacity:1; transform:none; }
+
+.social:hover .social__icon,
+.social:focus-visible .social__icon{
+  background:var(--fg); color:var(--bg); border-color:var(--fg);
+  transform:translateY(-5px);
+  box-shadow:0 16px 30px rgba(0,0,0,.4);
+}
+.social:hover .social__icon svg{ transform:rotate(-10deg) scale(1.08); }
+.social:hover .social__arrow{ opacity:1; transform:scale(1) rotate(0deg); }
+.social:hover .social__label{ color:var(--accent); }
+.social:active .social__icon{ transform:translateY(-2px) scale(.94); }
 
 /* ── form ──────────────────────────────────────────────── */
 .form{ display:grid; gap:clamp(20px,2.6vw,30px); }
@@ -963,7 +998,7 @@ body.np-open{ overflow:hidden; }
   .feature__media{ aspect-ratio:16/10; }
 
   .contact__grid{ grid-template-columns:1fr; }
-  .socials{ grid-template-columns:repeat(2,1fr); }
+  .socials{ justify-content:center; }
   .row-preview{ display:none; }
 }
 

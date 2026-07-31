@@ -113,7 +113,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   display:inline-flex; align-items:center; gap:12px;
   padding:15px 30px;
   border-radius:100px;
-  font-size:13px; letter-spacing:.02em;
+  font-size:15px; font-weight:600; letter-spacing:.01em;
   overflow:hidden;
   isolation:isolate;
   transition:color .45s var(--ease), border-color .45s var(--ease);
@@ -188,7 +188,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   padding:10px 20px;
   border-radius:100px;
   background:var(--fg); color:var(--bg);
-  font-size:14px; letter-spacing:-.01em;
+  font-size:16px; font-weight:600; letter-spacing:-.005em;
   overflow:hidden; isolation:isolate;
   transition:color .4s var(--ease);
 }
@@ -235,7 +235,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   padding:15px 30px;
   border-radius:100px;
   background:var(--fg); color:var(--bg);
-  font-size:16px; letter-spacing:-.01em;
+  font-size:18px; font-weight:600; letter-spacing:-.005em;
   transition:transform .3s var(--ease), background .3s;
 }
 .menu__cta:active{ transform:scale(.96); background:var(--accent); color:#fff; }
@@ -729,7 +729,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   width:100%; padding:15px 24px;
   border-radius:100px;
   background:var(--fg); color:var(--bg);
-  font-size:14px; letter-spacing:-.01em;
+  font-size:16px; font-weight:600; letter-spacing:-.005em;
   transition:color .4s var(--ease);
 }
 .pkg__book::after{

@@ -156,7 +156,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .nav__brand{
   display:inline-flex; align-items:center; gap:10px;
-  font-size:13px; letter-spacing:.02em;
+  font-size:15px; letter-spacing:.02em;
 }
 .nav__mark{
   width:7px; height:7px; border-radius:50%;
@@ -168,7 +168,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .nav__links{ display:flex; gap:clamp(20px,3vw,44px); }
 .nav__links a{
   position:relative;
-  font-size:13px;
+  font-size:15px;
   color:var(--muted);
   transition:color .35s;
 }
@@ -188,7 +188,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   padding:10px 20px;
   border-radius:100px;
   background:var(--fg); color:var(--bg);
-  font-size:12px; letter-spacing:-.01em;
+  font-size:14px; letter-spacing:-.01em;
   overflow:hidden; isolation:isolate;
   transition:color .4s var(--ease);
 }

@@ -867,8 +867,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 /* ── form ──────────────────────────────────────────────── */
 .form{ display:grid; gap:clamp(20px,2.6vw,30px); }
 .field{ display:grid; gap:10px; }
-.field label{
-  font-family:var(--mono); font-size:10px;
+/* direct child only — the pill group's own <label>s live deeper and
+   must keep their own type styles */
+.field > label{
+  font-family:var(--mono); font-size:11px;
   letter-spacing:.16em; text-transform:uppercase; color:var(--faint);
 }
 .field input,.field textarea{
@@ -877,7 +879,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   border:0; border-bottom:1px solid var(--line);
   padding:10px 0;
   color:var(--fg);
-  font:inherit; font-size:15px; letter-spacing:-.01em;
+  font:inherit; font-size:17px; letter-spacing:-.01em;
   border-radius:0;
   transition:border-color .4s;
   resize:vertical;
@@ -887,7 +889,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .field.is-invalid input,.field.is-invalid textarea{ border-bottom-color:var(--accent); }
 .field__hint{
   margin:-4px 0 0;
-  font-size:12px; line-height:1.5; color:var(--faint);
+  font-size:13px; line-height:1.5; color:var(--faint);
 }
 .form__submit{ justify-self:start; margin-top:8px; }
 
@@ -900,10 +902,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .pill-group__btn{
   display:inline-flex; align-items:center;
-  padding:9px 18px;
+  padding:10px 19px;
   border-radius:100px;
   border:1px solid var(--line);
-  font-family:var(--mono); font-size:11px;
+  font-family:var(--mono); font-size:12px;
   letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
   cursor:pointer;
   transition:color .3s, border-color .3s, background .3s;
@@ -917,7 +919,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .form__note{
   margin:0; min-height:1.4em;
-  font-family:var(--mono); font-size:11px;
+  font-family:var(--mono); font-size:12px;
   letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
   transition:color .3s;
 }
@@ -1007,7 +1009,7 @@ body.modal-open{ overflow:hidden; }
 .modal__sub{
   margin:0 0 clamp(26px,3.6vw,34px);
   max-width:38ch;
-  color:var(--muted); font-size:14px; line-height:1.55;
+  color:var(--muted); font-size:16px; line-height:1.55;
 }
 
 /* wider panel for the distribution form — scoped above the mobile

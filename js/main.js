@@ -50,7 +50,7 @@
     }
   };
   burger.addEventListener('click', () => setMenu(burger.getAttribute('aria-expanded') !== 'true'));
-  $$('#menu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  $$('#menu a, #menu button').forEach(a => a.addEventListener('click', () => setMenu(false)));
   addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 
   /* ── scroll reveal ────────────────────────────────────── */

@@ -514,7 +514,7 @@
 
       const data = new FormData(form);
       const body = `${data.get('message')}\n\n— ${data.get('name')} (${data.get('email')})`;
-      location.href = `mailto:hello@mstpd.audio?subject=${encodeURIComponent('Project enquiry — ' + data.get('name'))}&body=${encodeURIComponent(body)}`;
+      location.href = `mailto:offmstpd@gmail.com?subject=${encodeURIComponent('Project enquiry — ' + data.get('name'))}&body=${encodeURIComponent(body)}`;
       note.textContent = 'Opening your mail client…';
       form.reset();
     });

@@ -619,7 +619,12 @@
   const MAIL_TO = 'offmstpd@gmail.com';
   const keyReady = /^[0-9a-f-]{30,}$/i.test(FORM_ACCESS_KEY);
 
-  const bindForm = (form, { requiredFields, buildSubject, buildFields }) => {
+  /* Two or more name parts, each at least two letters. \p{L} so Cyrillic
+     and Latin both pass; hyphens and apostrophes are common in surnames
+     (Ivanov-Petrov, O'Brien) but can't start or end a part. */
+  const FULL_NAME = /^\p{L}[\p{L}'’-]*\p{L}(?:\s+\p{L}[\p{L}'’-]*\p{L})+$/u;
+
+  const bindForm = (form, { requiredFields, validators = {}, buildSubject, buildFields }) => {
     if (!form) return;
     const note = $('.form__note', form);
     const submit = $('button[type="submit"]', form);
@@ -637,19 +642,32 @@
       location.href = `mailto:${MAIL_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     };
 
+    // drop the red state as soon as they start correcting the field
+    form.addEventListener('input', e => {
+      const f = e.target.closest('.field');
+      if (f && f.classList.contains('is-invalid')) f.classList.remove('is-invalid');
+    });
+
     form.addEventListener('submit', async e => {
       e.preventDefault();
       if (form.classList.contains('is-sending')) return;
 
       let ok = true;
+      let reason = '';
       $$('.field', form).forEach(f => {
         const input = $('input, textarea', f);
         if (!input || !requiredFields.includes(input.name)) return;
-        const valid = input.checkValidity() && input.value.trim() !== '';
+        const value = input.value.trim();
+        let valid = input.checkValidity() && value !== '';
+        const rule = validators[input.name];
+        if (valid && rule && !rule.test(value)) {
+          valid = false;
+          if (!reason) reason = rule.message;      // first specific complaint wins
+        }
         f.classList.toggle('is-invalid', !valid);
         if (!valid) ok = false;
       });
-      if (!ok) { say('Please fill in the required fields.', 'error'); return; }
+      if (!ok) { say(reason || 'Please fill in the required fields.', 'error'); return; }
 
       const data = new FormData(form);
       if (data.get('botcheck')) return;               // honeypot tripped
@@ -708,6 +726,12 @@
 
   bindForm($('#distroForm'), {
     requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],
+    validators: {
+      artist: {
+        test: v => FULL_NAME.test(v),
+        message: 'Artist name: please give the full legal name, first and last.',
+      },
+    },
     buildSubject: data => `Distribution — ${data.get('artist')} — ${data.get('release')}`,
     buildFields: data => ({
       'Artist (legal name)': data.get('artist'),

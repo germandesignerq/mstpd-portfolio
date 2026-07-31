@@ -582,12 +582,38 @@
   bindModal($('#contactModal'), { triggerSelector: '[data-contact-modal]', focusSelector: '#m-name' });
   bindModal($('#distroModal'), { triggerSelector: '[data-distro-modal]', focusSelector: '#d-artist' });
 
-  /* ── forms → mail client (swap for a real endpoint) ───────── */
-  const bindMailtoForm = (form, { requiredFields, buildSubject, buildBody }) => {
+  /* ── forms → Web3Forms ──────────────────────────────────────
+     Free access key from web3forms.com — it's meant to live in
+     client-side code, so it's fine in the repo. Until it's filled
+     in (or if the request fails) the form falls back to opening
+     the visitor's mail client, so it never dead-ends.            */
+  const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+  const FORM_ACCESS_KEY = 'PASTE-YOUR-WEB3FORMS-ACCESS-KEY';
+  const MAIL_TO = 'offmstpd@gmail.com';
+  const keyReady = /^[0-9a-f-]{30,}$/i.test(FORM_ACCESS_KEY);
+
+  const bindForm = (form, { requiredFields, buildSubject, buildFields }) => {
     if (!form) return;
     const note = $('.form__note', form);
-    form.addEventListener('submit', e => {
+    const submit = $('button[type="submit"]', form);
+    const label = $('span', submit);
+    const idle = label.textContent;
+
+    const say = (text, state) => {
+      note.textContent = text;
+      note.classList.toggle('is-ok', state === 'ok');
+      note.classList.toggle('is-error', state === 'error');
+    };
+
+    const mailtoFallback = (subject, fields) => {
+      const body = Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join('\n');
+      location.href = `mailto:${MAIL_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
+      if (form.classList.contains('is-sending')) return;
+
       let ok = true;
       $$('.field', form).forEach(f => {
         const input = $('input, textarea', f);
@@ -596,37 +622,79 @@
         f.classList.toggle('is-invalid', !valid);
         if (!valid) ok = false;
       });
-      if (!ok) { note.textContent = 'Please fill in the required fields.'; return; }
+      if (!ok) { say('Please fill in the required fields.', 'error'); return; }
 
       const data = new FormData(form);
-      location.href = `mailto:offmstpd@gmail.com?subject=${encodeURIComponent(buildSubject(data))}&body=${encodeURIComponent(buildBody(data))}`;
-      note.textContent = 'Opening your mail client…';
-      form.reset();
+      if (data.get('botcheck')) return;               // honeypot tripped
+      const subject = buildSubject(data);
+      const fields = buildFields(data);
+
+      if (!keyReady) {                                // not configured yet
+        say('Opening your mail client…');
+        mailtoFallback(subject, fields);
+        return;
+      }
+
+      form.classList.add('is-sending');
+      submit.disabled = true;
+      label.textContent = 'Sending…';
+      say('Sending…');
+
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: FORM_ACCESS_KEY,
+            subject,
+            from_name: 'mstpd.com',
+            replyto: data.get('email') || undefined,
+            ...fields,
+          }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.success === false) throw new Error(json.message || 'Request failed');
+
+        form.reset();
+        $$('.field.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
+        say('Sent — I\'ll get back to you shortly.', 'ok');
+      } catch (err) {
+        say('Couldn\'t send. Opening your mail client instead…', 'error');
+        setTimeout(() => mailtoFallback(subject, fields), 800);
+      } finally {
+        form.classList.remove('is-sending');
+        submit.disabled = false;
+        label.textContent = idle;
+      }
     });
   };
 
-  bindMailtoForm($('#modalForm'), {
+  bindForm($('#modalForm'), {
     requiredFields: ['name', 'email', 'message'],
-    buildSubject: data => 'Project enquiry — ' + data.get('name'),
-    buildBody: data => `${data.get('message')}\n\n— ${data.get('name')} (${data.get('email')})`,
+    buildSubject: data => `Project enquiry — ${data.get('name')}`,
+    buildFields: data => ({
+      Name: data.get('name'),
+      Email: data.get('email'),
+      Message: data.get('message'),
+    }),
   });
 
-  bindMailtoForm($('#distroForm'), {
-    requiredFields: ['artist', 'release', 'performer', 'genre'],
+  bindForm($('#distroForm'), {
+    requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],
     buildSubject: data => `Distribution — ${data.get('artist')} — ${data.get('release')}`,
-    buildBody: data => [
-      `Artist: ${data.get('artist')}`,
-      `Release: ${data.get('release')}`,
-      `Version/Subtitle: ${data.get('version') || '—'}`,
-      `Main performer(s): ${data.get('performer')}`,
-      `Featuring: ${data.get('feat') || '—'}`,
-      `Genre: ${data.get('genre')}`,
-      `Subgenre: ${data.get('subgenre') || '—'}`,
-      `Format: ${data.get('format')}`,
-      `Explicit: ${data.get('explicit')}`,
-      '',
-      'Cover art: attach separately (1440×1440 or 3000×3000 px, JPEG)',
-    ].join('\n'),
+    buildFields: data => ({
+      'Artist (legal name)': data.get('artist'),
+      'Email': data.get('email'),
+      'Release': data.get('release'),
+      'Version / subtitle': data.get('version') || '—',
+      'Main performer(s)': data.get('performer'),
+      'Featuring': data.get('feat') || '—',
+      'Genre': data.get('genre'),
+      'Subgenre': data.get('subgenre') || '—',
+      'Format': data.get('format'),
+      'Explicit': data.get('explicit'),
+      'Cover art': data.get('cover') || 'not provided',
+    }),
   });
 
   /* ── hero parallax (desktop, motion allowed) ──────────── */

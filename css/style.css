@@ -916,7 +916,20 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   margin:0; min-height:1.4em;
   font-family:var(--mono); font-size:11px;
   letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  transition:color .3s;
 }
+.form__note.is-ok{ color:var(--fg); }
+.form__note.is-error{ color:var(--accent); }
+
+/* honeypot — visible to bots, not to people */
+.hp{
+  position:absolute; left:-9999px;
+  width:1px; height:1px; opacity:0;
+  pointer-events:none;
+}
+
+.form.is-sending{ opacity:.75; }
+.form__submit:disabled{ cursor:progress; }
 
 /* ── contact modal ─────────────────────────────────────── */
 body.modal-open{ overflow:hidden; }

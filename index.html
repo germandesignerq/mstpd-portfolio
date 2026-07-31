@@ -886,6 +886,8 @@
     <p class="modal__sub">Name, email, and what you need — I'll reply within a day.</p>
 
     <form class="form" id="modalForm" novalidate>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
       <div class="field">
         <label for="m-name">Name</label>
         <input id="m-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
@@ -919,10 +921,17 @@
     <p class="modal__sub">Release details for distribution — I'll confirm before it goes live.</p>
 
     <form class="form" id="distroForm" novalidate>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
       <div class="field">
         <label for="d-artist">Artist's full name</label>
         <p class="field__hint">Full legal name the artist is registered under.</p>
         <input id="d-artist" name="artist" type="text" required placeholder="Full name">
+      </div>
+      <div class="field">
+        <label for="d-mail">Email</label>
+        <p class="field__hint">So I can reply about the release.</p>
+        <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
       </div>
       <div class="field">
         <label for="d-release">Release title</label>
@@ -970,8 +979,9 @@
         </div>
       </div>
       <div class="field">
-        <label>Track cover</label>
-        <p class="field__hint">1440×1440 or 3000×3000&nbsp;px · JPEG. Can't be attached automatically — drag the file into the email once it opens.</p>
+        <label for="d-cover">Track cover — link</label>
+        <p class="field__hint">1440×1440 or 3000×3000&nbsp;px · JPEG. Paste a Google&nbsp;Drive, Dropbox or WeTransfer link to the file.</p>
+        <input id="d-cover" name="cover" type="url" placeholder="https://…">
       </div>
       <button class="btn btn--solid form__submit" type="submit">
         <span>Send for distribution</span>

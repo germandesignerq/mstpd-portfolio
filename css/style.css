@@ -294,6 +294,9 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 /* ── hero slider (Instagram-story style) ───────────────── */
 .hero__media{
   position:relative; margin:0;
+  width:100%;                      /* pin the width — otherwise aspect-ratio
+                                       + max-height can shrink it below the
+                                       grid column instead of just cropping */
   aspect-ratio:1/1;
   max-height:74svh;
   overflow:hidden;

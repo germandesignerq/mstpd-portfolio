@@ -64,6 +64,33 @@
   }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
   $$('.reveal').forEach(el => revealObs.observe(el));
 
+  /* ── stat counters (About section) ─────────────────────── */
+  const counters = $$('[data-count]');
+  if (counters.length) {
+    const easeOutCubic = t => 1 - (1 - t) ** 3;
+    const countUp = el => {
+      const target = parseInt(el.dataset.count, 10);
+      if (reduced) return;
+      const dur = 1400;
+      const start = performance.now();
+      const tick = now => {
+        const p = Math.min((now - start) / dur, 1);
+        el.textContent = Math.round(target * easeOutCubic(p));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      el.textContent = '0';
+      requestAnimationFrame(tick);
+    };
+    const countObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        countUp(e.target);
+        obs.unobserve(e.target);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(el => countObs.observe(el));
+  }
+
   /* ── work rows: thumbnail that follows the cursor ─────── */
   const preview = $('#preview');
   const rows = $$('#rows .row');

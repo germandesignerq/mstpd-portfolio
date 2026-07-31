@@ -931,6 +931,21 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .form.is-sending{ opacity:.75; }
 .form__submit:disabled{ cursor:progress; }
 
+/* two-column layout for the longer (distribution) form.
+   align-items:end keeps the inputs on a shared baseline even when
+   one field in a row has a hint and its neighbour doesn't. */
+@media (min-width:700px){
+  .form--grid{
+    grid-template-columns:1fr 1fr;
+    column-gap:clamp(26px,3vw,38px);
+    row-gap:clamp(18px,2vw,24px);
+    align-items:end;
+  }
+  .form--grid .field--wide,
+  .form--grid .form__submit,
+  .form--grid .form__note{ grid-column:1 / -1; }
+}
+
 /* ── contact modal ─────────────────────────────────────── */
 body.modal-open{ overflow:hidden; }
 
@@ -990,6 +1005,12 @@ body.modal-open{ overflow:hidden; }
   margin:0 0 clamp(26px,3.6vw,34px);
   max-width:38ch;
   color:var(--muted); font-size:14px; line-height:1.55;
+}
+
+/* wider panel for the distribution form — scoped above the mobile
+   breakpoint so it can't fight .modal__panel{max-width:none} there */
+@media (min-width:641px){
+  .modal--wide .modal__panel{ max-width:760px; }
 }
 
 @media (max-width:640px){

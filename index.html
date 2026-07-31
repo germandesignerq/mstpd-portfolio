@@ -912,7 +912,7 @@
 </div>
 
 <!-- ─────────────────────── distribution modal ─────────────────────── -->
-<div class="modal" id="distroModal" aria-hidden="true">
+<div class="modal modal--wide" id="distroModal" aria-hidden="true">
   <div class="modal__backdrop" id="distroBackdrop"></div>
   <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="distroTitle">
     <button class="modal__close" type="button" id="distroClose" aria-label="Close">
@@ -922,7 +922,7 @@
     <h2 class="modal__title" id="distroTitle">Send it out<br>into the world.</h2>
     <p class="modal__sub">Release details for distribution — I'll confirm before it goes live.</p>
 
-    <form class="form" id="distroForm" novalidate>
+    <form class="form form--grid" id="distroForm" novalidate>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="field">
@@ -980,7 +980,7 @@
           <label class="pill-group__btn" for="d-explicit-yes">Yes</label>
         </div>
       </div>
-      <div class="field">
+      <div class="field field--wide">
         <label for="d-cover">Track cover — link</label>
         <p class="field__hint">1440×1440 or 3000×3000&nbsp;px · JPEG. Paste a Google&nbsp;Drive, Dropbox or WeTransfer link to the file.</p>
         <input id="d-cover" name="cover" type="url" placeholder="https://…">

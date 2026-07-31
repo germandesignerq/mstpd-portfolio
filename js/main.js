@@ -441,6 +441,25 @@
     $('#miniClose').addEventListener('click', e => { e.stopPropagation(); api.dismiss(); });
     $('#npClose').addEventListener('click', () => setOpen(false));
     $('#npX').addEventListener('click', () => setOpen(false));
+
+    /* share the current track — native share sheet where available,
+       otherwise copy the Spotify link and flash a small confirmation */
+    const shareBtn = $('#npShare');
+    shareBtn.addEventListener('click', async () => {
+      if (!active) return;
+      const m = active.meta();
+      const shareData = { title: `${m.title} — ${m.artist}`, text: 'Give this a listen:', url: m.url || location.href };
+      if (navigator.share) {
+        try { await navigator.share(shareData); } catch { /* user cancelled — not an error */ }
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        shareBtn.classList.add('is-copied');
+        clearTimeout(shareBtn._t);
+        shareBtn._t = setTimeout(() => shareBtn.classList.remove('is-copied'), 1800);
+      } catch { /* clipboard unavailable — silently do nothing rather than fake success */ }
+    });
     // desktop: click the dark surround (outside the centred content) to dismiss
     np.addEventListener('click', e => { if (e.target === np || e.target === el.npBg) setOpen(false); });
     addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });

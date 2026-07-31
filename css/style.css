@@ -612,7 +612,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .row.is-playing .row__btn .ico-pause{ display:block; }
 
 .row__artist{
-  font-size:clamp(17px,1.8vw,26px);
+  font-size:clamp(14px,calc(1.8vw - 3px),23px);
   letter-spacing:-.035em;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }

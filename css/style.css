@@ -655,18 +655,11 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   background:var(--bg-2);
   transition:transform .5s var(--ease), border-color .45s, box-shadow .5s var(--ease);
 }
-.pkg::before{                       /* accent wash that fades in on hover */
-  content:""; position:absolute; inset:0; z-index:-1;
-  border-radius:inherit;
-  background:linear-gradient(180deg,rgba(217,88,60,.13),transparent 55%);
-  opacity:0; transition:opacity .5s var(--ease);
-}
 .pkg:hover{
   transform:translateY(-7px);
   border-color:rgba(242,240,236,.28);
   box-shadow:0 26px 55px rgba(0,0,0,.5);
 }
-.pkg:hover::before{ opacity:1; }
 
 .pkg__num{
   font-family:var(--mono); font-size:11px;
@@ -679,7 +672,17 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   font-family:var(--mono); font-size:9px;
   letter-spacing:.14em; text-transform:uppercase;
 }
-.pkg--hot{ border-color:rgba(217,88,60,.4); }
+
+/* the main package — permanently emphasised and raised above its siblings,
+   which stay plain-bordered so this is the only one that reads as "the one" */
+.pkg--hot{
+  border-color:rgba(217,88,60,.45);
+  background:linear-gradient(180deg,rgba(217,88,60,.15),var(--bg-2) 62%);
+  transform:translateY(-16px);
+  box-shadow:0 30px 65px rgba(0,0,0,.5);
+}
+.pkg--hot:hover{ transform:translateY(-22px); border-color:rgba(217,88,60,.6); }
+.pkg--hot .pkg__title{ color:var(--accent); }
 
 .pkg__title{
   margin:clamp(20px,2.4vw,30px) 0 0;
@@ -687,7 +690,6 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   line-height:1.1; letter-spacing:-.04em; font-weight:500;
   transition:color .4s;
 }
-.pkg:hover .pkg__title{ color:var(--accent); }
 .pkg__sub{
   margin:11px 0 0;
   color:var(--muted); font-size:14px; line-height:1.5;
@@ -708,6 +710,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .pkg__price{
   margin:0 0 16px;
   display:flex; align-items:baseline; gap:7px;
+}
+.pkg__from{
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
 }
 .pkg__price b{
   font-size:clamp(26px,2.4vw,32px);
@@ -1197,6 +1203,8 @@ body.np-open{ overflow:hidden; }
 
   .svc{ grid-template-columns:1fr; }
   .pkg:hover{ transform:none; }        /* no lift on touch */
+  .pkg--hot{ transform:none; }         /* stacked cards: no raised offset */
+  .pkg--hot:hover{ transform:none; }
 
   .socials{ justify-content:center; }
   .row-preview{ display:none; }

@@ -337,6 +337,27 @@
     });
   });
 
+  /* ── genre filter (Credits section) ────────────────────── */
+  const genreBtns = $$('.genre-filter__btn');
+  const genreEmpty = $('#genreEmpty');
+  if (genreBtns.length) {
+    genreBtns.forEach(btn => btn.addEventListener('click', () => {
+      const genre = btn.dataset.genreFilter;
+      genreBtns.forEach(b => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', String(active));
+      });
+      let visible = 0;
+      rows.forEach(row => {
+        const match = genre === 'all' || row.dataset.genre === genre;
+        row.classList.toggle('is-filtered', !match);
+        if (match) visible++;
+      });
+      if (genreEmpty) genreEmpty.hidden = visible > 0;
+    }));
+  }
+
   // whole featured card acts as one big play/open target
   $$('.feature').forEach(card => {
     const btn = $('.player__btn', card);

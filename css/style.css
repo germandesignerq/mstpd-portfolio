@@ -106,6 +106,42 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .credits-link svg,.credits-link span{ transition:transform .35s var(--ease); }
 .credits-link:hover span{ transform:translate(2px,-2px); }
 
+/* ── genre filter (Credits section) ───────────────────────── */
+.genre-filter{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin-bottom:clamp(28px,4vw,44px);
+}
+.genre-filter__btn{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:9px 16px;
+  border-radius:100px;
+  border:1px solid var(--line);
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  transition:color .3s, border-color .3s, background .3s;
+}
+.genre-filter__btn span{
+  font-size:9px; color:var(--faint);
+  transition:color .3s;
+}
+.genre-filter__btn:hover{ color:var(--fg); border-color:rgba(242,240,236,.35); }
+.genre-filter__btn.is-active{
+  background:var(--fg); color:var(--bg); border-color:var(--fg);
+}
+.genre-filter__btn.is-active span{ color:rgba(10,10,10,.55); }
+
+.genre-filter__empty{
+  margin:0 0 clamp(28px,4vw,44px);
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.06em; color:var(--faint);
+}
+
+/* rows leaving/entering the current filter — quick fade+collapse
+   rather than an abrupt visibility snap */
+.row.is-filtered{
+  display:none;
+}
+
 /* ── buttons ───────────────────────────────────────────── */
 .btn{
   --b-fg:var(--fg);

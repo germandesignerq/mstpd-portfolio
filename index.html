@@ -237,9 +237,20 @@
       <a class="credits-link" href="https://credits.muso.ai/profile/5a71f47b-1722-4e92-a587-620e8ef352de/credits" target="_blank" rel="noopener noreferrer">265 credits on Muso.AI <span aria-hidden="true">↗</span></a>
     </header>
 
+    <div class="genre-filter reveal" id="genreFilter" role="tablist" aria-label="Filter credits by genre">
+      <button class="genre-filter__btn is-active" type="button" data-genre-filter="all" role="tab" aria-selected="true">All<span>30</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="Hip-Hop" role="tab" aria-selected="false">Hip-Hop<span>15</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="Pop" role="tab" aria-selected="false">Pop<span>3</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="R&B" role="tab" aria-selected="false">R&amp;B<span>1</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="Indie Rock" role="tab" aria-selected="false">Indie Rock<span>1</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="Dance" role="tab" aria-selected="false">Dance<span>1</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="Other" role="tab" aria-selected="false">Other<span>9</span></button>
+    </div>
+    <p class="genre-filter__empty" id="genreEmpty" hidden>Nothing in this genre yet — try another filter.</p>
+
     <div class="rows" id="rows">
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/3bbcee44397f279807d550e643a8a87d118d20fd" data-img="https://i.scdn.co/image/ab67616d0000b273c3b117acc5a3fdb100d4f58f">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/3bbcee44397f279807d550e643a8a87d118d20fd" data-img="https://i.scdn.co/image/ab67616d0000b273c3b117acc5a3fdb100d4f58f" data-genre="Pop">
         <span class="row__idx">01</span>
         <button class="row__btn" type="button" aria-label="Play Забросили учебу by ШГШ">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -253,7 +264,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/5537d180f06b7ef01defc127bcf31a9a685f48ab" data-img="https://i.scdn.co/image/ab67616d0000b2733b3a69944f04ee4898a7405e">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/5537d180f06b7ef01defc127bcf31a9a685f48ab" data-img="https://i.scdn.co/image/ab67616d0000b2733b3a69944f04ee4898a7405e" data-genre="Hip-Hop">
         <span class="row__idx">02</span>
         <button class="row__btn" type="button" aria-label="Play Саме та by Sms вночi">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -267,7 +278,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a7559e1731e57b39aa537ac3758d707e2c3760d1" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a7559e1731e57b39aa537ac3758d707e2c3760d1" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">03</span>
         <button class="row__btn" type="button" aria-label="Play 15 травня by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -281,7 +292,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/39fba314083b35f0e744fb2610f29fd4e3f09792" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/39fba314083b35f0e744fb2610f29fd4e3f09792" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">04</span>
         <button class="row__btn" type="button" aria-label="Play СВО by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -295,7 +306,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/04989bef71b4a976c300d363a4751d885c79f8c6" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/04989bef71b4a976c300d363a4751d885c79f8c6" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">05</span>
         <button class="row__btn" type="button" aria-label="Play Мати Тереза by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -309,7 +320,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/e75c6f21dbe261e8052d26dd1b0dc21f9e44acc6" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/e75c6f21dbe261e8052d26dd1b0dc21f9e44acc6" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29" data-genre="Other">
         <span class="row__idx">06</span>
         <button class="row__btn" type="button" aria-label="Play Сказки by INDABLACK, lyner">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -323,7 +334,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/6e6459602ac06f17e441782a6fa4ff1b06d1a11b" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/6e6459602ac06f17e441782a6fa4ff1b06d1a11b" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">07</span>
         <button class="row__btn" type="button" aria-label="Play Радіація by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -337,7 +348,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/f1e329b83b9e63370581699c522525964ebb219a" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/f1e329b83b9e63370581699c522525964ebb219a" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">08</span>
         <button class="row__btn" type="button" aria-label="Play Yesvuiskiii by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -351,7 +362,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/77ea17716375979f598056582f2e91bdb06eb94a" data-img="https://i.scdn.co/image/ab67616d0000b2733d980a4063fd4140fb66f912">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/77ea17716375979f598056582f2e91bdb06eb94a" data-img="https://i.scdn.co/image/ab67616d0000b2733d980a4063fd4140fb66f912" data-genre="Pop">
         <span class="row__idx">09</span>
         <button class="row__btn" type="button" aria-label="Play Одна на самотi by ШГШ, Карина">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -365,7 +376,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/f7d9c228d1b8f600729914f3be45dbcb0aec842a" data-img="https://i.scdn.co/image/ab67616d0000b273ba1a67559e9d4ba85173b766">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/f7d9c228d1b8f600729914f3be45dbcb0aec842a" data-img="https://i.scdn.co/image/ab67616d0000b273ba1a67559e9d4ba85173b766" data-genre="Hip-Hop">
         <span class="row__idx">10</span>
         <button class="row__btn" type="button" aria-label="Play Анжгеркам by ШГШ">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -379,7 +390,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/b85290f4722e5b03df54cffde53d1a5e61531ec4" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/b85290f4722e5b03df54cffde53d1a5e61531ec4" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">11</span>
         <button class="row__btn" type="button" aria-label="Play Банка Огірків by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -393,7 +404,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/be5f8d85829f38b2a4d1041265e31bacef93d0f3" data-img="https://i.scdn.co/image/ab67616d0000b2734ebb7bad8623e2811a1a1b34">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/be5f8d85829f38b2a4d1041265e31bacef93d0f3" data-img="https://i.scdn.co/image/ab67616d0000b2734ebb7bad8623e2811a1a1b34" data-genre="Hip-Hop">
         <span class="row__idx">12</span>
         <button class="row__btn" type="button" aria-label="Play Людмила by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -407,7 +418,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a3e62bb461f6a00eac7edb6eada21bbb71c5f3ce" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a3e62bb461f6a00eac7edb6eada21bbb71c5f3ce" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29" data-genre="Other">
         <span class="row__idx">13</span>
         <button class="row__btn" type="button" aria-label="Play Хаки by INDABLACK, lyner">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -421,7 +432,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/1663eb223e9c0c64617cfc17a58f908bf218f8bc" data-img="https://i.scdn.co/image/ab67616d0000b2736f772bb360d233395277e7d7">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/1663eb223e9c0c64617cfc17a58f908bf218f8bc" data-img="https://i.scdn.co/image/ab67616d0000b2736f772bb360d233395277e7d7" data-genre="R&B">
         <span class="row__idx">14</span>
         <button class="row__btn" type="button" aria-label="Play Лиши меня эмоций by Zetsu">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -435,7 +446,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/2a33565a3d51028b5dc65751be270f1946606311" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/2a33565a3d51028b5dc65751be270f1946606311" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">15</span>
         <button class="row__btn" type="button" aria-label="Play Чайний гриб by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -449,7 +460,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/211249ec1bcc7444e9aca26297e2f7a9f76d8281" data-img="https://i.scdn.co/image/ab67616d0000b27352b58684fa7a52842acf112a">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/211249ec1bcc7444e9aca26297e2f7a9f76d8281" data-img="https://i.scdn.co/image/ab67616d0000b27352b58684fa7a52842acf112a" data-genre="Indie Rock">
         <span class="row__idx">16</span>
         <button class="row__btn" type="button" aria-label="Play Школьные коридоры by ШГШ">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -463,7 +474,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/97ee5cf3786b9b8429089526ad7799877728ff87" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/97ee5cf3786b9b8429089526ad7799877728ff87" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">17</span>
         <button class="row__btn" type="button" aria-label="Play Я Трачу by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -477,7 +488,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a7a079b7d53675f31c1d879de8277eb0512f0928" data-img="https://i.scdn.co/image/ab67616d0000b27365d02e9590b284e930d91b28">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a7a079b7d53675f31c1d879de8277eb0512f0928" data-img="https://i.scdn.co/image/ab67616d0000b27365d02e9590b284e930d91b28" data-genre="Pop">
         <span class="row__idx">18</span>
         <button class="row__btn" type="button" aria-label="Play Сколько с тобой by ШГШ">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -491,7 +502,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/60acd84a243eaeef39cf6bd02882aa72cf49ea9b" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/60acd84a243eaeef39cf6bd02882aa72cf49ea9b" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">19</span>
         <button class="row__btn" type="button" aria-label="Play ТТ by Clonnex">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -505,7 +516,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/0bad6c0d308b084503874d62db81b975fda9ea9a" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/0bad6c0d308b084503874d62db81b975fda9ea9a" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">20</span>
         <button class="row__btn" type="button" aria-label="Play Gabana by Clonnex, Mlody Korden">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -519,7 +530,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/1fcd6edf282095fdaf79ace024def9a52d598840" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/1fcd6edf282095fdaf79ace024def9a52d598840" data-img="https://i.scdn.co/image/ab67616d0000b27315f0b2e8e05b8fc67af732d1" data-genre="Hip-Hop">
         <span class="row__idx">21</span>
         <button class="row__btn" type="button" aria-label="Play Інтирнит стусунке з дівкую з Мумбая by Clonnex, irlbabee">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -533,7 +544,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/92c26670100d1d7a860f7b33ca7cca517191fd46" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/92c26670100d1d7a860f7b33ca7cca517191fd46" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29" data-genre="Other">
         <span class="row__idx">22</span>
         <button class="row__btn" type="button" aria-label="Play На Юг by INDABLACK, lyner">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -547,7 +558,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/ac334a1027e130434d6b2825b193a79079fbfaed" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/ac334a1027e130434d6b2825b193a79079fbfaed" data-img="https://i.scdn.co/image/ab67616d0000b273f8831e61c7e9e00731a15c29" data-genre="Other">
         <span class="row__idx">23</span>
         <button class="row__btn" type="button" aria-label="Play Танец Частиц by INDABLACK, lyner">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -561,7 +572,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/e5adca8aff142435fa32916090df695b04762fe5" data-img="https://i.scdn.co/image/ab67616d0000b27302ce77e3ccfdd5bede243e8c">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/e5adca8aff142435fa32916090df695b04762fe5" data-img="https://i.scdn.co/image/ab67616d0000b27302ce77e3ccfdd5bede243e8c" data-genre="Other">
         <span class="row__idx">24</span>
         <button class="row__btn" type="button" aria-label="Play СКУЧАЮ by INDABLACK">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -575,7 +586,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/92b3fbbd9083609e9e68e12eb8159657da003a76" data-img="https://i.scdn.co/image/ab67616d0000b2733865d940dcfd04368f9b6774">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/92b3fbbd9083609e9e68e12eb8159657da003a76" data-img="https://i.scdn.co/image/ab67616d0000b2733865d940dcfd04368f9b6774" data-genre="Other">
         <span class="row__idx">25</span>
         <button class="row__btn" type="button" aria-label="Play No Love by Jarry">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -589,7 +600,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a6e9d94d138971a39fc45a4de8739523268c7e02" data-img="https://i.scdn.co/image/ab67616d0000b273576bd9889d05693dfd6c6337">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/a6e9d94d138971a39fc45a4de8739523268c7e02" data-img="https://i.scdn.co/image/ab67616d0000b273576bd9889d05693dfd6c6337" data-genre="Other">
         <span class="row__idx">26</span>
         <button class="row__btn" type="button" aria-label="Play 5 Star by INDABLACK">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -603,7 +614,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/12d50473d8c6c99c2f7af98edd9e88be42ad454f" data-img="https://i.scdn.co/image/ab67616d0000b273541b53742ce1ce36351260fa">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/12d50473d8c6c99c2f7af98edd9e88be42ad454f" data-img="https://i.scdn.co/image/ab67616d0000b273541b53742ce1ce36351260fa" data-genre="Other">
         <span class="row__idx">27</span>
         <button class="row__btn" type="button" aria-label="Play Pretty Girls In My Room by Rodionis">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -617,7 +628,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/ba3f75927a9f9d3ec28f40e132c5e5eeba03038b" data-img="https://i.scdn.co/image/ab67616d0000b2739b88462d6cc5fb92eccb706f">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/ba3f75927a9f9d3ec28f40e132c5e5eeba03038b" data-img="https://i.scdn.co/image/ab67616d0000b2739b88462d6cc5fb92eccb706f" data-genre="Dance">
         <span class="row__idx">28</span>
         <button class="row__btn" type="button" aria-label="Play Interstellar by Antony Millnor">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -631,7 +642,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/19f4d7f0a686842fea56891bced03c854d76437a" data-img="https://i.scdn.co/image/ab67616d0000b2734e9726807acee90ba5b3af19">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/19f4d7f0a686842fea56891bced03c854d76437a" data-img="https://i.scdn.co/image/ab67616d0000b2734e9726807acee90ba5b3af19" data-genre="Hip-Hop">
         <span class="row__idx">29</span>
         <button class="row__btn" type="button" aria-label="Play Аризона by ШГШ">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
@@ -645,7 +656,7 @@
         <span class="row__bar" data-bar aria-hidden="true"></span>
       </div>
 
-      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/ca61562ec2a9fb9ce7208f27e3e888b826f226d8" data-img="https://i.scdn.co/image/ab67616d0000b273576bd9889d05693dfd6c6337">
+      <div class="row reveal" data-player data-src="https://p.scdn.co/mp3-preview/ca61562ec2a9fb9ce7208f27e3e888b826f226d8" data-img="https://i.scdn.co/image/ab67616d0000b273576bd9889d05693dfd6c6337" data-genre="Other">
         <span class="row__idx">30</span>
         <button class="row__btn" type="button" aria-label="Play No Competition by INDABLACK">
           <svg class="ico-play" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>

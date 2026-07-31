@@ -291,31 +291,86 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:clamp(28px,4vw,48px); }
 
+/* ── hero slider (Instagram-story style) ───────────────── */
 .hero__media{
   position:relative; margin:0;
   aspect-ratio:1/1;
   max-height:74svh;
   overflow:hidden;
   background:var(--bg-2);
+  opacity:0;
+  transition:opacity 1.4s ease;
+  touch-action:pan-y;              /* let vertical page scroll through */
 }
-.hero__media img{
+.is-loaded .hero__media{ opacity:1; }
+
+.slider__track{
+  display:flex; height:100%;
+  will-change:transform;
+  transition:transform .62s var(--ease);
+}
+.slider__track.is-dragging{ transition:none; }
+
+.slider__slide{ flex:0 0 100%; height:100%; overflow:hidden; }
+.slider__slide img{
   width:100%; height:100%;
   object-fit:cover; object-position:50% 50%;
   filter:grayscale(1) contrast(1.22) brightness(.82);
-  transform:scale(1.14);
-  opacity:0;
-  transition:transform 1.9s var(--ease), opacity 1.4s ease;
+  transform:scale(1.12);
+  transition:transform 1.9s var(--ease);
+  -webkit-user-drag:none; user-select:none; pointer-events:none;
 }
-.is-loaded .hero__media img{ transform:scale(1); opacity:1; }
+.is-loaded .slider__slide img{ transform:scale(1); }
+
 .hero__media::after{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(180deg,rgba(10,10,10,.28) 0%,rgba(10,10,10,0) 38%,rgba(10,10,10,.62) 100%);
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,10,10,.42) 0%,rgba(10,10,10,0) 34%,rgba(10,10,10,.62) 100%);
 }
+
+/* segmented progress bars, like stories */
+.slider__bars{
+  position:absolute; top:12px; left:12px; right:12px; z-index:3;
+  display:flex; gap:5px;
+}
+.slider__bars span{
+  flex:1; height:2px; border-radius:2px;
+  background:rgba(242,240,236,.28);
+  overflow:hidden;
+}
+.slider__bars i{ display:block; height:100%; width:0; background:var(--fg); }
+.slider__bars span.is-done i{ width:100%; }
+.slider__bars span.is-active i{ animation:barFill var(--slide-dur,5s) linear forwards; }
+.hero__media.is-paused .slider__bars span.is-active i{ animation-play-state:paused; }
+@keyframes barFill{ from{ width:0; } to{ width:100%; } }
+
+/* arrows — desktop affordance, hidden until hover */
+.slider__nav{
+  position:absolute; top:50%; z-index:3;
+  width:38px; height:38px; margin-top:-19px;
+  display:grid; place-items:center;
+  border-radius:50%;
+  background:rgba(11,11,12,.45);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(242,240,236,.16);
+  color:var(--fg); font-size:20px; line-height:1;
+  opacity:0; transform:scale(.9);
+  transition:opacity .35s var(--ease), transform .35s var(--ease), background .3s;
+}
+.slider__nav--prev{ left:12px; }
+.slider__nav--next{ right:12px; }
+.hero__media:hover .slider__nav{ opacity:1; transform:none; }
+.slider__nav:hover{ background:rgba(11,11,12,.75); }
+.slider__nav:active{ transform:scale(.92); }
+
 .hero__media figcaption{
-  position:absolute; left:16px; bottom:14px; z-index:2;
+  position:absolute; left:16px; bottom:14px; z-index:3;
   font-family:var(--mono); font-size:10px;
   letter-spacing:.16em; text-transform:uppercase;
   color:rgba(242,240,236,.72);
+}
+
+@media (hover:none){
+  .slider__nav{ display:none; }   /* swipe is the gesture on touch */
 }
 
 .hero__foot{

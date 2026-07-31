@@ -70,8 +70,26 @@
       </div>
     </div>
 
-    <figure class="hero__media">
-      <img src="assets/img/portrait.jpg" alt="Vyacheslav MSTPD at the desk in his studio" width="640" height="640">
+    <figure class="hero__media" id="heroSlider">
+      <div class="slider__bars" id="sliderBars" aria-hidden="true">
+        <span><i></i></span><span><i></i></span><span><i></i></span>
+      </div>
+
+      <div class="slider__track" id="sliderTrack">
+        <div class="slider__slide">
+          <img src="assets/img/portrait.jpg" alt="Vyacheslav MSTPD at the desk in his studio" width="640" height="640">
+        </div>
+        <div class="slider__slide">
+          <img src="assets/img/studio-1.jpg" alt="Mixing session on the console with monitors and laptop" width="1280" height="853" loading="lazy">
+        </div>
+        <div class="slider__slide">
+          <img src="assets/img/studio-2.jpg" alt="Working at the desk over the mixing surface" width="1280" height="853" loading="lazy">
+        </div>
+      </div>
+
+      <button class="slider__nav slider__nav--prev" type="button" id="sliderPrev" aria-label="Previous photo">‹</button>
+      <button class="slider__nav slider__nav--next" type="button" id="sliderNext" aria-label="Next photo">›</button>
+
       <figcaption>Studio — Odessa</figcaption>
     </figure>
 

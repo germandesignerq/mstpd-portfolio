@@ -549,8 +549,8 @@
   }
 
   /* ── hero parallax (desktop, motion allowed) ──────────── */
-  const heroImg = $('.hero__media img');
-  if (heroImg && !reduced && matchMedia('(min-width: 901px)').matches) {
+  const heroImgs = $$('.hero__media img');
+  if (heroImgs.length && !reduced && matchMedia('(min-width: 901px)').matches) {
     let ticking = false;
     addEventListener('scroll', () => {
       if (ticking) return;
@@ -558,9 +558,86 @@
       requestAnimationFrame(() => {
         // shifts the crop, not the element — keeps the load animation's transform free
         const p = Math.min(1, scrollY / innerHeight);
-        heroImg.style.objectPosition = `50% ${46 + p * 9}%`;
+        const pos = `50% ${46 + p * 9}%`;
+        heroImgs.forEach(img => { img.style.objectPosition = pos; });
         ticking = false;
       });
     }, { passive: true });
+  }
+
+  /* ── hero slider: autoplay + swipe, story-style bars ───── */
+  const slider = $('#heroSlider');
+  if (slider) {
+    const track = $('#sliderTrack');
+    const slides = $$('.slider__slide', track);
+    const bars = $$('#sliderBars span');
+    const DUR = 5000;                        // must match --slide-dur
+    slider.style.setProperty('--slide-dur', DUR + 'ms');
+
+    let index = 0, timer = null, paused = false;
+    let startX = 0, dx = 0, dragging = false;
+
+    const paint = () => {
+      track.style.transform = `translate3d(${-index * 100}%,0,0)`;
+      bars.forEach((b, i) => {
+        b.classList.toggle('is-done', i < index);
+        b.classList.toggle('is-active', i === index);
+      });
+    };
+
+    const stop = () => { clearTimeout(timer); timer = null; };
+    const schedule = () => {
+      stop();
+      if (!paused && !reduced) timer = setTimeout(() => go(index + 1), DUR);
+    };
+
+    function go(next) {
+      index = (next + slides.length) % slides.length;
+      paint();
+      schedule();
+    }
+
+    const setPaused = on => {
+      paused = on;
+      slider.classList.toggle('is-paused', on);
+      on ? stop() : schedule();
+    };
+
+    $('#sliderPrev').addEventListener('click', () => go(index - 1));
+    $('#sliderNext').addEventListener('click', () => go(index + 1));
+
+    // pause while the tab is hidden or the pointer rests on the slider
+    document.addEventListener('visibilitychange', () => setPaused(document.hidden));
+    if (matchMedia('(hover: hover)').matches) {
+      slider.addEventListener('mouseenter', () => setPaused(true));
+      slider.addEventListener('mouseleave', () => setPaused(false));
+    }
+
+    /* swipe */
+    track.addEventListener('pointerdown', e => {
+      dragging = true; startX = e.clientX; dx = 0;
+      track.classList.add('is-dragging');
+      track.setPointerCapture(e.pointerId);
+      setPaused(true);
+    });
+    track.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      dx = e.clientX - startX;
+      track.style.transform = `translate3d(calc(${-index * 100}% + ${dx}px),0,0)`;
+    });
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      track.classList.remove('is-dragging');
+      const threshold = slider.clientWidth * 0.18;
+      if (dx > threshold) go(index - 1);
+      else if (dx < -threshold) go(index + 1);
+      else paint();
+      setPaused(false);
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    go(0);
   }
 })();

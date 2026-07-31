@@ -786,6 +786,11 @@
           <span>Send enquiry</span>
           <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
         </button>
+
+        <button class="contact__distro reveal" type="button" data-distro-modal>
+          <span>Submit a release for distribution</span>
+          <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -896,6 +901,81 @@
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
       </button>
       <p class="form__note" id="modalFormNote" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ─────────────────────── distribution modal ─────────────────────── -->
+<div class="modal" id="distroModal" aria-hidden="true">
+  <div class="modal__backdrop" id="distroBackdrop"></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="distroTitle">
+    <button class="modal__close" type="button" id="distroClose" aria-label="Close">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
+    </button>
+
+    <h2 class="modal__title" id="distroTitle">Send it out<br>into the world.</h2>
+    <p class="modal__sub">Release details for distribution — I'll confirm before it goes live.</p>
+
+    <form class="form" id="distroForm" novalidate>
+      <div class="field">
+        <label for="d-artist">Artist's full name</label>
+        <p class="field__hint">Full legal name the artist is registered under.</p>
+        <input id="d-artist" name="artist" type="text" required placeholder="Full name">
+      </div>
+      <div class="field">
+        <label for="d-release">Release title</label>
+        <input id="d-release" name="release" type="text" required placeholder="Track or album title">
+      </div>
+      <div class="field">
+        <label for="d-version">Version / subtitle</label>
+        <p class="field__hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
+        <input id="d-version" name="version" type="text" placeholder="Remix, Live, Deluxe…">
+      </div>
+      <div class="field">
+        <label for="d-performer">Main performer(s)</label>
+        <p class="field__hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
+        <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)">
+      </div>
+      <div class="field">
+        <label for="d-feat">Featuring</label>
+        <p class="field__hint">Guest artists, if any — leave blank if none.</p>
+        <input id="d-feat" name="feat" type="text" placeholder="feat. …">
+      </div>
+      <div class="field">
+        <label for="d-genre">Genre</label>
+        <input id="d-genre" name="genre" type="text" required placeholder="e.g. Hip-Hop">
+      </div>
+      <div class="field">
+        <label for="d-subgenre">Subgenre</label>
+        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap">
+      </div>
+      <div class="field">
+        <label>Format</label>
+        <div class="pill-group" role="radiogroup" aria-label="Format">
+          <input class="pill-group__input" type="radio" name="format" id="d-format-single" value="Single" checked>
+          <label class="pill-group__btn" for="d-format-single">Single</label>
+          <input class="pill-group__input" type="radio" name="format" id="d-format-album" value="Album">
+          <label class="pill-group__btn" for="d-format-album">Album</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Explicit content</label>
+        <div class="pill-group" role="radiogroup" aria-label="Explicit content">
+          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-no" value="No" checked>
+          <label class="pill-group__btn" for="d-explicit-no">No</label>
+          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-yes" value="Yes">
+          <label class="pill-group__btn" for="d-explicit-yes">Yes</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Track cover</label>
+        <p class="field__hint">1440×1440 or 3000×3000&nbsp;px · JPEG. Can't be attached automatically — drag the file into the email once it opens.</p>
+      </div>
+      <button class="btn btn--solid form__submit" type="submit">
+        <span>Send for distribution</span>
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+      </button>
+      <p class="form__note" id="distroFormNote" role="status"></p>
     </form>
   </div>
 </div>

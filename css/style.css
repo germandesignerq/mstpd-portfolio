@@ -785,6 +785,16 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .contact{ border-top:1px solid var(--line-soft); }
 .contact__grid{ max-width:640px; }
 .contact__cta{ margin-top:clamp(36px,5vw,56px); }
+.contact__distro{
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:20px;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+  transition:color .35s;
+}
+.contact__distro:hover{ color:var(--accent); }
+.contact__distro svg{ width:8px; height:10px; fill:currentColor; transition:transform .35s var(--ease); }
+.contact__distro:hover svg{ transform:translateX(3px); }
 .contact__title{
   margin:0 0 clamp(28px,4vw,48px);
   font-size:clamp(38px,6vw,88px);
@@ -875,7 +885,36 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .field input::placeholder,.field textarea::placeholder{ color:var(--faint); }
 .field input:focus,.field textarea:focus{ outline:none; border-bottom-color:var(--fg); }
 .field.is-invalid input,.field.is-invalid textarea{ border-bottom-color:var(--accent); }
+.field__hint{
+  margin:-4px 0 0;
+  font-size:12px; line-height:1.5; color:var(--faint);
+}
 .form__submit{ justify-self:start; margin-top:8px; }
+
+.pill-group{ display:flex; flex-wrap:wrap; gap:10px; }
+.pill-group__input{
+  position:absolute;
+  width:1px; height:1px;
+  margin:-1px; padding:0; border:0;
+  clip:rect(0,0,0,0); overflow:hidden;
+}
+.pill-group__btn{
+  display:inline-flex; align-items:center;
+  padding:9px 18px;
+  border-radius:100px;
+  border:1px solid var(--line);
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  cursor:pointer;
+  transition:color .3s, border-color .3s, background .3s;
+}
+.pill-group__btn:hover{ color:var(--fg); border-color:rgba(242,240,236,.35); }
+.pill-group__input:checked + .pill-group__btn{
+  background:var(--fg); color:var(--bg); border-color:var(--fg);
+}
+.pill-group__input:focus-visible + .pill-group__btn{
+  outline:2px solid var(--accent); outline-offset:2px;
+}
 .form__note{
   margin:0; min-height:1.4em;
   font-family:var(--mono); font-size:11px;

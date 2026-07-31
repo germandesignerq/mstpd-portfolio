@@ -547,56 +547,87 @@
     return api;
   })();
 
-  /* ── contact modal ─────────────────────────────────────── */
-  const modal = $('#contactModal');
-  if (modal) {
-    const panel = $('.modal__panel', modal);
+  /* ── modals (contact + distribution) ──────────────────────── */
+  const openModals = new Set();
+  const bindModal = (modal, { triggerSelector, focusSelector }) => {
+    if (!modal) return;
+    const backdrop = $('.modal__backdrop', modal);
+    const closeBtn = $('.modal__close', modal);
     const openModal = () => {
       modal.classList.add('is-open');
       modal.removeAttribute('aria-hidden');
+      openModals.add(modal);
       document.body.classList.add('modal-open');
-      const first = $('#m-name', modal);
+      const first = focusSelector && $(focusSelector, modal);
       if (first) setTimeout(() => first.focus(), 350);
     };
     const closeModal = () => {
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('modal-open');
+      openModals.delete(modal);
+      if (!openModals.size) document.body.classList.remove('modal-open');
     };
 
-    $$('[data-contact-modal]').forEach(el => el.addEventListener('click', e => {
+    $$(triggerSelector).forEach(el => el.addEventListener('click', e => {
       e.preventDefault();
       openModal();
     }));
-    $('#modalClose').addEventListener('click', closeModal);
-    $('#modalBackdrop').addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
     addEventListener('keydown', e => {
       if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
     });
-  }
+  };
 
-  /* ── contact form → mail client (swap for a real endpoint) ── */
-  const form = $('#modalForm');
-  const note = $('#modalFormNote');
-  if (form) {
+  bindModal($('#contactModal'), { triggerSelector: '[data-contact-modal]', focusSelector: '#m-name' });
+  bindModal($('#distroModal'), { triggerSelector: '[data-distro-modal]', focusSelector: '#d-artist' });
+
+  /* ── forms → mail client (swap for a real endpoint) ───────── */
+  const bindMailtoForm = (form, { requiredFields, buildSubject, buildBody }) => {
+    if (!form) return;
+    const note = $('.form__note', form);
     form.addEventListener('submit', e => {
       e.preventDefault();
       let ok = true;
       $$('.field', form).forEach(f => {
         const input = $('input, textarea', f);
+        if (!input || !requiredFields.includes(input.name)) return;
         const valid = input.checkValidity() && input.value.trim() !== '';
         f.classList.toggle('is-invalid', !valid);
         if (!valid) ok = false;
       });
-      if (!ok) { note.textContent = 'Please fill in every field.'; return; }
+      if (!ok) { note.textContent = 'Please fill in the required fields.'; return; }
 
       const data = new FormData(form);
-      const body = `${data.get('message')}\n\n— ${data.get('name')} (${data.get('email')})`;
-      location.href = `mailto:offmstpd@gmail.com?subject=${encodeURIComponent('Project enquiry — ' + data.get('name'))}&body=${encodeURIComponent(body)}`;
+      location.href = `mailto:offmstpd@gmail.com?subject=${encodeURIComponent(buildSubject(data))}&body=${encodeURIComponent(buildBody(data))}`;
       note.textContent = 'Opening your mail client…';
       form.reset();
     });
-  }
+  };
+
+  bindMailtoForm($('#modalForm'), {
+    requiredFields: ['name', 'email', 'message'],
+    buildSubject: data => 'Project enquiry — ' + data.get('name'),
+    buildBody: data => `${data.get('message')}\n\n— ${data.get('name')} (${data.get('email')})`,
+  });
+
+  bindMailtoForm($('#distroForm'), {
+    requiredFields: ['artist', 'release', 'performer', 'genre'],
+    buildSubject: data => `Distribution — ${data.get('artist')} — ${data.get('release')}`,
+    buildBody: data => [
+      `Artist: ${data.get('artist')}`,
+      `Release: ${data.get('release')}`,
+      `Version/Subtitle: ${data.get('version') || '—'}`,
+      `Main performer(s): ${data.get('performer')}`,
+      `Featuring: ${data.get('feat') || '—'}`,
+      `Genre: ${data.get('genre')}`,
+      `Subgenre: ${data.get('subgenre') || '—'}`,
+      `Format: ${data.get('format')}`,
+      `Explicit: ${data.get('explicit')}`,
+      '',
+      'Cover art: attach separately (1440×1440 or 3000×3000 px, JPEG)',
+    ].join('\n'),
+  });
 
   /* ── hero parallax (desktop, motion allowed) ──────────── */
   const heroImgs = $$('.hero__media img');

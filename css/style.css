@@ -1046,13 +1046,14 @@ body.modal-open{ overflow:hidden; }
 .np__x{
   display:none; place-items:center;
   width:44px; height:44px; border-radius:50%;
-  font-size:26px; line-height:1; color:var(--fg);
+  color:var(--fg);
   background:rgba(11,11,12,.4);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
   border:1px solid rgba(242,240,236,.16);
   transition:color .3s, background .3s, transform .3s var(--ease);
 }
+.np__x svg{ width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; }
 /* higher specificity than ".np > *:not(.np__bg)" above, which would
    otherwise win the position property and drop this into flex flow */
 .np > .np__x{ position:absolute; top:20px; right:24px; z-index:3; }

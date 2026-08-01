@@ -618,6 +618,7 @@
     $('#pkgPickName').textContent = name || '';
     $('#pkgPickPrice').textContent = price || '';
     $('#pkgPickInput').value = name || '';
+    $('#pkgPickRateInput').value = price || '';
     $('#modalTitle').innerHTML = name ? 'Book<br>' + name + '.' : 'Send me<br>the rough mix.';
     $('#modalSub').textContent = name
       ? 'Tell me about the release and I\'ll confirm the details.'
@@ -741,11 +742,14 @@
   const enquiry = {
     requiredFields: ['name', 'email', 'message'],
     buildSubject: data => data.get('package')
-      ? `${data.get('package')} — ${data.get('name')}`
-      : `Project enquiry — ${data.get('name')}`,
-    // the inline Contact form has no package input, so this stays absent there
+      ? `New booking — ${data.get('package')} — ${data.get('name')}`
+      : `New enquiry — ${data.get('name')}`,
+    // the inline Contact form has no package input, so these stay absent there
     buildFields: data => ({
-      ...(data.get('package') ? { Package: data.get('package') } : {}),
+      ...(data.get('package') ? {
+        Package: data.get('package'),
+        Rate: data.get('packageRate'),
+      } : {}),
       Name: data.get('name'),
       Email: data.get('email'),
       Message: data.get('message'),

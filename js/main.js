@@ -637,7 +637,7 @@
      in (or if the request fails) the form falls back to opening
      the visitor's mail client, so it never dead-ends.            */
   const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
-  const FORM_ACCESS_KEY = 'PASTE-YOUR-WEB3FORMS-ACCESS-KEY';
+  const FORM_ACCESS_KEY = 'f39b0474-3b97-4934-9cdb-67591e71d404';
   const MAIL_TO = 'offmstpd@gmail.com';
   const keyReady = /^[0-9a-f-]{30,}$/i.test(FORM_ACCESS_KEY);
 

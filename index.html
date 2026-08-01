@@ -1034,9 +1034,10 @@
         </div>
       </div>
       <div class="field field--wide">
-        <label for="d-cover">Track cover — link</label>
-        <p class="field__hint">1440×1440 or 3000×3000&nbsp;px · JPEG. Paste a Google&nbsp;Drive, Dropbox or WeTransfer link to the file.</p>
-        <input id="d-cover" name="cover" type="url" placeholder="https://…">
+        <label for="d-cover">Track cover</label>
+        <p class="field__hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
+        <input id="d-cover" name="cover" type="file" accept="image/jpeg,image/png">
+        <p class="filenote" id="coverNote" role="status"></p>
       </div>
       <button class="btn btn--solid form__submit" type="submit">
         <span>Send for distribution</span>

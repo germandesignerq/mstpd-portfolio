@@ -935,6 +935,38 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .field > input::placeholder,.field > textarea::placeholder{ color:var(--faint); }
 .field > input:focus,.field > textarea:focus{ outline:none; border-bottom-color:var(--fg); }
 .field.is-invalid > input,.field.is-invalid > textarea{ border-bottom-color:var(--accent); }
+
+/* file input: the rule above sizes text fields, which leaves the native
+   control oversized and misaligned — pull it back and dress the button */
+.field > input[type="file"]{
+  font-size:14px; color:var(--muted);
+  padding:14px 0;
+  cursor:pointer;
+}
+.field > input[type="file"]::file-selector-button{
+  margin-right:14px;
+  padding:9px 18px;
+  border-radius:100px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--fg);
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.1em; text-transform:uppercase;
+  cursor:pointer;
+  transition:color .3s, border-color .3s, background .3s;
+}
+.field > input[type="file"]::file-selector-button:hover{
+  background:var(--fg); color:var(--bg); border-color:var(--fg);
+}
+
+.filenote{
+  margin:8px 0 0; min-height:1.3em;
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.06em; color:var(--faint);
+  overflow-wrap:anywhere;
+}
+.filenote.is-ok{ color:var(--muted); }
+.filenote.is-error{ color:var(--accent); }
 .field__hint{
   margin:-4px 0 0;
   font-size:15px; line-height:1.5; color:var(--faint);

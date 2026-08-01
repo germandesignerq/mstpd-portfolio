@@ -647,7 +647,8 @@
      (Ivanov-Petrov, O'Brien) but can't start or end a part. */
   const FULL_NAME = /^\p{L}[\p{L}'’-]*\p{L}(?:\s+\p{L}[\p{L}'’-]*\p{L})+$/u;
 
-  const bindForm = (form, { requiredFields, validators = {}, buildSubject, buildFields }) => {
+  const bindForm = (form, { requiredFields, validators = {}, buildSubject, buildFields,
+                            endpoint, preflight }) => {
     if (!form) return;
     const note = $('.form__note', form);
     const submit = $('button[type="submit"]', form);
@@ -692,12 +693,17 @@
       });
       if (!ok) { say(reason || 'Please fill in the required fields.', 'error'); return; }
 
+      // gate for things a per-field rule can't express, e.g. image dimensions
+      const blocker = preflight && preflight();
+      if (blocker) { say(blocker, 'error'); return; }
+
       const data = new FormData(form);
       if (data.get('botcheck')) return;               // honeypot tripped
       const subject = buildSubject(data);
       const fields = buildFields(data);
 
-      if (!keyReady) {                                // not configured yet
+      // the Web3Forms path needs a key; the own-endpoint path doesn't
+      if (!endpoint && !keyReady) {
         say('Opening your mail client…');
         mailtoFallback(subject, fields);
         return;
@@ -709,26 +715,35 @@
       say('Sending…');
 
       try {
-        const res = await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            access_key: FORM_ACCESS_KEY,
-            subject,
-            from_name: 'mstpd.com',
-            replyto: data.get('email') || undefined,
-            ...fields,
-          }),
-        });
+        const res = endpoint
+          // multipart, so the cover file rides along; the browser sets the boundary
+          ? await fetch(endpoint, { method: 'POST', body: data })
+          : await fetch(FORM_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({
+                access_key: FORM_ACCESS_KEY,
+                subject,
+                from_name: 'mstpd.com',
+                replyto: data.get('email') || undefined,
+                ...fields,
+              }),
+            });
         const json = await res.json().catch(() => ({}));
         if (!res.ok || json.success === false) throw new Error(json.message || 'Request failed');
 
-        form.reset();
+        form.reset();                                  // fires 'reset', which clears the cover note
         $$('.field.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
         say('Sent — I\'ll get back to you shortly.', 'ok');
       } catch (err) {
-        say('Couldn\'t send. Opening your mail client instead…', 'error');
-        setTimeout(() => mailtoFallback(subject, fields), 800);
+        // falling back to mailto would silently drop the attachment, so the
+        // file path reports the failure instead of pretending to degrade
+        if (endpoint) {
+          say('Couldn\'t send. Please email offmstpd@gmail.com directly.', 'error');
+        } else {
+          say('Couldn\'t send. Opening your mail client instead…', 'error');
+          setTimeout(() => mailtoFallback(subject, fields), 800);
+        }
       } finally {
         form.classList.remove('is-sending');
         submit.disabled = false;
@@ -758,7 +773,74 @@
   bindForm($('#modalForm'), enquiry);
   bindForm($('#contactForm'), enquiry);
 
+  /* ── cover art: checked in the browser before it can be submitted ──
+     Distributors want a square master; 3000px is the size Apple asks
+     for. Verified here so a wrong file is caught while the visitor can
+     still fix it, rather than after the release is in the queue. */
+  const COVER_MIN = 3000;
+  const COVER_MAX_BYTES = 4 * 1024 * 1024;
+  const COVER_TYPES = ['image/jpeg', 'image/png'];
+
+  const coverInput = $('#d-cover');
+  const coverNote = $('#coverNote');
+  let coverProblem = 'Attach the track cover.';        // no file chosen yet
+
+  const readSize = file => new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve({ w: img.naturalWidth, h: img.naturalHeight }); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('unreadable')); };
+    img.src = url;
+  });
+
+  if (coverInput && coverNote) {
+    const noteState = (text, state) => {
+      coverNote.textContent = text;
+      coverNote.classList.toggle('is-ok', state === 'ok');
+      coverNote.classList.toggle('is-error', state === 'error');
+    };
+
+    const clearCover = () => {
+      coverProblem = 'Attach the track cover.';
+      noteState('', null);
+    };
+    coverInput.form.addEventListener('reset', () => setTimeout(clearCover, 0));
+
+    coverInput.addEventListener('change', async () => {
+      const file = coverInput.files && coverInput.files[0];
+      if (!file) return clearCover();
+
+      const reject = msg => { coverProblem = msg; noteState(msg, 'error'); };
+
+      if (!COVER_TYPES.includes(file.type)) return reject('Cover must be a JPEG or PNG.');
+      if (file.size > COVER_MAX_BYTES) {
+        return reject(`Cover is ${(file.size / 1048576).toFixed(1)} MB — the limit is 4 MB. Save it as JPEG.`);
+      }
+
+      let size;
+      try { size = await readSize(file); }
+      catch { return reject('That file could not be read as an image.'); }
+
+      if (size.w !== size.h) return reject(`Cover must be square — this one is ${size.w}×${size.h}.`);
+      if (size.w < COVER_MIN) return reject(`Cover must be at least ${COVER_MIN}×${COVER_MIN} — this one is ${size.w}×${size.h}.`);
+
+      coverProblem = null;
+      noteState(`${file.name} — ${size.w}×${size.h}, ${Math.round(file.size / 1024)} KB`, 'ok');
+
+      // a submit may have been refused over this file; stop nagging now it's fixed
+      const formNote = $('.form__note', coverInput.form);
+      if (formNote && formNote.classList.contains('is-error')) {
+        formNote.textContent = '';
+        formNote.classList.remove('is-error');
+      }
+    });
+  }
+
   bindForm($('#distroForm'), {
+    // own endpoint rather than Web3Forms: file attachments are a paid
+    // feature there, and the cover is the point of this form
+    endpoint: '/api/distro',
+    preflight: () => coverProblem,
     requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],
     validators: {
       artist: {
@@ -766,19 +848,13 @@
         message: 'Artist name: please give the full legal name, first and last.',
       },
     },
+    // the endpoint composes the mail itself; these only feed the
+    // mailto fallback, which the file path never takes
     buildSubject: data => `Distribution — ${data.get('artist')} — ${data.get('release')}`,
     buildFields: data => ({
       'Artist (legal name)': data.get('artist'),
       'Email': data.get('email'),
       'Release': data.get('release'),
-      'Version / subtitle': data.get('version') || '—',
-      'Main performer(s)': data.get('performer'),
-      'Featuring': data.get('feat') || '—',
-      'Genre': data.get('genre'),
-      'Subgenre': data.get('subgenre') || '—',
-      'Format': data.get('format'),
-      'Explicit': data.get('explicit'),
-      'Cover art': data.get('cover') || 'not provided',
     }),
   });
 

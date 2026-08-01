@@ -848,6 +848,18 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .pkg__book:hover::after{ transform:translateY(0); }
 .pkg__book:active{ transform:scale(.97); }
 
+/* first-time-client offer, sitting under the three cards */
+.svc-offer{
+  margin:clamp(28px,3.4vw,44px) 0 0;
+  padding:clamp(18px,2.2vw,26px) clamp(20px,2.6vw,32px);
+  border:1px solid rgba(217,88,60,.55);
+  border-radius:16px;
+  background:rgba(217,88,60,.06);
+  color:var(--fg);
+  font-size:15px; line-height:1.6;
+  max-width:72ch;
+}
+
 /* ── presets ───────────────────────────────────────────── */
 .preset-grid{
   display:grid;

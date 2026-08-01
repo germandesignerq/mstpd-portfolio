@@ -247,6 +247,13 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .nav__cta--ghost:hover{ color:#fff; border-color:transparent; }
 
+/* already the hover colour by default — the sliding ::before layer
+   would be invisible against a same-colour background, so it's turned
+   off here and swapped for a plain brightness lift instead */
+.nav__cta--accent{ background:var(--accent); color:#fff; }
+.nav__cta--accent::before{ content:none; }
+.nav__cta--accent:hover{ color:#fff; filter:brightness(1.1); }
+
 .nav__burger{ display:none; width:28px; height:28px; position:relative; }
 .nav__burger span{
   position:absolute; left:3px; right:3px; height:1px; background:var(--fg);
@@ -295,6 +302,8 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   border:1px solid var(--line);
 }
 .menu__cta--ghost:active{ background:var(--accent); border-color:var(--accent); }
+
+.menu__cta--accent{ background:var(--accent); color:#fff; }
 .menu__mail{
   margin-top:36px;
   font-family:var(--mono); font-size:12px;

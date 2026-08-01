@@ -479,6 +479,18 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .about__copy p{ max-width:52ch; color:var(--muted); }
 .about__copy .lead{ color:var(--fg); margin-bottom:1.6em; }
+.about__list{
+  margin:clamp(26px,3vw,36px) 0; padding:clamp(24px,2.6vw,30px) 0;
+  border-top:1px solid var(--line-soft);
+  border-bottom:1px solid var(--line-soft);
+  list-style:none;
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  display:grid; gap:12px;
+}
+.about__list li{ display:flex; gap:10px; }
+.about__list li::before{ content:"—"; color:var(--line); }
+
 .about__badge{
   display:block;
   width:152px; height:auto;

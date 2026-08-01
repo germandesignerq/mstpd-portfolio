@@ -91,6 +91,7 @@ export default async function handler(request) {
     attachments.push({
       filename: cover.name || 'cover.jpg',
       content: toBase64(await cover.arrayBuffer()),
+      content_type: cover.type,
     });
   }
 

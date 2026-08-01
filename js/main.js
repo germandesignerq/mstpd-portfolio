@@ -1,5 +1,5 @@
 /* =========================================================
-   Vyacheslav MSTPD — interactions
+   Viacheslav MSTPD — interactions
    No dependencies. Everything degrades gracefully.
    ========================================================= */
 (() => {

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presets — Viacheslav MSTPD</title>
+<meta name="description" content="Mixing and mastering preset chains by Viacheslav MSTPD — vocal and mastering chains built on real client work.">
+<meta name="theme-color" content="#0A0A0A">
+<meta property="og:title" content="Presets — Viacheslav MSTPD">
+<meta property="og:description" content="Vocal and mastering chains built on real client work.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ───────────────────────── nav ───────────────────────── -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="index.html">
+      <span class="nav__mark" aria-hidden="true"></span>
+      Viacheslav&nbsp;MSTPD
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="presets.html" class="is-active">Presets</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="nav__cta nav__cta--accent" type="button" data-contact-modal>
+        <span>Get in touch</span>
+      </button>
+      <button class="nav__cta nav__cta--ghost" type="button" data-distro-modal>
+        <span>Distribution</span>
+      </button>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <a href="index.html#work">Work</a>
+  <a href="index.html#about">About</a>
+  <a href="index.html#services">Services</a>
+  <a href="presets.html">Presets</a>
+  <a href="index.html#contact">Contact</a>
+  <div class="menu__actions">
+    <button class="menu__cta menu__cta--accent" type="button" data-contact-modal>
+      <span>Get in touch</span>
+    </button>
+    <button class="menu__cta menu__cta--ghost" type="button" data-distro-modal>
+      <span>Distribution</span>
+    </button>
+  </div>
+  <span class="menu__mail">offmstpd@gmail.com</span>
+</div>
+
+<main id="top">
+
+<!-- ─────────────────────── presets ───────────────────────────
+     Placeholder catalogue — names, descriptions and cover art are
+     stand-ins until real presets and a store (Gumroad/Stripe) exist.
+     The "Coming soon" pill is inert on purpose: no store to link yet. -->
+<section class="section presets" id="presets">
+  <div class="container">
+    <header class="sec-head reveal">
+      <span class="label">Presets</span>
+      <h2 class="sec-title">Chains I reach for</h2>
+    </header>
+
+    <div class="preset-grid">
+      <article class="preset reveal">
+        <div class="preset__cover" data-tone="a">
+          <span class="preset__idx">01</span>
+        </div>
+        <h3 class="preset__title">Vocal Chain — Hip-Hop</h3>
+        <p class="preset__desc">Tight, present and forward — built for rap vocals that need to sit
+          on top of a busy low end without shouting.</p>
+        <div class="preset__foot">
+          <span class="preset__soon">Coming soon</span>
+        </div>
+      </article>
+
+      <article class="preset reveal">
+        <div class="preset__cover" data-tone="b">
+          <span class="preset__idx">02</span>
+        </div>
+        <h3 class="preset__title">Vocal Chain — Pop / R&amp;B</h3>
+        <p class="preset__desc">Smooth and airy, with just enough bite to stay intimate at low
+          volume and full-bodied at high volume.</p>
+        <div class="preset__foot">
+          <span class="preset__soon">Coming soon</span>
+        </div>
+      </article>
+
+      <article class="preset reveal">
+        <div class="preset__cover" data-tone="c">
+          <span class="preset__idx">03</span>
+        </div>
+        <h3 class="preset__title">Mastering Chain — Streaming Loud</h3>
+        <p class="preset__desc">Competitive loudness without pumping — tuned for the way Spotify
+          and Apple Music normalise playback.</p>
+        <div class="preset__foot">
+          <span class="preset__soon">Coming soon</span>
+        </div>
+      </article>
+    </div>
+
+    <p class="preset-note reveal">Presets aren't live yet — want first access when they drop? <button class="preset-note__link" type="button" data-contact-modal>Get in touch</button>.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <!-- Apple's official badge — shown unaltered, per their identity guidelines -->
+    <div class="footer__cert">
+      <img src="assets/img/apple-digital-masters.png" alt="Apple Digital Masters certified" width="384" height="115" loading="lazy">
+    </div>
+
+    <div class="footer__inner">
+      <span>© <span id="year">2026</span> Viacheslav MSTPD</span>
+      <span class="footer__mid">Sound Engineer / Mixing &amp; Mastering</span>
+      <a class="footer__by" href="https://ive-studio.com" target="_blank" rel="noopener noreferrer">Site by IVE&nbsp;Studio <span aria-hidden="true">↗</span></a>
+      <a href="#top" class="footer__top">Back to top <span aria-hidden="true">↑</span></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─────────────────────── contact modal ─────────────────────── -->
+<div class="modal" id="contactModal" aria-hidden="true">
+  <div class="modal__backdrop" id="modalBackdrop"></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal__close" type="button" id="modalClose" aria-label="Close">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
+    </button>
+
+    <h2 class="modal__title" id="modalTitle">Send me<br>the rough mix.</h2>
+    <p class="modal__sub" id="modalSub">Name, email, and what you need — I'll reply within a day.</p>
+
+    <!-- only filled in when the modal is opened from a Services card -->
+    <div class="pkg-pick" id="pkgPick" hidden>
+      <span class="pkg-pick__label">Selected package</span>
+      <span class="pkg-pick__name" id="pkgPickName"></span>
+      <span class="pkg-pick__price" id="pkgPickPrice"></span>
+    </div>
+
+    <form class="form" id="modalForm" novalidate>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="package" id="pkgPickInput">
+      <input type="hidden" name="packageRate" id="pkgPickRateInput">
+
+      <div class="field">
+        <label for="m-name">Name</label>
+        <input id="m-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
+      </div>
+      <div class="field">
+        <label for="m-mail">Email</label>
+        <input id="m-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
+      </div>
+      <div class="field">
+        <label for="m-msg">Message</label>
+        <textarea id="m-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…"></textarea>
+      </div>
+      <button class="btn btn--solid form__submit" type="submit">
+        <span>Send enquiry</span>
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+      </button>
+      <p class="form__note" id="modalFormNote" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ─────────────────────── distribution modal ─────────────────────── -->
+<div class="modal modal--wide" id="distroModal" aria-hidden="true">
+  <div class="modal__backdrop" id="distroBackdrop"></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="distroTitle">
+    <button class="modal__close" type="button" id="distroClose" aria-label="Close">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
+    </button>
+
+    <h2 class="modal__title" id="distroTitle">Send it out<br>into the world.</h2>
+    <p class="modal__sub">Release details for distribution — I'll confirm before it goes live.</p>
+
+    <form class="form form--grid" id="distroForm" novalidate>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="field">
+        <label for="d-artist">Artist's full name</label>
+        <p class="field__hint">Full legal name the artist is registered under.</p>
+        <input id="d-artist" name="artist" type="text" autocomplete="name" required placeholder="Full name">
+      </div>
+      <div class="field">
+        <label for="d-mail">Email</label>
+        <p class="field__hint">So I can reply about the release.</p>
+        <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
+      </div>
+      <div class="field">
+        <label for="d-release">Release title</label>
+        <input id="d-release" name="release" type="text" required placeholder="Track or album title">
+      </div>
+      <div class="field">
+        <label for="d-version">Version / subtitle</label>
+        <p class="field__hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
+        <input id="d-version" name="version" type="text" placeholder="Remix, Live, Deluxe…">
+      </div>
+      <div class="field">
+        <label for="d-performer">Main performer(s)</label>
+        <p class="field__hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
+        <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)">
+      </div>
+      <div class="field">
+        <label for="d-feat">Featuring</label>
+        <p class="field__hint">Guest artists, if any — leave blank if none.</p>
+        <input id="d-feat" name="feat" type="text" placeholder="feat. …">
+      </div>
+      <div class="field">
+        <label for="d-genre">Genre</label>
+        <input id="d-genre" name="genre" type="text" required placeholder="e.g. Hip-Hop">
+      </div>
+      <div class="field">
+        <label for="d-subgenre">Subgenre</label>
+        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap">
+      </div>
+      <div class="field">
+        <label>Format</label>
+        <div class="pill-group" role="radiogroup" aria-label="Format">
+          <input class="pill-group__input" type="radio" name="format" id="d-format-single" value="Single" checked>
+          <label class="pill-group__btn" for="d-format-single">Single</label>
+          <input class="pill-group__input" type="radio" name="format" id="d-format-album" value="Album">
+          <label class="pill-group__btn" for="d-format-album">Album</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Explicit content</label>
+        <div class="pill-group" role="radiogroup" aria-label="Explicit content">
+          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-no" value="No" checked>
+          <label class="pill-group__btn" for="d-explicit-no">No</label>
+          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-yes" value="Yes">
+          <label class="pill-group__btn" for="d-explicit-yes">Yes</label>
+        </div>
+      </div>
+      <div class="field field--wide">
+        <label for="d-cover">Track cover</label>
+        <p class="field__hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
+        <input id="d-cover" name="cover" type="file" accept="image/jpeg,image/png">
+        <p class="filenote" id="coverNote" role="status"></p>
+      </div>
+      <button class="btn btn--solid form__submit" type="submit">
+        <span>Send for distribution</span>
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+      </button>
+      <p class="form__note" id="distroFormNote" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -698,7 +698,8 @@
 
         <div class="pkg__foot">
           <p class="pkg__price"><span class="pkg__from">From</span><b>US$100</b><span>/song</span></p>
-          <button class="pkg__book" type="button" data-contact-modal>Book now</button>
+          <button class="pkg__book" type="button" data-contact-modal
+                  data-package="Mixing (Full Stems)" data-price="From US$100 /song">Book now</button>
         </div>
       </article>
 
@@ -716,7 +717,8 @@
 
         <div class="pkg__foot">
           <p class="pkg__price"><span class="pkg__from">From</span><b>US$50</b><span>/song</span></p>
-          <button class="pkg__book" type="button" data-contact-modal>Book now</button>
+          <button class="pkg__book" type="button" data-contact-modal
+                  data-package="Mastering" data-price="From US$50 /song">Book now</button>
         </div>
       </article>
 
@@ -733,7 +735,8 @@
 
         <div class="pkg__foot">
           <p class="pkg__price"><span class="pkg__from">From</span><b>US$100</b><span>/song</span></p>
-          <button class="pkg__book" type="button" data-contact-modal>Book now</button>
+          <button class="pkg__book" type="button" data-contact-modal
+                  data-package="Mixing (2-Track)" data-price="From US$100 /song">Book now</button>
         </div>
       </article>
     </div>
@@ -914,10 +917,18 @@
     </button>
 
     <h2 class="modal__title" id="modalTitle">Send me<br>the rough mix.</h2>
-    <p class="modal__sub">Name, email, and what you need — I'll reply within a day.</p>
+    <p class="modal__sub" id="modalSub">Name, email, and what you need — I'll reply within a day.</p>
+
+    <!-- only filled in when the modal is opened from a Services card -->
+    <div class="pkg-pick" id="pkgPick" hidden>
+      <span class="pkg-pick__label">Selected package</span>
+      <span class="pkg-pick__name" id="pkgPickName"></span>
+      <span class="pkg-pick__price" id="pkgPickPrice"></span>
+    </div>
 
     <form class="form" id="modalForm" novalidate>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="package" id="pkgPickInput">
 
       <div class="field">
         <label for="m-name">Name</label>

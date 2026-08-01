@@ -576,11 +576,12 @@
 
   /* ── modals (contact + distribution) ──────────────────────── */
   const openModals = new Set();
-  const bindModal = (modal, { triggerSelector, focusSelector }) => {
+  const bindModal = (modal, { triggerSelector, focusSelector, onOpen }) => {
     if (!modal) return;
     const backdrop = $('.modal__backdrop', modal);
     const closeBtn = $('.modal__close', modal);
-    const openModal = () => {
+    const openModal = trigger => {
+      if (onOpen) onOpen(trigger);            // before paint, so it opens already filled in
       modal.classList.add('is-open');
       modal.removeAttribute('aria-hidden');
       openModals.add(modal);
@@ -597,7 +598,7 @@
 
     $$(triggerSelector).forEach(el => el.addEventListener('click', e => {
       e.preventDefault();
-      openModal();
+      openModal(el);
     }));
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (backdrop) backdrop.addEventListener('click', closeModal);
@@ -606,7 +607,28 @@
     });
   };
 
-  bindModal($('#contactModal'), { triggerSelector: '[data-contact-modal]', focusSelector: '#m-name' });
+  /* the same modal serves the generic "get in touch" CTAs and the
+     Services cards — the package block only appears for the latter */
+  const pkgPick = $('#pkgPick');
+  const showPackage = trigger => {
+    if (!pkgPick) return;
+    const name = trigger && trigger.dataset.package;
+    const price = trigger && trigger.dataset.price;
+    pkgPick.hidden = !name;
+    $('#pkgPickName').textContent = name || '';
+    $('#pkgPickPrice').textContent = price || '';
+    $('#pkgPickInput').value = name || '';
+    $('#modalTitle').innerHTML = name ? 'Book<br>' + name + '.' : 'Send me<br>the rough mix.';
+    $('#modalSub').textContent = name
+      ? 'Tell me about the release and I\'ll confirm the details.'
+      : 'Name, email, and what you need — I\'ll reply within a day.';
+  };
+
+  bindModal($('#contactModal'), {
+    triggerSelector: '[data-contact-modal]',
+    focusSelector: '#m-name',
+    onOpen: showPackage,
+  });
   bindModal($('#distroModal'), { triggerSelector: '[data-distro-modal]', focusSelector: '#d-artist' });
 
   /* ── forms → Web3Forms ──────────────────────────────────────
@@ -718,8 +740,12 @@
      the modal behind the nav / Services CTAs further up the page */
   const enquiry = {
     requiredFields: ['name', 'email', 'message'],
-    buildSubject: data => `Project enquiry — ${data.get('name')}`,
+    buildSubject: data => data.get('package')
+      ? `${data.get('package')} — ${data.get('name')}`
+      : `Project enquiry — ${data.get('name')}`,
+    // the inline Contact form has no package input, so this stays absent there
     buildFields: data => ({
+      ...(data.get('package') ? { Package: data.get('package') } : {}),
       Name: data.get('name'),
       Email: data.get('email'),
       Message: data.get('message'),

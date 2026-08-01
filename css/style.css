@@ -1040,6 +1040,28 @@ body.modal-open{ overflow:hidden; }
   .modal--wide .modal__panel{ max-width:760px; }
 }
 
+/* selected package summary — [hidden] needs the override because the
+   grid display below would otherwise beat the UA's [hidden]{display:none} */
+.pkg-pick{
+  display:grid; gap:6px;
+  margin:0 0 clamp(26px,3.6vw,34px);
+  padding:16px 20px;
+  border:1px solid var(--line);
+  border-left:2px solid var(--accent);
+  border-radius:12px;
+  background:rgba(242,240,236,.04);
+}
+.pkg-pick[hidden]{ display:none; }
+.pkg-pick__label{
+  font-family:var(--mono); font-size:10px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--faint);
+}
+.pkg-pick__name{ font-size:19px; letter-spacing:-.02em; color:var(--fg); }
+.pkg-pick__price{
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+}
+
 @media (max-width:640px){
   .modal{ align-items:flex-end; padding:0; }
   .modal__panel{

@@ -1,0 +1,360 @@
+/* =========================================================
+   i18n — EN is the default and lives in the markup; RU and UK
+   live here. Elements opt in via data attributes:
+
+     data-i18n      innerHTML swapped for the dict value
+     data-i18n-ph   placeholder attribute swapped
+     data-i18n-tn   first text node only (for buttons that
+                    carry a count <span> that must survive)
+
+   Switching back to EN restores the exact original markup,
+   captured element-by-element on load — so English never has
+   to be duplicated into the dictionary.
+
+   Loads before main.js and exposes window.T(key, fallback,
+   vars) for strings composed at runtime.
+   ========================================================= */
+(() => {
+  'use strict';
+
+  const RU = {
+    // nav
+    "nav.work": "Работы",
+    "nav.about": "Обо мне",
+    "nav.services": "Услуги",
+    "nav.presets": "Пресеты",
+    "nav.contact": "Контакты",
+    "nav.get_in_touch": "Связаться",
+    "nav.distribution": "Дистрибуция",
+    // hero
+    "hero.eyebrow": "Саунд-инженер / Сведение и мастеринг",
+    "hero.intro": "Я превращаю звук в эмоцию и ясность.",
+    "hero.view_work": "Смотреть работы",
+    "hero.figcaption": "Студия — Одесса",
+    "hero.meta1": "Одесса, Украина · Удалённо по всему миру",
+    "hero.meta2": "265 треков сведено и отмастерено с 2018 года",
+    "hero.scroll": "Листайте",
+    // about
+    "about.label": "(01) — Обо мне",
+    "about.lead": "MSTPD – инженер сведения и мастеринга",
+    "about.p1": "200+ проектов с артистами по всему миру. Apple Digital Masters Verified – сертифицирован выпускать треки, соответствующие высочайшим индустриальным стандартам.",
+    "about.h1": "Кто я?",
+    "about.p2": "Я Вячеслав (MSTPD), профессиональный инженер сведения и мастеринга с большим опытом в музыкальной индустрии.",
+    "about.p3": "Моя миссия — помочь артистам раскрыть свой потенциал и сделать так, чтобы их музыка звучала на мировом уровне.",
+    "about.h2": "Что я предлагаю?",
+    "about.o1": "Сведение и мастеринг высочайшего качества.",
+    "about.o2": "Оптимизация звука под стриминговые платформы.",
+    "about.o3": "Мощное, сбалансированное и динамичное звучание по современным индустриальным стандартам.",
+    "about.o4": "Опыт в разных жанрах — от хип-хопа и попа до электроники и альтернативы.",
+    "about.o5": "Персональный подход к каждому проекту.",
+    "about.h3": "Почему со мной?",
+    "about.w1": "В топ-5% инженеров сведения и мастеринга на MUSO.AI.",
+    "about.w2": "Сертификация Apple Digital Masters — ваши треки готовы к глобальной дистрибуции.",
+    "about.w3": "Прозрачная коммуникация и гарантированные сроки.",
+    "about.h4": "Поднимем ваш звук на новый уровень!",
+    "about.p4": "Готовы вывести свою музыку на новый уровень? Давайте вместе создадим профессиональное, мощное звучание. Напишите мне сегодня — обсудим проект и воплотим вашу идею в жизнь!",
+    "about.f1": "Работаю с",
+    "about.f2": "Треков",
+    "about.f3": "Артистов",
+    "about.f4": "Локация",
+    "about.f4v": "Одесса, Украина",
+    // featured
+    "feat.label": "(02) — Избранное",
+    "feat.title": "Три работы,<br>которые стоит включить погромче.",
+    "feat.d1": "Мастеринг и сведение для INDABLACK &amp; lyner — заглавный трек совместного релиза.",
+    "feat.d2": "Сведение и мастеринг для INDABLACK — из той же серии синглов 2025 года, что и «5 Star».",
+    "feat.d3": "Сведение и мастеринг для INDABLACK — из той же серии синглов 2025 года, что и «No Competition».",
+    "feat.spotify": "Полный трек на Spotify <span aria-hidden=\"true\">↗</span>",
+    // credits
+    "cred.label": "(03) — Кредиты",
+    "cred.title": "Избранные кредиты",
+    "cred.muso": "265 кредитов на Muso.AI <span aria-hidden=\"true\">↗</span>",
+    "cred.all": "Все",
+    "cred.other": "Другое",
+    "cred.empty": "В этом жанре пока пусто — попробуйте другой фильтр.",
+    // services
+    "svc.label": "(04) — Услуги",
+    "svc.title": "Чем я занимаюсь",
+    "svc.tag": "Чаще всего берут",
+    "svc.t1": "Мастеринг",
+    "svc.s1": "Мастеринг финального микса под релиз",
+    "svc.l1a": "Мастера для стриминга и DDP",
+    "svc.l1b": "Громкость под каждую платформу",
+    "svc.l1c": "Один раунд правок",
+    "svc.t2": "Сведение<br>(Full Stems)",
+    "svc.s2": "Все дорожки бита и вокала по отдельности",
+    "svc.l2a": "Тюнинг и компинг вокала",
+    "svc.l2b": "Полное сведение по стемам",
+    "svc.l2c": "Два раунда правок",
+    "svc.t3": "Сведение<br>(2-Track)",
+    "svc.s3": "Бит одной дорожкой и вокал",
+    "svc.l3a": "Баланс и автоматизация вокала",
+    "svc.l3b": "Обработка мастер-шины",
+    "svc.l3c": "Один раунд правок",
+    "svc.from": "От",
+    "svc.per": "/трек",
+    "svc.select": "Выбрать пакет",
+    "svc.offer": "Скидка 10% на первый микс, мастеринг или обработку вокала. Плюс бесплатная консультация и один дополнительный раунд правок для новых клиентов.",
+    // presets page
+    "pre.label": "Пресеты",
+    "pre.title": "Цепочки, к которым я возвращаюсь",
+    "pre.d1": "Плотный, читаемый вокал с подачей вперёд — для рэпа, которому нужно сидеть поверх плотного низа, не срываясь на крик.",
+    "pre.d2": "Гладкий и воздушный, с лёгкой резкостью — интимный на тихой громкости, полнотелый на громкой.",
+    "pre.d3": "Конкурентная громкость без «прокачки» — с учётом нормализации Spotify и Apple Music.",
+    "pre.soon": "Скоро в продаже",
+    "pre.note": "Пресеты ещё не в продаже — хотите получить доступ первыми?",
+    "pre.note_link": "Напишите мне",
+    // contact
+    "con.label": "(05) — Контакты",
+    "con.title": "Пришлите мне<br>черновой микс.",
+    "con.formlead": "Имя, почта и что нужно сделать — отвечу в течение дня.",
+    "form.name": "Имя",
+    "form.name_ph": "Ваше имя",
+    "form.email": "Почта",
+    "form.msg": "Сообщение",
+    "form.msg_ph": "Артист, количество треков, дедлайн, референс…",
+    "form.send": "Отправить заявку",
+    // footer / player
+    "foot.mid": "Саунд-инженер / Сведение и мастеринг",
+    "foot.by": "Сайт — IVE&nbsp;Studio <span aria-hidden=\"true\">↗</span>",
+    "foot.top": "Наверх <span aria-hidden=\"true\">↑</span>",
+    "np.copied": "Ссылка скопирована",
+    // contact modal
+    "m.pkg_label": "Выбранный пакет",
+    // distro modal
+    "d.title": "Отправим релиз<br>в мир.",
+    "d.sub": "Данные релиза для дистрибуции — я подтверждаю всё перед отправкой.",
+    "d.artist": "ФИО артиста",
+    "d.artist_hint": "Полное имя, под которым зарегистрирован артист.",
+    "d.artist_ph": "Полное имя",
+    "d.email_hint": "Чтобы я мог ответить по релизу.",
+    "d.release": "Название релиза",
+    "d.release_ph": "Название трека или альбома",
+    "d.version": "Версия / подзаголовок",
+    "d.version_hint": "Например: Remix, Live, Deluxe, Anniversary — оставьте пустым, если нет.",
+    "d.performer": "Основной исполнитель",
+    "d.performer_hint": "Укажите всех, если трек совместный — релиз появится в карточках у всех исполнителей.",
+    "d.performer_ph": "Имя артиста (артистов)",
+    "d.feat": "При участии (feat.)",
+    "d.feat_hint": "Приглашённые артисты, если есть — оставьте пустым, если нет.",
+    "d.genre": "Жанр",
+    "d.genre_ph": "напр. Hip-Hop",
+    "d.subgenre": "Поджанр",
+    "d.subgenre_ph": "напр. Trap",
+    "d.format": "Формат",
+    "d.single": "Сингл",
+    "d.album": "Альбом",
+    "d.explicit": "Нецензурная лексика",
+    "d.no": "Нет",
+    "d.yes": "Да",
+    "d.cover": "Обложка трека",
+    "d.cover_hint": "JPEG или PNG · квадрат · минимум 3000×3000&nbsp;px · до 4&nbsp;МБ.",
+    "d.send": "Отправить на дистрибуцию",
+    // runtime strings (main.js)
+    "js.fill_required": "Заполните обязательные поля.",
+    "js.artist_fullname": "ФИО артиста: укажите полные имя и фамилию.",
+    "js.opening_mail": "Открываю почтовый клиент…",
+    "js.sending": "Отправляю…",
+    "js.sent": "Отправлено — скоро отвечу.",
+    "js.cant_send_direct": "Не удалось отправить. Напишите напрямую на offmstpd@gmail.com.",
+    "js.cant_send_mailto": "Не удалось отправить. Открываю почтовый клиент…",
+    "js.book_title": "Заказать<br>{name}.",
+    "js.book_sub": "Расскажите о релизе — я подтвержу детали.",
+    "js.cover_attach": "Прикрепите обложку трека.",
+    "js.cover_type": "Обложка должна быть JPEG или PNG.",
+    "js.cover_size": "Обложка весит {mb} МБ — лимит 4 МБ. Сохраните в JPEG.",
+    "js.cover_unreadable": "Файл не читается как изображение.",
+    "js.cover_square": "Обложка должна быть квадратной — эта {w}×{h}.",
+    "js.cover_min": "Обложка минимум {min}×{min} — эта {w}×{h}."
+  };
+
+  const UK = {
+    "nav.work": "Роботи",
+    "nav.about": "Про мене",
+    "nav.services": "Послуги",
+    "nav.presets": "Пресети",
+    "nav.contact": "Контакти",
+    "nav.get_in_touch": "Зв'язатися",
+    "nav.distribution": "Дистрибуція",
+    "hero.eyebrow": "Саунд-інженер / Зведення та мастеринг",
+    "hero.intro": "Я перетворюю звук на емоцію та ясність.",
+    "hero.view_work": "Дивитися роботи",
+    "hero.figcaption": "Студія — Одеса",
+    "hero.meta1": "Одеса, Україна · Дистанційно по всьому світу",
+    "hero.meta2": "265 треків зведено та відмастерено з 2018 року",
+    "hero.scroll": "Гортайте",
+    "about.label": "(01) — Про мене",
+    "about.lead": "MSTPD – інженер зведення та мастерингу",
+    "about.p1": "200+ проєктів з артистами по всьому світу. Apple Digital Masters Verified – сертифікований випускати треки, що відповідають найвищим індустріальним стандартам.",
+    "about.h1": "Хто я?",
+    "about.p2": "Я В'ячеслав (MSTPD), професійний інженер зведення та мастерингу з великим досвідом у музичній індустрії.",
+    "about.p3": "Моя місія — допомогти артистам розкрити свій потенціал і зробити так, щоб їхня музика звучала на світовому рівні.",
+    "about.h2": "Що я пропоную?",
+    "about.o1": "Зведення та мастеринг найвищої якості.",
+    "about.o2": "Оптимізація звуку під стрімінгові платформи.",
+    "about.o3": "Потужне, збалансоване й динамічне звучання за сучасними індустріальними стандартами.",
+    "about.o4": "Досвід у різних жанрах — від хіп-хопу й попу до електроніки та альтернативи.",
+    "about.o5": "Персональний підхід до кожного проєкту.",
+    "about.h3": "Чому зі мною?",
+    "about.w1": "У топ-5% інженерів зведення та мастерингу на MUSO.AI.",
+    "about.w2": "Сертифікація Apple Digital Masters — ваші треки готові до глобальної дистрибуції.",
+    "about.w3": "Прозора комунікація та гарантовані терміни.",
+    "about.h4": "Піднімемо ваш звук на новий рівень!",
+    "about.p4": "Готові вивести свою музику на новий рівень? Давайте разом створимо професійне, потужне звучання. Напишіть мені сьогодні — обговоримо проєкт і втілимо вашу ідею в життя!",
+    "about.f1": "Працюю з",
+    "about.f2": "Треків",
+    "about.f3": "Артистів",
+    "about.f4": "Локація",
+    "about.f4v": "Одеса, Україна",
+    "feat.label": "(02) — Вибране",
+    "feat.title": "Три роботи,<br>які варто ввімкнути гучніше.",
+    "feat.d1": "Мастеринг і зведення для INDABLACK &amp; lyner — головний трек спільного релізу.",
+    "feat.d2": "Зведення та мастеринг для INDABLACK — з тієї ж серії синглів 2025 року, що й «5 Star».",
+    "feat.d3": "Зведення та мастеринг для INDABLACK — з тієї ж серії синглів 2025 року, що й «No Competition».",
+    "feat.spotify": "Повний трек на Spotify <span aria-hidden=\"true\">↗</span>",
+    "cred.label": "(03) — Кредити",
+    "cred.title": "Вибрані кредити",
+    "cred.muso": "265 кредитів на Muso.AI <span aria-hidden=\"true\">↗</span>",
+    "cred.all": "Всі",
+    "cred.other": "Інше",
+    "cred.empty": "У цьому жанрі поки порожньо — спробуйте інший фільтр.",
+    "svc.label": "(04) — Послуги",
+    "svc.title": "Чим я займаюся",
+    "svc.tag": "Найчастіше беруть",
+    "svc.t1": "Мастеринг",
+    "svc.s1": "Мастеринг фінального міксу під реліз",
+    "svc.l1a": "Мастери для стрімінгу та DDP",
+    "svc.l1b": "Гучність під кожну платформу",
+    "svc.l1c": "Один раунд правок",
+    "svc.t2": "Зведення<br>(Full Stems)",
+    "svc.s2": "Усі доріжки біта й вокалу окремо",
+    "svc.l2a": "Тюнінг і компінг вокалу",
+    "svc.l2b": "Повне зведення по стемах",
+    "svc.l2c": "Два раунди правок",
+    "svc.t3": "Зведення<br>(2-Track)",
+    "svc.s3": "Біт однією доріжкою та вокал",
+    "svc.l3a": "Баланс і автоматизація вокалу",
+    "svc.l3b": "Обробка мастер-шини",
+    "svc.l3c": "Один раунд правок",
+    "svc.from": "Від",
+    "svc.per": "/трек",
+    "svc.select": "Обрати пакет",
+    "svc.offer": "Знижка 10% на перший мікс, мастеринг або обробку вокалу. Плюс безкоштовна консультація та один додатковий раунд правок для нових клієнтів.",
+    "pre.label": "Пресети",
+    "pre.title": "Ланцюжки, до яких я повертаюся",
+    "pre.d1": "Щільний, читкий вокал із подачею вперед — для репу, якому треба сидіти поверх щільного низу, не зриваючись на крик.",
+    "pre.d2": "Гладкий і повітряний, з легкою різкістю — інтимний на тихій гучності, повнотілий на гучній.",
+    "pre.d3": "Конкурентна гучність без «прокачування» — з урахуванням нормалізації Spotify та Apple Music.",
+    "pre.soon": "Незабаром у продажу",
+    "pre.note": "Пресети ще не в продажу — хочете отримати доступ першими?",
+    "pre.note_link": "Напишіть мені",
+    "con.label": "(05) — Контакти",
+    "con.title": "Надішліть мені<br>чорновий мікс.",
+    "con.formlead": "Ім'я, пошта і що потрібно зробити — відповім протягом дня.",
+    "form.name": "Ім'я",
+    "form.name_ph": "Ваше ім'я",
+    "form.email": "Пошта",
+    "form.msg": "Повідомлення",
+    "form.msg_ph": "Артист, кількість треків, дедлайн, референс…",
+    "form.send": "Надіслати заявку",
+    "foot.mid": "Саунд-інженер / Зведення та мастеринг",
+    "foot.by": "Сайт — IVE&nbsp;Studio <span aria-hidden=\"true\">↗</span>",
+    "foot.top": "Догори <span aria-hidden=\"true\">↑</span>",
+    "np.copied": "Посилання скопійовано",
+    "m.pkg_label": "Обраний пакет",
+    "d.title": "Відправимо реліз<br>у світ.",
+    "d.sub": "Дані релізу для дистрибуції — я підтверджую все перед відправленням.",
+    "d.artist": "ПІБ артиста",
+    "d.artist_hint": "Повне ім'я, під яким зареєстрований артист.",
+    "d.artist_ph": "Повне ім'я",
+    "d.email_hint": "Щоб я міг відповісти щодо релізу.",
+    "d.release": "Назва релізу",
+    "d.release_ph": "Назва треку або альбому",
+    "d.version": "Версія / підзаголовок",
+    "d.version_hint": "Наприклад: Remix, Live, Deluxe, Anniversary — залиште порожнім, якщо немає.",
+    "d.performer": "Основний виконавець",
+    "d.performer_hint": "Вкажіть усіх, якщо трек спільний — реліз з'явиться у картках усіх виконавців.",
+    "d.performer_ph": "Ім'я артиста (артистів)",
+    "d.feat": "За участю (feat.)",
+    "d.feat_hint": "Запрошені артисти, якщо є — залиште порожнім, якщо немає.",
+    "d.genre": "Жанр",
+    "d.genre_ph": "напр. Hip-Hop",
+    "d.subgenre": "Піджанр",
+    "d.subgenre_ph": "напр. Trap",
+    "d.format": "Формат",
+    "d.single": "Сингл",
+    "d.album": "Альбом",
+    "d.explicit": "Нецензурна лексика",
+    "d.no": "Ні",
+    "d.yes": "Так",
+    "d.cover": "Обкладинка треку",
+    "d.cover_hint": "JPEG або PNG · квадрат · мінімум 3000×3000&nbsp;px · до 4&nbsp;МБ.",
+    "d.send": "Надіслати на дистрибуцію",
+    "js.fill_required": "Заповніть обов'язкові поля.",
+    "js.artist_fullname": "ПІБ артиста: вкажіть повні ім'я та прізвище.",
+    "js.opening_mail": "Відкриваю поштовий клієнт…",
+    "js.sending": "Надсилаю…",
+    "js.sent": "Надіслано — скоро відповім.",
+    "js.cant_send_direct": "Не вдалося надіслати. Напишіть напряму на offmstpd@gmail.com.",
+    "js.cant_send_mailto": "Не вдалося надіслати. Відкриваю поштовий клієнт…",
+    "js.book_title": "Замовити<br>{name}.",
+    "js.book_sub": "Розкажіть про реліз — я підтверджу деталі.",
+    "js.cover_attach": "Прикріпіть обкладинку треку.",
+    "js.cover_type": "Обкладинка має бути JPEG або PNG.",
+    "js.cover_size": "Обкладинка важить {mb} МБ — ліміт 4 МБ. Збережіть у JPEG.",
+    "js.cover_unreadable": "Файл не читається як зображення.",
+    "js.cover_square": "Обкладинка має бути квадратною — ця {w}×{h}.",
+    "js.cover_min": "Обкладинка щонайменше {min}×{min} — ця {w}×{h}."
+  };
+
+  const DICTS = { ru: RU, uk: UK };
+  let current = 'en';
+
+  const els = [...document.querySelectorAll('[data-i18n]')];
+  const phEls = [...document.querySelectorAll('[data-i18n-ph]')];
+  const tnEls = [...document.querySelectorAll('[data-i18n-tn]')];
+
+  // English baselines, captured from the markup itself
+  const base = new Map(els.map(el => [el, el.innerHTML]));
+  const basePh = new Map(phEls.map(el => [el, el.getAttribute('placeholder') || '']));
+  const baseTn = new Map(tnEls.map(el => [el, el.firstChild ? el.firstChild.nodeValue : '']));
+
+  const apply = lang => {
+    /* dict must be undefined-or-hit: `dict && dict[k]` would yield null
+       for EN and null slips past the !== undefined check, wiping text */
+    const dict = DICTS[lang];
+    els.forEach(el => {
+      const v = dict ? dict[el.dataset.i18n] : undefined;
+      el.innerHTML = v !== undefined ? v : base.get(el);
+    });
+    phEls.forEach(el => {
+      const v = dict ? dict[el.dataset.i18nPh] : undefined;
+      el.setAttribute('placeholder', v !== undefined ? v : basePh.get(el));
+    });
+    tnEls.forEach(el => {
+      if (!el.firstChild) return;
+      const v = dict ? dict[el.dataset.i18nTn] : undefined;
+      el.firstChild.nodeValue = v !== undefined ? v : baseTn.get(el);
+    });
+    current = lang;
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('lang', lang); } catch {}
+    document.querySelectorAll('.lang__btn').forEach(b =>
+      b.classList.toggle('is-active', b.dataset.lang === lang));
+  };
+
+  /* runtime lookup for strings main.js builds on the fly */
+  window.T = (key, fallback, vars) => {
+    const dict = DICTS[current];
+    let s = (dict && dict[key] !== undefined) ? dict[key] : fallback;
+    if (vars) for (const k of Object.keys(vars)) s = s.split('{' + k + '}').join(vars[k]);
+    return s;
+  };
+
+  document.querySelectorAll('.lang__btn').forEach(b =>
+    b.addEventListener('click', () => apply(b.dataset.lang)));
+
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch {}
+  apply(saved === 'ru' || saved === 'uk' ? saved : 'en');
+})();

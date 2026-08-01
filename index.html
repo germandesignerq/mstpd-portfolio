@@ -22,18 +22,23 @@
       Viacheslav&nbsp;MSTPD
     </a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="presets.html">Presets</a>
-      <a href="#contact">Contact</a>
+      <a href="#work" data-i18n="nav.work">Work</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#services" data-i18n="nav.services">Services</a>
+      <a href="presets.html" data-i18n="nav.presets">Presets</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn is-active" type="button" data-lang="en">EN</button>
+        <button class="lang__btn" type="button" data-lang="ru">RU</button>
+        <button class="lang__btn" type="button" data-lang="uk">UA</button>
+      </div>
       <button class="nav__cta nav__cta--accent" type="button" data-contact-modal>
-        <span>Get in touch</span>
+        <span data-i18n="nav.get_in_touch">Get in touch</span>
       </button>
       <button class="nav__cta nav__cta--ghost" type="button" data-distro-modal>
-        <span>Distribution</span>
+        <span data-i18n="nav.distribution">Distribution</span>
       </button>
     </div>
     <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
@@ -41,18 +46,23 @@
 </header>
 
 <div class="menu" id="menu" hidden>
-  <a href="#work">Work</a>
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="presets.html">Presets</a>
-  <a href="#contact">Contact</a>
+  <a href="#work" data-i18n="nav.work">Work</a>
+  <a href="#about" data-i18n="nav.about">About</a>
+  <a href="#services" data-i18n="nav.services">Services</a>
+  <a href="presets.html" data-i18n="nav.presets">Presets</a>
+  <a href="#contact" data-i18n="nav.contact">Contact</a>
   <div class="menu__actions">
     <button class="menu__cta menu__cta--accent" type="button" data-contact-modal>
-      <span>Get in touch</span>
+      <span data-i18n="nav.get_in_touch">Get in touch</span>
     </button>
     <button class="menu__cta menu__cta--ghost" type="button" data-distro-modal>
-      <span>Distribution</span>
+      <span data-i18n="nav.distribution">Distribution</span>
     </button>
+  </div>
+  <div class="lang lang--menu" role="group" aria-label="Language">
+    <button class="lang__btn is-active" type="button" data-lang="en">EN</button>
+    <button class="lang__btn" type="button" data-lang="ru">RU</button>
+    <button class="lang__btn" type="button" data-lang="uk">UA</button>
   </div>
   <span class="menu__mail">offmstpd@gmail.com</span>
 </div>
@@ -64,21 +74,21 @@
   <div class="hero__grid">
 
     <div class="hero__text">
-      <p class="eyebrow reveal">Sound Engineer / Mixing &amp; Mastering</p>
+      <p class="eyebrow reveal" data-i18n="hero.eyebrow">Sound Engineer / Mixing &amp; Mastering</p>
 
       <h1 class="hero__title">
         <span class="line"><span class="reveal-line">Viacheslav</span></span>
         <span class="line"><span class="reveal-line">MSTPD</span></span>
       </h1>
 
-      <p class="hero__intro reveal">I shape sound into emotion and clarity.</p>
+      <p class="hero__intro reveal" data-i18n="hero.intro">I shape sound into emotion and clarity.</p>
 
       <div class="hero__cta reveal">
         <button class="btn btn--solid" type="button" data-contact-modal>
-          <span>Get in touch</span>
+          <span data-i18n="nav.get_in_touch">Get in touch</span>
           <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
         </button>
-        <a class="btn btn--ghost" href="#work"><span>View work</span></a>
+        <a class="btn btn--ghost" href="#work"><span data-i18n="hero.view_work">View work</span></a>
       </div>
     </div>
 
@@ -102,16 +112,16 @@
       <button class="slider__nav slider__nav--prev" type="button" id="sliderPrev" aria-label="Previous photo">‹</button>
       <button class="slider__nav slider__nav--next" type="button" id="sliderNext" aria-label="Next photo">›</button>
 
-      <figcaption>Studio — Odessa</figcaption>
+      <figcaption data-i18n="hero.figcaption">Studio — Odessa</figcaption>
     </figure>
 
   </div>
 
   <div class="hero__foot">
-    <span class="meta">Odessa, UA · Remote worldwide</span>
-    <span class="meta hero__foot-mid">265 credits mixed &amp; mastered since 2018</span>
+    <span class="meta" data-i18n="hero.meta1">Odessa, UA · Remote worldwide</span>
+    <span class="meta hero__foot-mid" data-i18n="hero.meta2">265 credits mixed &amp; mastered since 2018</span>
     <a class="scroll" href="#about">
-      <span>Scroll</span>
+      <span data-i18n="hero.scroll">Scroll</span>
       <span class="scroll__line" aria-hidden="true"></span>
     </a>
   </div>
@@ -121,15 +131,15 @@
 <section class="section about" id="about">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="label">(01) — About</span>
+      <span class="label" data-i18n="about.label">(01) — About</span>
     </header>
 
     <div class="about__grid">
       <div class="about__copy">
-        <p class="lead reveal">
+        <p class="lead reveal" data-i18n="about.lead">
           MSTPD – Mixing &amp; Mastering Engineer
         </p>
-        <p class="reveal">
+        <p class="reveal" data-i18n="about.p1">
           200+ Projects with artists worldwide. Apple Digital Masters Verified – certified
           to deliver tracks that meet the highest industry standards.
         </p>
@@ -139,44 +149,44 @@
           <img class="about__badge" src="assets/img/believe.png" alt="Believe" width="819" height="195" loading="lazy">
         </div>
 
-        <h3 class="about__h reveal">Who Am I?</h3>
-        <p class="reveal">
+        <h3 class="about__h reveal" data-i18n="about.h1">Who Am I?</h3>
+        <p class="reveal" data-i18n="about.p2">
           I’m Viacheslav (MSTPD), a professional mixing and mastering engineer with
           extensive experience in the music industry.
         </p>
-        <p class="reveal">
+        <p class="reveal" data-i18n="about.p3">
           My mission is to help artists unlock their full potential and make their music
           stand out on a global scale.
         </p>
 
-        <h3 class="about__h reveal">What Do I Offer?</h3>
+        <h3 class="about__h reveal" data-i18n="about.h2">What Do I Offer?</h3>
         <ul class="about__list reveal">
-          <li>High-Quality Mixing and Mastering Services.</li>
-          <li>Audio Optimization for streaming platforms.</li>
-          <li>Powerful, balanced, and dynamic sound that meets modern industry standards.</li>
-          <li>Experience across multiple genres—from hip-hop and pop to electronic and alternative music.</li>
-          <li>A personalized approach to every project.</li>
+          <li data-i18n="about.o1">High-Quality Mixing and Mastering Services.</li>
+          <li data-i18n="about.o2">Audio Optimization for streaming platforms.</li>
+          <li data-i18n="about.o3">Powerful, balanced, and dynamic sound that meets modern industry standards.</li>
+          <li data-i18n="about.o4">Experience across multiple genres—from hip-hop and pop to electronic and alternative music.</li>
+          <li data-i18n="about.o5">A personalized approach to every project.</li>
         </ul>
 
-        <h3 class="about__h reveal">Why Work With Me?</h3>
+        <h3 class="about__h reveal" data-i18n="about.h3">Why Work With Me?</h3>
         <ul class="about__list reveal">
-          <li>Ranked in the Top 5% of Mixing and Mastering Engineers on MUSO.AI.</li>
-          <li>Certified for Apple Digital Masters, ensuring your tracks are ready for global distribution.</li>
-          <li>Transparent communication and on-time delivery guaranteed.</li>
+          <li data-i18n="about.w1">Ranked in the Top 5% of Mixing and Mastering Engineers on MUSO.AI.</li>
+          <li data-i18n="about.w2">Certified for Apple Digital Masters, ensuring your tracks are ready for global distribution.</li>
+          <li data-i18n="about.w3">Transparent communication and on-time delivery guaranteed.</li>
         </ul>
 
-        <h3 class="about__h reveal">Let’s Elevate Your Sound!</h3>
-        <p class="reveal">
+        <h3 class="about__h reveal" data-i18n="about.h4">Let’s Elevate Your Sound!</h3>
+        <p class="reveal" data-i18n="about.p4">
           Ready to take your music to the next level? Let’s work together to create a
           professional and impactful sound. Contact me today to discuss your project and
           turn your vision into reality!
         </p>
 
         <dl class="facts reveal">
-          <div><dt>Working since</dt><dd data-count="2018">2018</dd></div>
-          <div><dt>Credits</dt><dd data-count="265">265</dd></div>
-          <div><dt>Collaborators</dt><dd data-count="250">250</dd></div>
-          <div><dt>Based in</dt><dd>Odessa, UA</dd></div>
+          <div><dt data-i18n="about.f1">Working since</dt><dd data-count="2018">2018</dd></div>
+          <div><dt data-i18n="about.f2">Credits</dt><dd data-count="265">265</dd></div>
+          <div><dt data-i18n="about.f3">Collaborators</dt><dd data-count="250">250</dd></div>
+          <div><dt data-i18n="about.f4">Based in</dt><dd data-i18n="about.f4v">Odessa, UA</dd></div>
         </dl>
       </div>
 
@@ -191,8 +201,8 @@
 <section class="section featured" id="featured">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="label">(02) — Selected work</span>
-      <h2 class="sec-title">Three credits<br>worth turning up.</h2>
+      <span class="label" data-i18n="feat.label">(02) — Selected work</span>
+      <h2 class="sec-title" data-i18n="feat.title">Three credits<br>worth turning up.</h2>
     </header>
   </div>
 
@@ -206,7 +216,7 @@
       <div class="feature__body">
         <p class="feature__meta"><span>INDABLACK, lyner</span><span>Mastering · Mixing</span><span>2026</span></p>
         <h3 class="feature__title">Сказки</h3>
-        <p class="feature__desc">
+        <p class="feature__desc" data-i18n="feat.d1">
           Mastering and mixing for INDABLACK &amp; lyner — the lead cut from a joint release.
         </p>
         <div class="player" data-player>
@@ -217,7 +227,7 @@
           <canvas class="player__wave" data-wave height="72"></canvas>
           <span class="player__time" data-time>0:00</span>
         </div>
-        <a class="feature__out" href="https://open.spotify.com/track/5n7sMWsXo4bYeTV1jY8g2x" target="_blank" rel="noopener noreferrer">Full track on Spotify <span aria-hidden="true">↗</span></a>
+        <a class="feature__out" href="https://open.spotify.com/track/5n7sMWsXo4bYeTV1jY8g2x" target="_blank" rel="noopener noreferrer" data-i18n="feat.spotify">Full track on Spotify <span aria-hidden="true">↗</span></a>
       </div>
     </article>
 
@@ -229,7 +239,7 @@
       <div class="feature__body">
         <p class="feature__meta"><span>INDABLACK</span><span>Mixing · Mastering</span><span>2025</span></p>
         <h3 class="feature__title">No Competition</h3>
-        <p class="feature__desc">
+        <p class="feature__desc" data-i18n="feat.d2">
           Mixing and mastering for INDABLACK, from the same run of 2025 singles as «5 Star».
         </p>
         <div class="player" data-player>
@@ -240,7 +250,7 @@
           <canvas class="player__wave" data-wave height="72"></canvas>
           <span class="player__time" data-time>0:00</span>
         </div>
-        <a class="feature__out" href="https://open.spotify.com/track/3NnM5T2ftIqTrt8rIqgLG8" target="_blank" rel="noopener noreferrer">Full track on Spotify <span aria-hidden="true">↗</span></a>
+        <a class="feature__out" href="https://open.spotify.com/track/3NnM5T2ftIqTrt8rIqgLG8" target="_blank" rel="noopener noreferrer" data-i18n="feat.spotify">Full track on Spotify <span aria-hidden="true">↗</span></a>
       </div>
     </article>
 
@@ -252,7 +262,7 @@
       <div class="feature__body">
         <p class="feature__meta"><span>INDABLACK</span><span>Mixing · Mastering</span><span>2025</span></p>
         <h3 class="feature__title">5 Star</h3>
-        <p class="feature__desc">
+        <p class="feature__desc" data-i18n="feat.d3">
           Mixing and mastering for INDABLACK, from the same run of 2025 singles as «No Competition».
         </p>
         <div class="player" data-player>
@@ -263,7 +273,7 @@
           <canvas class="player__wave" data-wave height="72"></canvas>
           <span class="player__time" data-time>0:00</span>
         </div>
-        <a class="feature__out" href="https://open.spotify.com/track/6GCR9JcOWgHjoXyHBt9lyg" target="_blank" rel="noopener noreferrer">Full track on Spotify <span aria-hidden="true">↗</span></a>
+        <a class="feature__out" href="https://open.spotify.com/track/6GCR9JcOWgHjoXyHBt9lyg" target="_blank" rel="noopener noreferrer" data-i18n="feat.spotify">Full track on Spotify <span aria-hidden="true">↗</span></a>
       </div>
     </article>
 
@@ -274,21 +284,21 @@
 <section class="section work" id="work">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="label">(03) — Credits</span>
-      <h2 class="sec-title">Selected credits</h2>
-      <a class="credits-link" href="https://credits.muso.ai/profile/5a71f47b-1722-4e92-a587-620e8ef352de/credits" target="_blank" rel="noopener noreferrer">265 credits on Muso.AI <span aria-hidden="true">↗</span></a>
+      <span class="label" data-i18n="cred.label">(03) — Credits</span>
+      <h2 class="sec-title" data-i18n="cred.title">Selected credits</h2>
+      <a class="credits-link" href="https://credits.muso.ai/profile/5a71f47b-1722-4e92-a587-620e8ef352de/credits" target="_blank" rel="noopener noreferrer" data-i18n="cred.muso">265 credits on Muso.AI <span aria-hidden="true">↗</span></a>
     </header>
 
     <div class="genre-filter reveal" id="genreFilter" role="tablist" aria-label="Filter credits by genre">
-      <button class="genre-filter__btn is-active" type="button" data-genre-filter="all" role="tab" aria-selected="true">All<span>30</span></button>
+      <button class="genre-filter__btn is-active" type="button" data-genre-filter="all" role="tab" aria-selected="true" data-i18n-tn="cred.all">All<span>30</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Hip-Hop" role="tab" aria-selected="false">Hip-Hop<span>15</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Pop" role="tab" aria-selected="false">Pop<span>3</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="R&B" role="tab" aria-selected="false">R&amp;B<span>1</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Indie Rock" role="tab" aria-selected="false">Indie Rock<span>1</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Dance" role="tab" aria-selected="false">Dance<span>1</span></button>
-      <button class="genre-filter__btn" type="button" data-genre-filter="Other" role="tab" aria-selected="false">Other<span>9</span></button>
+      <button class="genre-filter__btn" type="button" data-genre-filter="Other" role="tab" aria-selected="false" data-i18n-tn="cred.other">Other<span>9</span></button>
     </div>
-    <p class="genre-filter__empty" id="genreEmpty" hidden>Nothing in this genre yet — try another filter.</p>
+    <p class="genre-filter__empty" id="genreEmpty" hidden data-i18n="cred.empty">Nothing in this genre yet — try another filter.</p>
 
     <div class="rows" id="rows">
 
@@ -722,68 +732,68 @@
 <section class="section services" id="services">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="label">(04) — Services</span>
-      <h2 class="sec-title">What I do</h2>
+      <span class="label" data-i18n="svc.label">(04) — Services</span>
+      <h2 class="sec-title" data-i18n="svc.title">What I do</h2>
     </header>
 
     <div class="svc">
       <article class="pkg reveal">
         <span class="pkg__num">01</span>
-        <h3 class="pkg__title">Mastering</h3>
-        <p class="pkg__sub">Master your final mix for release</p>
+        <h3 class="pkg__title" data-i18n="svc.t1">Mastering</h3>
+        <p class="pkg__sub" data-i18n="svc.s1">Master your final mix for release</p>
 
         <ul class="pkg__list">
-          <li>Streaming &amp; DDP masters</li>
-          <li>Loudness matched per platform</li>
-          <li>One revision round</li>
+          <li data-i18n="svc.l1a">Streaming &amp; DDP masters</li>
+          <li data-i18n="svc.l1b">Loudness matched per platform</li>
+          <li data-i18n="svc.l1c">One revision round</li>
         </ul>
 
         <div class="pkg__foot">
-          <p class="pkg__price"><span class="pkg__from">From</span><b>$50</b><span>/song</span></p>
+          <p class="pkg__price"><span class="pkg__from" data-i18n="svc.from">From</span><b>$50</b><span data-i18n="svc.per">/song</span></p>
           <button class="pkg__book" type="button" data-contact-modal
-                  data-package="Mastering" data-price="From $50 /song">Select package</button>
+                  data-package="Mastering" data-price="From $50 /song" data-i18n="svc.select">Select package</button>
         </div>
       </article>
 
       <article class="pkg pkg--hot reveal">
         <span class="pkg__num">02</span>
-        <span class="pkg__tag">Most booked</span>
-        <h3 class="pkg__title">Mixing<br>(Full Stems)</h3>
-        <p class="pkg__sub">All beat files and vocal files separated</p>
+        <span class="pkg__tag" data-i18n="svc.tag">Most booked</span>
+        <h3 class="pkg__title" data-i18n="svc.t2">Mixing<br>(Full Stems)</h3>
+        <p class="pkg__sub" data-i18n="svc.s2">All beat files and vocal files separated</p>
 
         <ul class="pkg__list">
-          <li>Vocal tuning &amp; comping</li>
-          <li>Full stem mixing</li>
-          <li>Two revision rounds</li>
+          <li data-i18n="svc.l2a">Vocal tuning &amp; comping</li>
+          <li data-i18n="svc.l2b">Full stem mixing</li>
+          <li data-i18n="svc.l2c">Two revision rounds</li>
         </ul>
 
         <div class="pkg__foot">
-          <p class="pkg__price"><span class="pkg__from">From</span><b>$150</b><span>/song</span></p>
+          <p class="pkg__price"><span class="pkg__from" data-i18n="svc.from">From</span><b>$150</b><span data-i18n="svc.per">/song</span></p>
           <button class="pkg__book" type="button" data-contact-modal
-                  data-package="Mixing (Full Stems)" data-price="From $150 /song">Select package</button>
+                  data-package="Mixing (Full Stems)" data-price="From $150 /song" data-i18n="svc.select">Select package</button>
         </div>
       </article>
 
       <article class="pkg reveal">
         <span class="pkg__num">03</span>
-        <h3 class="pkg__title">Mixing<br>(2-Track)</h3>
-        <p class="pkg__sub">2-track beat and vocals only</p>
+        <h3 class="pkg__title" data-i18n="svc.t3">Mixing<br>(2-Track)</h3>
+        <p class="pkg__sub" data-i18n="svc.s3">2-track beat and vocals only</p>
 
         <ul class="pkg__list">
-          <li>Vocal riding &amp; balance</li>
-          <li>Mix bus processing</li>
-          <li>One revision round</li>
+          <li data-i18n="svc.l3a">Vocal riding &amp; balance</li>
+          <li data-i18n="svc.l3b">Mix bus processing</li>
+          <li data-i18n="svc.l3c">One revision round</li>
         </ul>
 
         <div class="pkg__foot">
-          <p class="pkg__price"><span class="pkg__from">From</span><b>$100</b><span>/song</span></p>
+          <p class="pkg__price"><span class="pkg__from" data-i18n="svc.from">From</span><b>$100</b><span data-i18n="svc.per">/song</span></p>
           <button class="pkg__book" type="button" data-contact-modal
-                  data-package="Mixing (2-Track)" data-price="From $100 /song">Select package</button>
+                  data-package="Mixing (2-Track)" data-price="From $100 /song" data-i18n="svc.select">Select package</button>
         </div>
       </article>
     </div>
 
-    <p class="svc-offer reveal">Get 10% off your first mix, master, or vocal processing.
+    <p class="svc-offer reveal" data-i18n="svc.offer">Get 10% off your first mix, master, or vocal processing.
       Plus, enjoy a free consultation and 1 additional round of revisions at no extra cost
       for first-time clients.</p>
   </div>
@@ -793,12 +803,12 @@
 <section class="section contact" id="contact">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="label">(05) — Contact</span>
+      <span class="label" data-i18n="con.label">(05) — Contact</span>
     </header>
 
     <div class="contact__grid">
       <div class="contact__left">
-        <h2 class="contact__title reveal">Send me<br>the rough mix.</h2>
+        <h2 class="contact__title reveal" data-i18n="con.title">Send me<br>the rough mix.</h2>
         <a class="contact__mail reveal" href="mailto:offmstpd@gmail.com">offmstpd@gmail.com</a>
 
         <ul class="socials reveal">
@@ -833,32 +843,32 @@
 
         <div class="contact__actions reveal">
           <button class="btn btn--ghost" type="button" data-distro-modal>
-            <span>Distribution</span>
+            <span data-i18n="nav.distribution">Distribution</span>
             <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
           </button>
         </div>
       </div>
 
       <div class="contact__right reveal">
-        <p class="contact__formlead">Name, email, and what you need — I'll reply within a day.</p>
+        <p class="contact__formlead" data-i18n="con.formlead">Name, email, and what you need — I'll reply within a day.</p>
 
         <form class="form" id="contactForm" novalidate>
           <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
           <div class="field">
-            <label for="c-name">Name</label>
-            <input id="c-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
+            <label for="c-name" data-i18n="form.name">Name</label>
+            <input id="c-name" name="name" type="text" autocomplete="name" required placeholder="Your name" data-i18n-ph="form.name_ph">
           </div>
           <div class="field">
-            <label for="c-mail">Email</label>
+            <label for="c-mail" data-i18n="form.email">Email</label>
             <input id="c-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
           </div>
           <div class="field">
-            <label for="c-msg">Message</label>
-            <textarea id="c-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…"></textarea>
+            <label for="c-msg" data-i18n="form.msg">Message</label>
+            <textarea id="c-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
           </div>
           <button class="btn btn--solid form__submit" type="submit">
-            <span>Send enquiry</span>
+            <span data-i18n="form.send">Send enquiry</span>
             <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
           </button>
           <p class="form__note" id="contactFormNote" role="status"></p>
@@ -879,9 +889,9 @@
 
     <div class="footer__inner">
       <span>© <span id="year">2026</span> Viacheslav MSTPD</span>
-      <span class="footer__mid">Sound Engineer / Mixing &amp; Mastering</span>
-      <a class="footer__by" href="https://ive-studio.com" target="_blank" rel="noopener noreferrer">Site by IVE&nbsp;Studio <span aria-hidden="true">↗</span></a>
-      <a href="#top" class="footer__top">Back to top <span aria-hidden="true">↑</span></a>
+      <span class="footer__mid" data-i18n="foot.mid">Sound Engineer / Mixing &amp; Mastering</span>
+      <a class="footer__by" href="https://ive-studio.com" target="_blank" rel="noopener noreferrer" data-i18n="foot.by">Site by IVE&nbsp;Studio <span aria-hidden="true">↗</span></a>
+      <a href="#top" class="footer__top" data-i18n="foot.top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </div>
 </footer>
@@ -914,7 +924,7 @@
   </button>
   <button class="np__share" type="button" id="npShare" aria-label="Share this track">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.4"/><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="19" r="2.4"/><path d="M8.2 10.7L15.8 6.3M8.2 13.3L15.8 17.7"/></svg>
-    <span class="np__share-note">Link copied</span>
+    <span class="np__share-note" data-i18n="np.copied">Link copied</span>
   </button>
 
   <figure class="np__art" id="npArtWrap">
@@ -951,7 +961,7 @@
     </button>
   </div>
 
-  <a class="np__out" id="npOut" target="_blank" rel="noopener noreferrer">Full track on Spotify <span aria-hidden="true">↗</span></a>
+  <a class="np__out" id="npOut" target="_blank" rel="noopener noreferrer" data-i18n="feat.spotify">Full track on Spotify <span aria-hidden="true">↗</span></a>
 </section>
 
 <!-- ─────────────────────── contact modal ─────────────────────── -->
@@ -962,12 +972,12 @@
       <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
     </button>
 
-    <h2 class="modal__title" id="modalTitle">Send me<br>the rough mix.</h2>
-    <p class="modal__sub" id="modalSub">Name, email, and what you need — I'll reply within a day.</p>
+    <h2 class="modal__title" id="modalTitle" data-i18n="con.title">Send me<br>the rough mix.</h2>
+    <p class="modal__sub" id="modalSub" data-i18n="con.formlead">Name, email, and what you need — I'll reply within a day.</p>
 
     <!-- only filled in when the modal is opened from a Services card -->
     <div class="pkg-pick" id="pkgPick" hidden>
-      <span class="pkg-pick__label">Selected package</span>
+      <span class="pkg-pick__label" data-i18n="m.pkg_label">Selected package</span>
       <span class="pkg-pick__name" id="pkgPickName"></span>
       <span class="pkg-pick__price" id="pkgPickPrice"></span>
     </div>
@@ -978,19 +988,19 @@
       <input type="hidden" name="packageRate" id="pkgPickRateInput">
 
       <div class="field">
-        <label for="m-name">Name</label>
-        <input id="m-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
+        <label for="m-name" data-i18n="form.name">Name</label>
+        <input id="m-name" name="name" type="text" autocomplete="name" required placeholder="Your name" data-i18n-ph="form.name_ph">
       </div>
       <div class="field">
-        <label for="m-mail">Email</label>
+        <label for="m-mail" data-i18n="form.email">Email</label>
         <input id="m-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
       </div>
       <div class="field">
-        <label for="m-msg">Message</label>
-        <textarea id="m-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…"></textarea>
+        <label for="m-msg" data-i18n="form.msg">Message</label>
+        <textarea id="m-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
       </div>
       <button class="btn btn--solid form__submit" type="submit">
-        <span>Send enquiry</span>
+        <span data-i18n="form.send">Send enquiry</span>
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
       </button>
       <p class="form__note" id="modalFormNote" role="status"></p>
@@ -1006,75 +1016,75 @@
       <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
     </button>
 
-    <h2 class="modal__title" id="distroTitle">Send it out<br>into the world.</h2>
-    <p class="modal__sub">Release details for distribution — I'll confirm before it goes live.</p>
+    <h2 class="modal__title" id="distroTitle" data-i18n="d.title">Send it out<br>into the world.</h2>
+    <p class="modal__sub" data-i18n="d.sub">Release details for distribution — I'll confirm before it goes live.</p>
 
     <form class="form form--grid" id="distroForm" novalidate>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="field">
-        <label for="d-artist">Artist's full name</label>
-        <p class="field__hint">Full legal name the artist is registered under.</p>
-        <input id="d-artist" name="artist" type="text" autocomplete="name" required placeholder="Full name">
+        <label for="d-artist" data-i18n="d.artist">Artist's full name</label>
+        <p class="field__hint" data-i18n="d.artist_hint">Full legal name the artist is registered under.</p>
+        <input id="d-artist" name="artist" type="text" autocomplete="name" required placeholder="Full name" data-i18n-ph="d.artist_ph">
       </div>
       <div class="field">
-        <label for="d-mail">Email</label>
-        <p class="field__hint">So I can reply about the release.</p>
+        <label for="d-mail" data-i18n="form.email">Email</label>
+        <p class="field__hint" data-i18n="d.email_hint">So I can reply about the release.</p>
         <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
       </div>
       <div class="field">
-        <label for="d-release">Release title</label>
-        <input id="d-release" name="release" type="text" required placeholder="Track or album title">
+        <label for="d-release" data-i18n="d.release">Release title</label>
+        <input id="d-release" name="release" type="text" required placeholder="Track or album title" data-i18n-ph="d.release_ph">
       </div>
       <div class="field">
-        <label for="d-version">Version / subtitle</label>
-        <p class="field__hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
+        <label for="d-version" data-i18n="d.version">Version / subtitle</label>
+        <p class="field__hint" data-i18n="d.version_hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
         <input id="d-version" name="version" type="text" placeholder="Remix, Live, Deluxe…">
       </div>
       <div class="field">
-        <label for="d-performer">Main performer(s)</label>
-        <p class="field__hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
-        <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)">
+        <label for="d-performer" data-i18n="d.performer">Main performer(s)</label>
+        <p class="field__hint" data-i18n="d.performer_hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
+        <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)" data-i18n-ph="d.performer_ph">
       </div>
       <div class="field">
-        <label for="d-feat">Featuring</label>
-        <p class="field__hint">Guest artists, if any — leave blank if none.</p>
+        <label for="d-feat" data-i18n="d.feat">Featuring</label>
+        <p class="field__hint" data-i18n="d.feat_hint">Guest artists, if any — leave blank if none.</p>
         <input id="d-feat" name="feat" type="text" placeholder="feat. …">
       </div>
       <div class="field">
-        <label for="d-genre">Genre</label>
-        <input id="d-genre" name="genre" type="text" required placeholder="e.g. Hip-Hop">
+        <label for="d-genre" data-i18n="d.genre">Genre</label>
+        <input id="d-genre" name="genre" type="text" required placeholder="e.g. Hip-Hop" data-i18n-ph="d.genre_ph">
       </div>
       <div class="field">
-        <label for="d-subgenre">Subgenre</label>
-        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap">
+        <label for="d-subgenre" data-i18n="d.subgenre">Subgenre</label>
+        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap" data-i18n-ph="d.subgenre_ph">
       </div>
       <div class="field">
-        <label>Format</label>
+        <label data-i18n="d.format">Format</label>
         <div class="pill-group" role="radiogroup" aria-label="Format">
           <input class="pill-group__input" type="radio" name="format" id="d-format-single" value="Single" checked>
-          <label class="pill-group__btn" for="d-format-single">Single</label>
+          <label class="pill-group__btn" for="d-format-single" data-i18n="d.single">Single</label>
           <input class="pill-group__input" type="radio" name="format" id="d-format-album" value="Album">
-          <label class="pill-group__btn" for="d-format-album">Album</label>
+          <label class="pill-group__btn" for="d-format-album" data-i18n="d.album">Album</label>
         </div>
       </div>
       <div class="field">
-        <label>Explicit content</label>
+        <label data-i18n="d.explicit">Explicit content</label>
         <div class="pill-group" role="radiogroup" aria-label="Explicit content">
           <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-no" value="No" checked>
-          <label class="pill-group__btn" for="d-explicit-no">No</label>
+          <label class="pill-group__btn" for="d-explicit-no" data-i18n="d.no">No</label>
           <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-yes" value="Yes">
-          <label class="pill-group__btn" for="d-explicit-yes">Yes</label>
+          <label class="pill-group__btn" for="d-explicit-yes" data-i18n="d.yes">Yes</label>
         </div>
       </div>
       <div class="field field--wide">
-        <label for="d-cover">Track cover</label>
-        <p class="field__hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
+        <label for="d-cover" data-i18n="d.cover">Track cover</label>
+        <p class="field__hint" data-i18n="d.cover_hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
         <input id="d-cover" name="cover" type="file" accept="image/jpeg,image/png">
         <p class="filenote" id="coverNote" role="status"></p>
       </div>
       <button class="btn btn--solid form__submit" type="submit">
-        <span>Send for distribution</span>
+        <span data-i18n="d.send">Send for distribution</span>
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
       </button>
       <p class="form__note" id="distroFormNote" role="status"></p>
@@ -1082,6 +1092,7 @@
   </div>
 </div>
 
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

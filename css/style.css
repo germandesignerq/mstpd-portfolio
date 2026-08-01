@@ -220,6 +220,19 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 
 .nav__actions{ display:flex; align-items:center; gap:12px; }
 
+/* language switcher */
+.lang{ display:flex; align-items:center; gap:2px; margin-right:6px; }
+.lang__btn{
+  padding:6px 7px;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.08em; color:var(--faint);
+  transition:color .3s;
+}
+.lang__btn:hover{ color:var(--muted); }
+.lang__btn.is-active{ color:var(--fg); }
+.lang--menu{ margin:26px 0 0; gap:10px; }
+.lang--menu .lang__btn{ font-size:14px; padding:8px 10px; }
+
 .nav__cta{
   position:relative;
   display:inline-flex; align-items:center;
@@ -830,13 +843,16 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
 }
 
+/* outline by default; only the featured middle card keeps the solid
+   white button, so the emphasis matches the card treatment above it */
 .pkg__book{
   position:relative; overflow:hidden; isolation:isolate;
-  width:100%; padding:15px 24px;
+  width:100%; padding:14px 24px;
   border-radius:100px;
-  background:var(--fg); color:var(--bg);
+  background:transparent; color:var(--fg);
+  border:1px solid var(--line);
   font-size:15px; font-weight:500; letter-spacing:-.005em;
-  transition:color .4s var(--ease);
+  transition:color .4s var(--ease), border-color .4s;
 }
 .pkg__book::after{
   content:""; position:absolute; inset:0; z-index:-1;
@@ -844,9 +860,12 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   transform:translateY(101%);
   transition:transform .45s var(--ease);
 }
-.pkg__book:hover{ color:#fff; }
+.pkg__book:hover{ color:#fff; border-color:transparent; }
 .pkg__book:hover::after{ transform:translateY(0); }
 .pkg__book:active{ transform:scale(.97); }
+
+.pkg--hot .pkg__book{ background:var(--fg); color:var(--bg); border-color:transparent; }
+.pkg--hot .pkg__book:hover{ color:#fff; }
 
 /* first-time-client offer, sitting under the three cards */
 .svc-offer{

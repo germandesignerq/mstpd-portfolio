@@ -9,6 +9,14 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* i18n.js provides window.T; if it ever fails to load, fall back to
+     the English strings passed inline so nothing breaks */
+  const T = window.T || ((key, fallback, vars) => {
+    let s = fallback;
+    if (vars) for (const k of Object.keys(vars)) s = s.split('{' + k + '}').join(vars[k]);
+    return s;
+  });
+
   /* ── entrance ─────────────────────────────────────────── */
   requestAnimationFrame(() => document.documentElement.classList.add('is-loaded'));
   const yr = $('#year');
@@ -50,7 +58,8 @@
     }
   };
   burger.addEventListener('click', () => setMenu(burger.getAttribute('aria-expanded') !== 'true'));
-  $$('#menu a, #menu button').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  // lang buttons excluded: switching language shouldn't dismiss the menu
+  $$('#menu a, #menu button:not(.lang__btn)').forEach(a => a.addEventListener('click', () => setMenu(false)));
   addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 
   /* ── scroll reveal ────────────────────────────────────── */
@@ -619,10 +628,12 @@
     $('#pkgPickPrice').textContent = price || '';
     $('#pkgPickInput').value = name || '';
     $('#pkgPickRateInput').value = price || '';
-    $('#modalTitle').innerHTML = name ? 'Book<br>' + name + '.' : 'Send me<br>the rough mix.';
-    $('#modalSub').textContent = name
-      ? 'Tell me about the release and I\'ll confirm the details.'
-      : 'Name, email, and what you need — I\'ll reply within a day.';
+    $('#modalTitle').innerHTML = name
+      ? T('js.book_title', 'Book<br>{name}.', { name })
+      : T('con.title', 'Send me<br>the rough mix.');
+    $('#modalSub').innerHTML = name
+      ? T('js.book_sub', 'Tell me about the release and I\'ll confirm the details.')
+      : T('con.formlead', 'Name, email, and what you need — I\'ll reply within a day.');
   };
 
   bindModal($('#contactModal'), {
@@ -653,7 +664,6 @@
     const note = $('.form__note', form);
     const submit = $('button[type="submit"]', form);
     const label = $('span', submit);
-    const idle = label.textContent;
 
     const say = (text, state) => {
       note.textContent = text;
@@ -686,12 +696,14 @@
         const rule = validators[input.name];
         if (valid && rule && !rule.test(value)) {
           valid = false;
-          if (!reason) reason = rule.message;      // first specific complaint wins
+          // first specific complaint wins; resolved lazily so it lands
+          // in whichever language is active at submit time
+          if (!reason) reason = typeof rule.message === 'function' ? rule.message() : rule.message;
         }
         f.classList.toggle('is-invalid', !valid);
         if (!valid) ok = false;
       });
-      if (!ok) { say(reason || 'Please fill in the required fields.', 'error'); return; }
+      if (!ok) { say(reason || T('js.fill_required', 'Please fill in the required fields.'), 'error'); return; }
 
       // gate for things a per-field rule can't express, e.g. image dimensions
       const blocker = preflight && preflight();
@@ -704,15 +716,18 @@
 
       // the Web3Forms path needs a key; the own-endpoint path doesn't
       if (!endpoint && !keyReady) {
-        say('Opening your mail client…');
+        say(T('js.opening_mail', 'Opening your mail client…'));
         mailtoFallback(subject, fields);
         return;
       }
 
+      // captured here, not at bind time, so a language switch between
+      // page load and submit restores the right label afterwards
+      const idle = label.textContent;
       form.classList.add('is-sending');
       submit.disabled = true;
-      label.textContent = 'Sending…';
-      say('Sending…');
+      label.textContent = T('js.sending', 'Sending…');
+      say(T('js.sending', 'Sending…'));
 
       try {
         const res = endpoint
@@ -734,14 +749,14 @@
 
         form.reset();                                  // fires 'reset', which clears the cover note
         $$('.field.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
-        say('Sent — I\'ll get back to you shortly.', 'ok');
+        say(T('js.sent', 'Sent — I\'ll get back to you shortly.'), 'ok');
       } catch (err) {
         // falling back to mailto would silently drop the attachment, so the
         // file path reports the failure instead of pretending to degrade
         if (endpoint) {
-          say('Couldn\'t send. Please email offmstpd@gmail.com directly.', 'error');
+          say(T('js.cant_send_direct', 'Couldn\'t send. Please email offmstpd@gmail.com directly.'), 'error');
         } else {
-          say('Couldn\'t send. Opening your mail client instead…', 'error');
+          say(T('js.cant_send_mailto', 'Couldn\'t send. Opening your mail client instead…'), 'error');
           setTimeout(() => mailtoFallback(subject, fields), 800);
         }
       } finally {
@@ -783,7 +798,10 @@
 
   const coverInput = $('#d-cover');
   const coverNote = $('#coverNote');
-  let coverProblem = 'Attach the track cover.';        // no file chosen yet
+  /* held as a producer, not a string, so the message resolves in the
+     language active when it's shown — not the one active when it was set */
+  const NO_COVER = () => T('js.cover_attach', 'Attach the track cover.');
+  let coverProblem = NO_COVER;
 
   const readSize = file => new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -801,7 +819,7 @@
     };
 
     const clearCover = () => {
-      coverProblem = 'Attach the track cover.';
+      coverProblem = NO_COVER;
       noteState('', null);
     };
     coverInput.form.addEventListener('reset', () => setTimeout(clearCover, 0));
@@ -810,19 +828,26 @@
       const file = coverInput.files && coverInput.files[0];
       if (!file) return clearCover();
 
-      const reject = msg => { coverProblem = msg; noteState(msg, 'error'); };
+      const reject = msgFn => { coverProblem = msgFn; noteState(msgFn(), 'error'); };
 
-      if (!COVER_TYPES.includes(file.type)) return reject('Cover must be a JPEG or PNG.');
+      if (!COVER_TYPES.includes(file.type)) {
+        return reject(() => T('js.cover_type', 'Cover must be a JPEG or PNG.'));
+      }
       if (file.size > COVER_MAX_BYTES) {
-        return reject(`Cover is ${(file.size / 1048576).toFixed(1)} MB — the limit is 4 MB. Save it as JPEG.`);
+        const mb = (file.size / 1048576).toFixed(1);
+        return reject(() => T('js.cover_size', 'Cover is {mb} MB — the limit is 4 MB. Save it as JPEG.', { mb }));
       }
 
       let size;
       try { size = await readSize(file); }
-      catch { return reject('That file could not be read as an image.'); }
+      catch { return reject(() => T('js.cover_unreadable', 'That file could not be read as an image.')); }
 
-      if (size.w !== size.h) return reject(`Cover must be square — this one is ${size.w}×${size.h}.`);
-      if (size.w < COVER_MIN) return reject(`Cover must be at least ${COVER_MIN}×${COVER_MIN} — this one is ${size.w}×${size.h}.`);
+      if (size.w !== size.h) {
+        return reject(() => T('js.cover_square', 'Cover must be square — this one is {w}×{h}.', { w: size.w, h: size.h }));
+      }
+      if (size.w < COVER_MIN) {
+        return reject(() => T('js.cover_min', 'Cover must be at least {min}×{min} — this one is {w}×{h}.', { min: COVER_MIN, w: size.w, h: size.h }));
+      }
 
       coverProblem = null;
       noteState(`${file.name} — ${size.w}×${size.h}, ${Math.round(file.size / 1024)} KB`, 'ok');
@@ -840,12 +865,12 @@
     // own endpoint rather than Web3Forms: file attachments are a paid
     // feature there, and the cover is the point of this form
     endpoint: '/api/distro',
-    preflight: () => coverProblem,
+    preflight: () => coverProblem && coverProblem(),
     requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],
     validators: {
       artist: {
         test: v => FULL_NAME.test(v),
-        message: 'Artist name: please give the full legal name, first and last.',
+        message: () => T('js.artist_fullname', 'Artist name: please give the full legal name, first and last.'),
       },
     },
     // the endpoint composes the mail itself; these only feed the

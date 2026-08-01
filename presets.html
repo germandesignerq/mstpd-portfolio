@@ -20,18 +20,23 @@
       Viacheslav&nbsp;MSTPD
     </a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="index.html#work">Work</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#services">Services</a>
-      <a href="presets.html" class="is-active">Presets</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="index.html#work" data-i18n="nav.work">Work</a>
+      <a href="index.html#about" data-i18n="nav.about">About</a>
+      <a href="index.html#services" data-i18n="nav.services">Services</a>
+      <a href="presets.html" class="is-active" data-i18n="nav.presets">Presets</a>
+      <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn is-active" type="button" data-lang="en">EN</button>
+        <button class="lang__btn" type="button" data-lang="ru">RU</button>
+        <button class="lang__btn" type="button" data-lang="uk">UA</button>
+      </div>
       <button class="nav__cta nav__cta--accent" type="button" data-contact-modal>
-        <span>Get in touch</span>
+        <span data-i18n="nav.get_in_touch">Get in touch</span>
       </button>
       <button class="nav__cta nav__cta--ghost" type="button" data-distro-modal>
-        <span>Distribution</span>
+        <span data-i18n="nav.distribution">Distribution</span>
       </button>
     </div>
     <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
@@ -39,18 +44,23 @@
 </header>
 
 <div class="menu" id="menu" hidden>
-  <a href="index.html#work">Work</a>
-  <a href="index.html#about">About</a>
-  <a href="index.html#services">Services</a>
-  <a href="presets.html">Presets</a>
-  <a href="index.html#contact">Contact</a>
+  <a href="index.html#work" data-i18n="nav.work">Work</a>
+  <a href="index.html#about" data-i18n="nav.about">About</a>
+  <a href="index.html#services" data-i18n="nav.services">Services</a>
+  <a href="presets.html" data-i18n="nav.presets">Presets</a>
+  <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
   <div class="menu__actions">
     <button class="menu__cta menu__cta--accent" type="button" data-contact-modal>
-      <span>Get in touch</span>
+      <span data-i18n="nav.get_in_touch">Get in touch</span>
     </button>
     <button class="menu__cta menu__cta--ghost" type="button" data-distro-modal>
-      <span>Distribution</span>
+      <span data-i18n="nav.distribution">Distribution</span>
     </button>
+  </div>
+  <div class="lang lang--menu" role="group" aria-label="Language">
+    <button class="lang__btn is-active" type="button" data-lang="en">EN</button>
+    <button class="lang__btn" type="button" data-lang="ru">RU</button>
+    <button class="lang__btn" type="button" data-lang="uk">UA</button>
   </div>
   <span class="menu__mail">offmstpd@gmail.com</span>
 </div>
@@ -64,8 +74,8 @@
 <section class="section presets" id="presets">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="label">Presets</span>
-      <h2 class="sec-title">Chains I reach for</h2>
+      <span class="label" data-i18n="pre.label">Presets</span>
+      <h2 class="sec-title" data-i18n="pre.title">Chains I reach for</h2>
     </header>
 
     <div class="preset-grid">
@@ -74,10 +84,10 @@
           <span class="preset__idx">01</span>
         </div>
         <h3 class="preset__title">Vocal Chain — Hip-Hop</h3>
-        <p class="preset__desc">Tight, present and forward — built for rap vocals that need to sit
+        <p class="preset__desc" data-i18n="pre.d1">Tight, present and forward — built for rap vocals that need to sit
           on top of a busy low end without shouting.</p>
         <div class="preset__foot">
-          <span class="preset__soon">Coming soon</span>
+          <span class="preset__soon" data-i18n="pre.soon">Coming soon</span>
         </div>
       </article>
 
@@ -86,10 +96,10 @@
           <span class="preset__idx">02</span>
         </div>
         <h3 class="preset__title">Vocal Chain — Pop / R&amp;B</h3>
-        <p class="preset__desc">Smooth and airy, with just enough bite to stay intimate at low
+        <p class="preset__desc" data-i18n="pre.d2">Smooth and airy, with just enough bite to stay intimate at low
           volume and full-bodied at high volume.</p>
         <div class="preset__foot">
-          <span class="preset__soon">Coming soon</span>
+          <span class="preset__soon" data-i18n="pre.soon">Coming soon</span>
         </div>
       </article>
 
@@ -98,15 +108,15 @@
           <span class="preset__idx">03</span>
         </div>
         <h3 class="preset__title">Mastering Chain — Streaming Loud</h3>
-        <p class="preset__desc">Competitive loudness without pumping — tuned for the way Spotify
+        <p class="preset__desc" data-i18n="pre.d3">Competitive loudness without pumping — tuned for the way Spotify
           and Apple Music normalise playback.</p>
         <div class="preset__foot">
-          <span class="preset__soon">Coming soon</span>
+          <span class="preset__soon" data-i18n="pre.soon">Coming soon</span>
         </div>
       </article>
     </div>
 
-    <p class="preset-note reveal">Presets aren't live yet — want first access when they drop? <button class="preset-note__link" type="button" data-contact-modal>Get in touch</button>.</p>
+    <p class="preset-note reveal"><span data-i18n="pre.note">Presets aren't live yet — want first access when they drop?</span> <button class="preset-note__link" type="button" data-contact-modal data-i18n="pre.note_link">Get in touch</button>.</p>
   </div>
 </section>
 
@@ -121,9 +131,9 @@
 
     <div class="footer__inner">
       <span>© <span id="year">2026</span> Viacheslav MSTPD</span>
-      <span class="footer__mid">Sound Engineer / Mixing &amp; Mastering</span>
-      <a class="footer__by" href="https://ive-studio.com" target="_blank" rel="noopener noreferrer">Site by IVE&nbsp;Studio <span aria-hidden="true">↗</span></a>
-      <a href="#top" class="footer__top">Back to top <span aria-hidden="true">↑</span></a>
+      <span class="footer__mid" data-i18n="foot.mid">Sound Engineer / Mixing &amp; Mastering</span>
+      <a class="footer__by" href="https://ive-studio.com" target="_blank" rel="noopener noreferrer" data-i18n="foot.by">Site by IVE&nbsp;Studio <span aria-hidden="true">↗</span></a>
+      <a href="#top" class="footer__top" data-i18n="foot.top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </div>
 </footer>
@@ -136,12 +146,12 @@
       <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
     </button>
 
-    <h2 class="modal__title" id="modalTitle">Send me<br>the rough mix.</h2>
-    <p class="modal__sub" id="modalSub">Name, email, and what you need — I'll reply within a day.</p>
+    <h2 class="modal__title" id="modalTitle" data-i18n="con.title">Send me<br>the rough mix.</h2>
+    <p class="modal__sub" id="modalSub" data-i18n="con.formlead">Name, email, and what you need — I'll reply within a day.</p>
 
     <!-- only filled in when the modal is opened from a Services card -->
     <div class="pkg-pick" id="pkgPick" hidden>
-      <span class="pkg-pick__label">Selected package</span>
+      <span class="pkg-pick__label" data-i18n="m.pkg_label">Selected package</span>
       <span class="pkg-pick__name" id="pkgPickName"></span>
       <span class="pkg-pick__price" id="pkgPickPrice"></span>
     </div>
@@ -152,19 +162,19 @@
       <input type="hidden" name="packageRate" id="pkgPickRateInput">
 
       <div class="field">
-        <label for="m-name">Name</label>
-        <input id="m-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
+        <label for="m-name" data-i18n="form.name">Name</label>
+        <input id="m-name" name="name" type="text" autocomplete="name" required placeholder="Your name" data-i18n-ph="form.name_ph">
       </div>
       <div class="field">
-        <label for="m-mail">Email</label>
+        <label for="m-mail" data-i18n="form.email">Email</label>
         <input id="m-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
       </div>
       <div class="field">
-        <label for="m-msg">Message</label>
-        <textarea id="m-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…"></textarea>
+        <label for="m-msg" data-i18n="form.msg">Message</label>
+        <textarea id="m-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
       </div>
       <button class="btn btn--solid form__submit" type="submit">
-        <span>Send enquiry</span>
+        <span data-i18n="form.send">Send enquiry</span>
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
       </button>
       <p class="form__note" id="modalFormNote" role="status"></p>
@@ -180,75 +190,75 @@
       <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
     </button>
 
-    <h2 class="modal__title" id="distroTitle">Send it out<br>into the world.</h2>
-    <p class="modal__sub">Release details for distribution — I'll confirm before it goes live.</p>
+    <h2 class="modal__title" id="distroTitle" data-i18n="d.title">Send it out<br>into the world.</h2>
+    <p class="modal__sub" data-i18n="d.sub">Release details for distribution — I'll confirm before it goes live.</p>
 
     <form class="form form--grid" id="distroForm" novalidate>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="field">
-        <label for="d-artist">Artist's full name</label>
-        <p class="field__hint">Full legal name the artist is registered under.</p>
-        <input id="d-artist" name="artist" type="text" autocomplete="name" required placeholder="Full name">
+        <label for="d-artist" data-i18n="d.artist">Artist's full name</label>
+        <p class="field__hint" data-i18n="d.artist_hint">Full legal name the artist is registered under.</p>
+        <input id="d-artist" name="artist" type="text" autocomplete="name" required placeholder="Full name" data-i18n-ph="d.artist_ph">
       </div>
       <div class="field">
-        <label for="d-mail">Email</label>
-        <p class="field__hint">So I can reply about the release.</p>
+        <label for="d-mail" data-i18n="form.email">Email</label>
+        <p class="field__hint" data-i18n="d.email_hint">So I can reply about the release.</p>
         <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
       </div>
       <div class="field">
-        <label for="d-release">Release title</label>
-        <input id="d-release" name="release" type="text" required placeholder="Track or album title">
+        <label for="d-release" data-i18n="d.release">Release title</label>
+        <input id="d-release" name="release" type="text" required placeholder="Track or album title" data-i18n-ph="d.release_ph">
       </div>
       <div class="field">
-        <label for="d-version">Version / subtitle</label>
-        <p class="field__hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
+        <label for="d-version" data-i18n="d.version">Version / subtitle</label>
+        <p class="field__hint" data-i18n="d.version_hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
         <input id="d-version" name="version" type="text" placeholder="Remix, Live, Deluxe…">
       </div>
       <div class="field">
-        <label for="d-performer">Main performer(s)</label>
-        <p class="field__hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
-        <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)">
+        <label for="d-performer" data-i18n="d.performer">Main performer(s)</label>
+        <p class="field__hint" data-i18n="d.performer_hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
+        <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)" data-i18n-ph="d.performer_ph">
       </div>
       <div class="field">
-        <label for="d-feat">Featuring</label>
-        <p class="field__hint">Guest artists, if any — leave blank if none.</p>
+        <label for="d-feat" data-i18n="d.feat">Featuring</label>
+        <p class="field__hint" data-i18n="d.feat_hint">Guest artists, if any — leave blank if none.</p>
         <input id="d-feat" name="feat" type="text" placeholder="feat. …">
       </div>
       <div class="field">
-        <label for="d-genre">Genre</label>
-        <input id="d-genre" name="genre" type="text" required placeholder="e.g. Hip-Hop">
+        <label for="d-genre" data-i18n="d.genre">Genre</label>
+        <input id="d-genre" name="genre" type="text" required placeholder="e.g. Hip-Hop" data-i18n-ph="d.genre_ph">
       </div>
       <div class="field">
-        <label for="d-subgenre">Subgenre</label>
-        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap">
+        <label for="d-subgenre" data-i18n="d.subgenre">Subgenre</label>
+        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap" data-i18n-ph="d.subgenre_ph">
       </div>
       <div class="field">
-        <label>Format</label>
+        <label data-i18n="d.format">Format</label>
         <div class="pill-group" role="radiogroup" aria-label="Format">
           <input class="pill-group__input" type="radio" name="format" id="d-format-single" value="Single" checked>
-          <label class="pill-group__btn" for="d-format-single">Single</label>
+          <label class="pill-group__btn" for="d-format-single" data-i18n="d.single">Single</label>
           <input class="pill-group__input" type="radio" name="format" id="d-format-album" value="Album">
-          <label class="pill-group__btn" for="d-format-album">Album</label>
+          <label class="pill-group__btn" for="d-format-album" data-i18n="d.album">Album</label>
         </div>
       </div>
       <div class="field">
-        <label>Explicit content</label>
+        <label data-i18n="d.explicit">Explicit content</label>
         <div class="pill-group" role="radiogroup" aria-label="Explicit content">
           <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-no" value="No" checked>
-          <label class="pill-group__btn" for="d-explicit-no">No</label>
+          <label class="pill-group__btn" for="d-explicit-no" data-i18n="d.no">No</label>
           <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-yes" value="Yes">
-          <label class="pill-group__btn" for="d-explicit-yes">Yes</label>
+          <label class="pill-group__btn" for="d-explicit-yes" data-i18n="d.yes">Yes</label>
         </div>
       </div>
       <div class="field field--wide">
-        <label for="d-cover">Track cover</label>
-        <p class="field__hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
+        <label for="d-cover" data-i18n="d.cover">Track cover</label>
+        <p class="field__hint" data-i18n="d.cover_hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
         <input id="d-cover" name="cover" type="file" accept="image/jpeg,image/png">
         <p class="filenote" id="coverNote" role="status"></p>
       </div>
       <button class="btn btn--solid form__submit" type="submit">
-        <span>Send for distribution</span>
+        <span data-i18n="d.send">Send for distribution</span>
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
       </button>
       <p class="form__note" id="distroFormNote" role="status"></p>
@@ -256,6 +266,7 @@
   </div>
 </div>
 
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

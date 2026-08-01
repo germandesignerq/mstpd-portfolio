@@ -470,6 +470,11 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .about__copy p{ max-width:52ch; color:var(--muted); }
 .about__copy .lead{ color:var(--fg); margin-bottom:1.6em; }
+.about__badge{
+  display:block;
+  width:152px; height:auto;
+  margin-top:clamp(20px,2.6vw,30px);
+}
 
 .facts{
   display:grid;

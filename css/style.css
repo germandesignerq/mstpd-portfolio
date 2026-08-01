@@ -1050,6 +1050,11 @@ body.modal-open{ overflow:hidden; }
 .footer__top{ transition:color .35s; }
 .footer__top:hover{ color:var(--fg); }
 
+.footer__by{ white-space:nowrap; transition:color .35s; }
+.footer__by:hover{ color:var(--accent); }
+.footer__by span{ display:inline-block; transition:transform .35s var(--ease); }
+.footer__by:hover span{ transform:translate(2px,-2px); }
+
 /* ── scroll reveal ─────────────────────────────────────── */
 .reveal{
   opacity:0; transform:translateY(26px);

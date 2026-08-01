@@ -25,7 +25,7 @@
       <a href="#work">Work</a>
       <a href="#about">About</a>
       <a href="#services">Services</a>
-      <a href="#contact" data-contact-modal>Contact</a>
+      <a href="#contact">Contact</a>
     </nav>
     <button class="nav__cta" type="button" data-contact-modal>
       <span>Get in touch</span>
@@ -38,7 +38,7 @@
   <a href="#work">Work</a>
   <a href="#about">About</a>
   <a href="#services">Services</a>
-  <a href="#contact" data-contact-modal>Contact</a>
+  <a href="#contact">Contact</a>
   <button class="menu__cta" type="button" data-contact-modal>
     <span>Get in touch</span>
   </button>
@@ -783,16 +783,37 @@
         </ul>
 
         <div class="contact__actions reveal">
-          <button class="btn btn--solid" type="button" data-contact-modal>
-            <span>Send enquiry</span>
-            <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
-          </button>
-
           <button class="btn btn--ghost" type="button" data-distro-modal>
             <span>Submit a release</span>
             <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
           </button>
         </div>
+      </div>
+
+      <div class="contact__right reveal">
+        <p class="contact__formlead">Name, email, and what you need — I'll reply within a day.</p>
+
+        <form class="form" id="contactForm" novalidate>
+          <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="field">
+            <label for="c-name">Name</label>
+            <input id="c-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label for="c-mail">Email</label>
+            <input id="c-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
+          </div>
+          <div class="field">
+            <label for="c-msg">Message</label>
+            <textarea id="c-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…"></textarea>
+          </div>
+          <button class="btn btn--solid form__submit" type="submit">
+            <span>Send enquiry</span>
+            <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+          </button>
+          <p class="form__note" id="contactFormNote" role="status"></p>
+        </form>
       </div>
     </div>
   </div>

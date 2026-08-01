@@ -714,7 +714,9 @@
     });
   };
 
-  bindForm($('#modalForm'), {
+  /* same enquiry, two entry points: inline in the Contact section, and
+     the modal behind the nav / Services CTAs further up the page */
+  const enquiry = {
     requiredFields: ['name', 'email', 'message'],
     buildSubject: data => `Project enquiry — ${data.get('name')}`,
     buildFields: data => ({
@@ -722,7 +724,9 @@
       Email: data.get('email'),
       Message: data.get('message'),
     }),
-  });
+  };
+  bindForm($('#modalForm'), enquiry);
+  bindForm($('#contactForm'), enquiry);
 
   bindForm($('#distroForm'), {
     requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],

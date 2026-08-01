@@ -1054,6 +1054,13 @@ body.modal-open{ overflow:hidden; }
 
 /* ── footer ────────────────────────────────────────────── */
 .footer{ border-top:1px solid var(--line); padding-block:36px; }
+/* the badge plate is pure black against a #0A0A0A page — near-invisible
+   by design, so the mark reads as white type. Never recoloured. */
+.footer__cert{ margin-bottom:30px; }
+.footer__cert img{
+  display:block;
+  width:128px; height:auto;
+}
 .footer__inner{
   display:flex; align-items:center; justify-content:space-between; gap:20px;
   font-family:var(--mono); font-size:11px;

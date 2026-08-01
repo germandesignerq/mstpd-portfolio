@@ -218,6 +218,8 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .nav__links a:hover::after{ transform:scaleX(1); transform-origin:left; }
 .nav__links a.is-active{ color:var(--fg); }
 
+.nav__actions{ display:flex; align-items:center; gap:12px; }
+
 .nav__cta{
   position:relative;
   display:inline-flex; align-items:center;
@@ -226,7 +228,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   background:var(--fg); color:var(--bg);
   font-size:15px; font-weight:500; letter-spacing:-.005em;
   overflow:hidden; isolation:isolate;
-  transition:color .4s var(--ease);
+  transition:color .4s var(--ease), border-color .4s;
 }
 .nav__cta span{ position:relative; z-index:1; }
 .nav__cta::before{
@@ -238,6 +240,12 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .nav__cta:hover{ color:#fff; }
 .nav__cta:hover::before{ transform:translateY(0); }
 .nav__cta:active{ transform:scale(.96); }
+
+.nav__cta--ghost{
+  background:transparent; color:var(--muted);
+  border:1px solid var(--line);
+}
+.nav__cta--ghost:hover{ color:#fff; border-color:transparent; }
 
 .nav__burger{ display:none; width:28px; height:28px; position:relative; }
 .nav__burger span{
@@ -264,17 +272,29 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   font-size:clamp(34px,10vw,56px);
   letter-spacing:-.045em; line-height:1.28;
 }
-.menu__cta{
-  align-self:flex-start;
+.menu__actions{
+  display:flex; flex-wrap:wrap; gap:14px;
   margin-top:28px;
+}
+@media (max-width:480px){
+  .menu__actions{ gap:12px; }
+  .menu__cta{ flex:1 1 100%; justify-content:center; }
+}
+.menu__cta{
   display:inline-flex; align-items:center;
   padding:15px 30px;
   border-radius:100px;
   background:var(--fg); color:var(--bg);
   font-size:17px; font-weight:500; letter-spacing:-.005em;
-  transition:transform .3s var(--ease), background .3s;
+  transition:transform .3s var(--ease), background .3s, border-color .3s, color .3s;
 }
 .menu__cta:active{ transform:scale(.96); background:var(--accent); color:#fff; }
+
+.menu__cta--ghost{
+  background:transparent; color:var(--fg);
+  border:1px solid var(--line);
+}
+.menu__cta--ghost:active{ background:var(--accent); border-color:var(--accent); }
 .menu__mail{
   margin-top:36px;
   font-family:var(--mono); font-size:12px;
@@ -1390,7 +1410,7 @@ body.np-open{ overflow:hidden; }
 
 @media (max-width:900px){
   :root{ --nav-h:64px; }
-  .nav__links,.nav__cta{ display:none; }
+  .nav__links,.nav__actions{ display:none; }
   .nav__burger{ display:block; }
 
   .hero{ min-height:100svh; padding-bottom:56px; }

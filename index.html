@@ -290,7 +290,7 @@
     </header>
 
     <div class="genre-filter reveal" id="genreFilter" role="tablist" aria-label="Filter credits by genre">
-      <button class="genre-filter__btn is-active" type="button" data-genre-filter="all" role="tab" aria-selected="true" data-i18n-tn="cred.all">All<span>30</span></button>
+      <button class="genre-filter__btn is-active" type="button" data-genre-filter="all" role="tab" aria-selected="true" data-i18n-tn="cred.all">All<span>265</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Hip-Hop" role="tab" aria-selected="false">Hip-Hop<span>15</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Pop" role="tab" aria-selected="false">Pop<span>3</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="R&B" role="tab" aria-selected="false">R&amp;B<span>1</span></button>
@@ -723,6 +723,11 @@
       </div>
 
     </div>
+
+    <!-- rows 31–265 are built into #rows by js/credits-extra.js -->
+    <button class="btn btn--ghost rows-toggle" type="button" id="rowsToggle" aria-expanded="false">
+      <span>Show all 265</span>
+    </button>
   </div>
 
   <div class="row-preview" id="preview" aria-hidden="true"><img alt=""></div>
@@ -1093,6 +1098,7 @@
 </div>
 
 <script src="js/i18n.js"></script>
+<script src="js/credits-extra.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

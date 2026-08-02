@@ -72,6 +72,8 @@
     "cred.all": "Все",
     "cred.other": "Другое",
     "cred.empty": "В этом жанре пока пусто — попробуйте другой фильтр.",
+    "cred.show_all": "Показать все 265",
+    "cred.show_less": "Показать только топ-30",
     // services
     "svc.label": "(04) — Услуги",
     "svc.title": "Чем я занимаюсь",
@@ -218,6 +220,8 @@
     "cred.all": "Всі",
     "cred.other": "Інше",
     "cred.empty": "У цьому жанрі поки порожньо — спробуйте інший фільтр.",
+    "cred.show_all": "Показати всі 265",
+    "cred.show_less": "Показати лише топ-30",
     "svc.label": "(04) — Послуги",
     "svc.title": "Чим я займаюся",
     "svc.tag": "Найчастіше беруть",
@@ -341,6 +345,9 @@
     try { localStorage.setItem('lang', lang); } catch {}
     document.querySelectorAll('.lang__btn').forEach(b =>
       b.classList.toggle('is-active', b.dataset.lang === lang));
+    // lets scripts refresh labels they manage themselves (e.g. the
+    // credits show-all toggle, whose text depends on open/closed state)
+    document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
   };
 
   /* runtime lookup for strings main.js builds on the fly */

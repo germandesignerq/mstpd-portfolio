@@ -10,7 +10,7 @@
 <meta property="og:description" content="I shape sound into emotion and clarity.">
 <meta property="og:image" content="assets/img/portrait.jpg">
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
@@ -1032,13 +1032,13 @@
 
       <div class="field">
         <label for="d-artist" data-i18n="d.artist">Artist's full name</label>
-        <p class="field__hint" data-i18n="d.artist_hint">Full legal name the artist is registered under.</p>
         <input id="d-artist" name="artist" type="text" autocomplete="name" required placeholder="Full name" data-i18n-ph="d.artist_ph">
+        <p class="field__hint" data-i18n="d.artist_hint">Full legal name the artist is registered under.</p>
       </div>
       <div class="field">
         <label for="d-mail" data-i18n="form.email">Email</label>
-        <p class="field__hint" data-i18n="d.email_hint">So I can reply about the release.</p>
         <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
+        <p class="field__hint" data-i18n="d.email_hint">So I can reply about the release.</p>
       </div>
       <div class="field">
         <label for="d-release" data-i18n="d.release">Release title</label>
@@ -1046,18 +1046,18 @@
       </div>
       <div class="field">
         <label for="d-version" data-i18n="d.version">Version / subtitle</label>
-        <p class="field__hint" data-i18n="d.version_hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
         <input id="d-version" name="version" type="text" placeholder="Remix, Live, Deluxe…">
+        <p class="field__hint" data-i18n="d.version_hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
       </div>
       <div class="field">
         <label for="d-performer" data-i18n="d.performer">Main performer(s)</label>
-        <p class="field__hint" data-i18n="d.performer_hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
         <input id="d-performer" name="performer" type="text" required placeholder="Artist name(s)" data-i18n-ph="d.performer_ph">
+        <p class="field__hint" data-i18n="d.performer_hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
       </div>
       <div class="field">
         <label for="d-feat" data-i18n="d.feat">Featuring</label>
-        <p class="field__hint" data-i18n="d.feat_hint">Guest artists, if any — leave blank if none.</p>
         <input id="d-feat" name="feat" type="text" placeholder="feat. …">
+        <p class="field__hint" data-i18n="d.feat_hint">Guest artists, if any — leave blank if none.</p>
       </div>
       <div class="field">
         <label for="d-genre" data-i18n="d.genre">Genre</label>
@@ -1087,8 +1087,8 @@
       </div>
       <div class="field field--wide">
         <label for="d-cover" data-i18n="d.cover">Track cover</label>
-        <p class="field__hint" data-i18n="d.cover_hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
         <input id="d-cover" name="cover" type="file" accept="image/jpeg,image/png">
+        <p class="field__hint" data-i18n="d.cover_hint">JPEG or PNG · square · at least 3000×3000&nbsp;px · up to 4&nbsp;MB.</p>
         <p class="filenote" id="coverNote" role="status"></p>
       </div>
       <button class="btn btn--solid form__submit" type="submit">

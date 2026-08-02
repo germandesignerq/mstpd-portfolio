@@ -1142,9 +1142,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .filenote.is-ok{ color:var(--muted); }
 .filenote.is-error{ color:var(--accent); }
+/* help text under the input's underline */
 .field__hint{
-  margin:-4px 0 0;
-  font-size:15px; line-height:1.5; color:var(--faint);
+  margin:0;
+  font-size:13px; line-height:1.5; color:var(--faint);
 }
 .form__submit{ justify-self:start; margin-top:8px; }
 
@@ -1195,15 +1196,16 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .form.is-sending{ opacity:.75; }
 .form__submit:disabled{ cursor:progress; }
 
-/* two-column layout for the longer (distribution) form.
-   align-items:end keeps the inputs on a shared baseline even when
-   one field in a row has a hint and its neighbour doesn't. */
+/* two-column layout for the longer (distribution) form. Hints sit
+   BELOW their input (label → input → hint), so rows align by their
+   tops and labels stay glued to their fields — bottom-aligning with
+   hints above the input left holes wherever hint lengths differed. */
 @media (min-width:700px){
   .form--grid{
     grid-template-columns:1fr 1fr;
     column-gap:clamp(26px,3vw,38px);
-    row-gap:clamp(18px,2vw,24px);
-    align-items:end;
+    row-gap:clamp(20px,2.4vw,28px);
+    align-items:start;
   }
   .form--grid .field--wide,
   .form--grid .form__submit,

@@ -1094,7 +1094,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
    width:100% and blew out the panel horizontally. */
 .field > label{
   font-family:var(--mono); font-size:13px;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--faint);
+  letter-spacing:.14em; text-transform:uppercase; color:var(--fg);
 }
 .field > input,.field > textarea{
   width:100%;

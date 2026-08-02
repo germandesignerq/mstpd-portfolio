@@ -10,7 +10,7 @@
 <meta property="og:description" content="I shape sound into emotion and clarity.">
 <meta property="og:image" content="assets/img/portrait.jpg">
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
 
@@ -297,8 +297,11 @@
       <button class="genre-filter__btn" type="button" data-genre-filter="Indie Rock" role="tab" aria-selected="false">Indie Rock<span>1</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Dance" role="tab" aria-selected="false">Dance<span>1</span></button>
       <button class="genre-filter__btn" type="button" data-genre-filter="Other" role="tab" aria-selected="false" data-i18n-tn="cred.other">Other<span>9</span></button>
+      <input class="row-search" id="rowSearch" type="search" autocomplete="off"
+             placeholder="Search by track title" data-i18n-ph="cred.search_ph" aria-label="Search credits">
     </div>
-    <p class="genre-filter__empty" id="genreEmpty" hidden data-i18n="cred.empty">Nothing in this genre yet — try another filter.</p>
+    <!-- text managed by main.js (search vs genre wording), not data-i18n -->
+    <p class="genre-filter__empty" id="genreEmpty" hidden>Nothing in this genre yet — try another filter.</p>
 
     <div class="rows" id="rows">
 
@@ -1097,8 +1100,8 @@
   </div>
 </div>
 
-<script src="js/i18n.js"></script>
-<script src="js/credits-extra.js"></script>
-<script src="js/main.js"></script>
+<script src="js/i18n.js?v=2"></script>
+<script src="js/credits-extra.js?v=2"></script>
+<script src="js/main.js?v=2"></script>
 </body>
 </html>

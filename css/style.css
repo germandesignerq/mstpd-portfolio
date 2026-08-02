@@ -142,12 +142,35 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   display:none;
 }
 
-/* rows 31–265: collapsed until the show-all toggle opens the list */
-.rows:not(.is-open) .row.is-extra{ display:none; }
+/* rows 31–265: collapsed until the show-all toggle opens the list.
+   An active search overrides the collapse — it scans the whole
+   catalogue, so matches behind the toggle must be able to surface. */
+.rows:not(.is-open):not(.is-searching) .row.is-extra{ display:none; }
 
 .rows-toggle{
   display:flex;
   margin:clamp(30px,4vw,48px) auto 0;
+}
+/* expand/collapse is meaningless mid-search — the query decides */
+.rows.is-searching + .rows-toggle{ display:none; }
+
+/* search input, trailing the genre pills */
+.row-search{
+  flex:1 1 220px; max-width:320px;
+  margin-left:auto;
+  background:transparent;
+  border:0; border-bottom:1px solid var(--line);
+  border-radius:0;
+  padding:8px 0;
+  color:var(--fg);
+  font:inherit; font-size:14px;
+  transition:border-color .4s;
+}
+.row-search::placeholder{ color:var(--faint); }
+.row-search:focus{ outline:none; border-bottom-color:var(--fg); }
+.row-search::-webkit-search-cancel-button{ -webkit-appearance:none; }
+@media (max-width:640px){
+  .row-search{ flex-basis:100%; max-width:none; margin-left:0; margin-top:8px; }
 }
 
 /* rows with no Muso preview keep the grid shape, minus the invitation */

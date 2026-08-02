@@ -373,25 +373,56 @@
     });
   });
 
-  /* ── genre filter (Credits section) ────────────────────── */
+  /* ── genre filter + title search (Credits section) ──────── */
   const genreBtns = $$('.genre-filter__btn');
   const genreEmpty = $('#genreEmpty');
+  const rowSearch = $('#rowSearch');
+  const rowsWrap = $('#rows');
   if (genreBtns.length) {
+    let curGenre = 'all';
+    let curQuery = '';
+
+    // title + artist per row, built once (rows never change after load)
+    const haystack = new Map(rows.map(row => [row,
+      ((($('.row__track', row) || {}).textContent || '') + ' ' +
+       (($('.row__artist', row) || {}).textContent || '')).toLowerCase()]));
+
+    const applyRowFilters = () => {
+      let visible = 0;
+      rows.forEach(row => {
+        const match = (curGenre === 'all' || row.dataset.genre === curGenre)
+                   && (!curQuery || haystack.get(row).includes(curQuery));
+        row.classList.toggle('is-filtered', !match);
+        if (match) visible++;
+      });
+      // while searching, collapsed extras join in — otherwise "no results"
+      // would lie about tracks that merely sit behind the show-all toggle
+      if (rowsWrap) rowsWrap.classList.toggle('is-searching', !!curQuery);
+      if (genreEmpty) {
+        genreEmpty.hidden = visible > 0;
+        genreEmpty.textContent = curQuery
+          ? T('cred.search_empty', 'Nothing matches your search.')
+          : T('cred.empty', 'Nothing in this genre yet — try another filter.');
+      }
+    };
+
     genreBtns.forEach(btn => btn.addEventListener('click', () => {
-      const genre = btn.dataset.genreFilter;
+      curGenre = btn.dataset.genreFilter;
       genreBtns.forEach(b => {
         const active = b === btn;
         b.classList.toggle('is-active', active);
         b.setAttribute('aria-selected', String(active));
       });
-      let visible = 0;
-      rows.forEach(row => {
-        const match = genre === 'all' || row.dataset.genre === genre;
-        row.classList.toggle('is-filtered', !match);
-        if (match) visible++;
-      });
-      if (genreEmpty) genreEmpty.hidden = visible > 0;
+      applyRowFilters();
     }));
+
+    if (rowSearch) rowSearch.addEventListener('input', () => {
+      curQuery = rowSearch.value.trim().toLowerCase();
+      applyRowFilters();
+    });
+
+    // the empty-state message is composed here, so retranslate on switch
+    document.addEventListener('langchange', () => { if (genreEmpty && !genreEmpty.hidden) applyRowFilters(); });
   }
 
   // whole featured card acts as one big play/open target

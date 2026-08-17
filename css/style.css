@@ -461,11 +461,11 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
       allows. Only the grey's luminance matters, not its hue — grayscale()
       runs after the blend.
 
-   The geometry is all em, so it tracks the clamp()ed font-size, and the JS
-   offsets are unitless multipliers of 1em for the same reason — the motion
-   can't outrun the overscan at any viewport width. --mask-y sits mid-range
-   (the photo only clears the text block by ~2.1em) to keep that headroom
-   in both directions. */
+   The geometry is all em, so it tracks the clamp()ed font-size. The fill is
+   static: it used to drift and follow the pointer, per the component this
+   came from, but that motion is gone by request — the photo just sits in
+   the letters now. --mask-y stays mid-range because that is the crop that
+   framed best, not because anything still travels into the margin. */
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .hero__title.is-masked .reveal-line{
     --mask-y:-1.05em;
@@ -480,10 +480,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
     filter:grayscale(1) brightness(1.45) contrast(1.05);
   }
   .hero__title.is-masked .line:nth-child(1) .reveal-line{
-    background-position:calc(50% + var(--mx,0) * 1em) calc(var(--mask-y) + var(--my,0) * 1em), 0 0;
+    background-position:50% var(--mask-y), 0 0;
   }
   .hero__title.is-masked .line:nth-child(2) .reveal-line{
-    background-position:calc(50% + var(--mx,0) * 1em) calc(var(--mask-y) - var(--stride) + var(--my,0) * 1em), 0 0;
+    background-position:50% calc(var(--mask-y) - var(--stride)), 0 0;
   }
 }
 

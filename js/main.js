@@ -1039,58 +1039,10 @@
   /* ── hero masked heading: media under the letters ───────── */
   const maskTitle = $('.hero__title');
   if (maskTitle) {
-    /* Offsets are fractions of 1em (see the CSS): the overscan is .38em,
-       so pointer travel + idle drift stay inside it at any type size. */
-    const PARALLAX = .19;
-    const DRIFT    = .13;
-
-    const set = (x, y) => {
-      maskTitle.style.setProperty('--mx', x.toFixed(4));
-      maskTitle.style.setProperty('--my', y.toFixed(4));
-    };
-
     /* The masked text is transparent, so an image that never arrives would
        erase the name — only switch the fill on once it has decoded. */
     const photo = new Image();
-    photo.onload = () => {
-      maskTitle.classList.add('is-masked');
-      if (reduced) return;
-
-      let px = 0, py = 0;                       // pointer, -1…1
-      const t0 = performance.now();
-      let frame = 0;
-
-      /* Drift runs on its own; the pointer just biases it. Two primes
-         apart so the loop never visibly repeats. */
-      const tick = now => {
-        const t = (now - t0) / 1000;
-        set(
-          px * PARALLAX + Math.sin(t * .21) * DRIFT,
-          py * PARALLAX + Math.cos(t * .17) * DRIFT
-        );
-        frame = requestAnimationFrame(tick);
-      };
-      frame = requestAnimationFrame(tick);
-
-      if (matchMedia('(hover: hover)').matches) {
-        addEventListener('pointermove', e => {
-          px = (e.clientX / innerWidth  - .5) * 2;
-          py = (e.clientY / innerHeight - .5) * 2;
-        }, { passive: true });
-      }
-
-      /* Nothing to animate once the hero has scrolled away. */
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(([entry]) => {
-          if (entry.isIntersecting) {
-            if (!frame) frame = requestAnimationFrame(tick);
-          } else if (frame) {
-            cancelAnimationFrame(frame);
-            frame = 0;
-          }
-        }, { threshold: 0 }).observe(maskTitle);
-      }
-    };
+    photo.onload = () => maskTitle.classList.add('is-masked');
     photo.src = 'assets/img/studio-1.jpg';
   }
 

@@ -378,20 +378,81 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .hero__text .eyebrow{ display:block; margin-bottom:clamp(20px,3vw,32px); }
 
 .hero__title{
+  /* the masked fill below stitches its two lines together off these two,
+     so they're named rather than inlined — a line-height change here has
+     to move the photo with it or the seam opens up */
+  --lh:1.05;
+  --line-pad:.04em;
   margin:0;
   font-size:clamp(48px,8.7vw,138px);
-  line-height:1.05;
+  line-height:var(--lh);
   letter-spacing:-.055em;
   font-weight:500;
 }
-.hero__title .line{ display:block; overflow:hidden; padding-bottom:.04em; }
+.hero__title .line{ display:block; overflow:hidden; padding-bottom:var(--line-pad); }
 .hero__title .reveal-line{
   display:block;
   transform:translateY(105%);
-  transition:transform 1.15s var(--ease);
+  /* colour is in the list so the swap to the photo fill can't pop: the mask
+     only switches on once the image has decoded, and on a slow connection
+     that can land after the rise has finished. Fading the solid colour out
+     lets the photo come up through the letters instead. */
+  transition:transform 1.15s var(--ease), color .5s linear;
 }
 .hero__title .line:nth-child(2) .reveal-line{ transition-delay:.09s; }
 .is-loaded .hero__title .reveal-line{ transform:translateY(0); }
+
+/* ── masked heading: the studio photo shows through the letters ──
+   reactbits.dev/text-animations/masked-heading, rebuilt without gsap.
+   The mask-rise above already *is* that component's "rise" entrance —
+   words lifting out of a clipped box, 0.09s apart, which is its default
+   stagger — so all that's added here is the media fill.
+
+   Two things this has to get right on a page this dark:
+
+   1. One photo, not two. The lines are separate elements, so the fill is
+      stitched by hand — and all that takes is putting line 2's copy exactly
+      one line-stride higher than line 1's, which is --stride (the line box
+      plus the padding .line adds). Because only the *difference* matters,
+      the image is free to keep its natural aspect ratio: 125% wide, height
+      auto. Sizing both axes would squash a 3:2 photo into a smear.
+      --mask-y then just picks which band of the photo the letters sit on.
+
+   2. Exposure. Measured, that photo averages ~77/255 — a dim room — so
+      dropped into letters on a near-black page it reads as mud, with whole
+      counters going black. Fixing it is a straight trade: a grey screened in
+      underneath sets the floor the photo's blacks can't fall below, but push
+      that floor too high and the texture flattens into plain grey text. This
+      pair lands the darkest 5% of the fill near 112/255 and the median near
+      157 while keeping the spread wide, which is about the best the source
+      allows. Only the grey's luminance matters, not its hue — grayscale()
+      runs after the blend.
+
+   The geometry is all em, so it tracks the clamp()ed font-size, and the JS
+   offsets are unitless multipliers of 1em for the same reason — the motion
+   can't outrun the overscan at any viewport width. --mask-y sits mid-range
+   (the photo only clears the text block by ~2.1em) to keep that headroom
+   in both directions. */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hero__title.is-masked .reveal-line{
+    --mask-y:-1.05em;
+    --stride:calc(1em * var(--lh) + var(--line-pad));
+    color:transparent;
+    background-image:url(../assets/img/studio-1.jpg), linear-gradient(#4d4d4d, #4d4d4d);
+    background-repeat:no-repeat, no-repeat;
+    background-size:125% auto, 100% 100%;
+    background-blend-mode:screen;
+    -webkit-background-clip:text;
+    background-clip:text;
+    filter:grayscale(1) brightness(1.45) contrast(1.05);
+  }
+  .hero__title.is-masked .line:nth-child(1) .reveal-line{
+    background-position:calc(50% + var(--mx,0) * 1em) calc(var(--mask-y) + var(--my,0) * 1em), 0 0;
+  }
+  .hero__title.is-masked .line:nth-child(2) .reveal-line{
+    background-position:calc(50% + var(--mx,0) * 1em) calc(var(--mask-y) - var(--stride) + var(--my,0) * 1em), 0 0;
+  }
+}
 
 .hero__intro{
   margin:clamp(24px,3.4vw,40px) 0 0;

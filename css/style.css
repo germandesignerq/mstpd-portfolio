@@ -687,6 +687,50 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 @media (hover: none){
   .feature__plays{ max-width:22ch; margin-left:0; opacity:1; }
 }
+
+/* Chart badge — the verified seal from the socials list, reused so the
+   mark reads the same everywhere. Rendered from data-chart (js/main.js),
+   so a track that hasn't charted simply has no badge.
+
+   A <button>, not a bare span: that makes the tooltip reachable by
+   keyboard and openable by tap, since a touch device has no hover to
+   give. It sits first in the meta line and the tooltip is anchored to
+   its left edge, so the tooltip always opens into the card's own width
+   — body has overflow-x:hidden, and a centred one would be cut off at
+   the viewport edge on a phone. */
+.feature__chart{
+  position:relative;
+  display:inline-flex; align-items:center;
+  padding:0; border:0; background:none;
+  color:var(--accent);
+  cursor:help; line-height:0;
+  transition:transform .3s var(--ease);
+}
+.feature__chart svg{ width:14px; height:14px; }
+.feature__chart:hover{ transform:scale(1.12); }
+.feature__chart:focus-visible{
+  outline:2px solid var(--accent); outline-offset:4px; border-radius:50%;
+}
+
+.feature__tip{
+  position:absolute; bottom:calc(100% + 12px); left:0;
+  padding:9px 13px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:var(--bg-2);
+  color:var(--fg);
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase;
+  white-space:nowrap;
+  opacity:0; transform:translateY(5px);
+  pointer-events:none;
+  transition:opacity .3s, transform .3s var(--ease);
+  z-index:5;
+}
+.feature__chart:hover .feature__tip,
+.feature__chart:focus-visible .feature__tip{
+  opacity:1; transform:translateY(0);
+}
 .feature__title{
   margin:0;
   font-size:clamp(30px,4.2vw,60px);

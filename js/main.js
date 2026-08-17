@@ -100,6 +100,33 @@
     counters.forEach(el => countObs.observe(el));
   }
 
+  /* ── featured cards: play count on the meta line ───────── */
+  const playCards = $$('.feature[data-plays]');
+  if (playCards.length) {
+    /* Built here rather than written into the markup so the number is
+       grouped and the word translated for whichever language is active —
+       and so a card with no figure yet simply carries no data-plays and
+       gets no chip, instead of an empty one. */
+    const renderPlays = () => {
+      playCards.forEach(card => {
+        const n = parseInt(card.dataset.plays, 10);
+        if (!Number.isFinite(n)) return;
+        const meta = $('.feature__meta', card);
+        if (!meta) return;
+        let chip = $('.feature__plays', meta);
+        if (!chip) {
+          chip = document.createElement('span');
+          chip.className = 'feature__plays';
+          meta.appendChild(chip);
+        }
+        const lang = document.documentElement.lang || 'en';
+        chip.textContent = T('js.plays', '{n} plays', { n: n.toLocaleString(lang) });
+      });
+    };
+    renderPlays();
+    document.addEventListener('langchange', renderPlays);
+  }
+
   /* ── work rows: thumbnail that follows the cursor ─────── */
   const preview = $('#preview');
   const rows = $$('#rows .row');

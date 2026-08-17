@@ -659,6 +659,34 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
 }
 .feature__meta span:first-child{ color:var(--fg); }
+
+/* Play count, revealed by hovering the meta line. Rendered only when the
+   card carries a data-plays value (js/main.js), so a track with no figure
+   simply has no chip rather than an empty one.
+
+   It collapses via max-width rather than display:none so the reveal can
+   animate, and the gap is folded into the chip's own padding — a flex gap
+   can't be transitioned, so leaving one would reserve a visible hole
+   next to the year while the chip is closed. */
+.feature__plays{
+  display:inline-flex; align-items:center;
+  max-width:0; overflow:hidden;
+  margin-left:-18px;            /* cancels .feature__meta's gap while closed */
+  opacity:0;
+  white-space:nowrap;
+  color:var(--accent);
+  transition:max-width .5s var(--ease), opacity .35s, margin-left .5s var(--ease);
+}
+@media (hover: hover){
+  .feature:hover .feature__plays,
+  .feature__meta:focus-within .feature__plays{
+    max-width:22ch; margin-left:0; opacity:1;
+  }
+}
+/* no hover to give: touch devices get it outright */
+@media (hover: none){
+  .feature__plays{ max-width:22ch; margin-left:0; opacity:1; }
+}
 .feature__title{
   margin:0;
   font-size:clamp(30px,4.2vw,60px);

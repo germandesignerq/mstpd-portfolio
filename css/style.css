@@ -588,20 +588,35 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .about__badge{ display:block; width:152px; height:auto; }
 
+/* Columns size to their content rather than splitting the row evenly:
+   at four equal columns the cells are ~125px here, and "Odessa, UA" only
+   stays on one line up to 24px — barely above where this started. Letting
+   the numbers keep just the width they need frees enough for the location
+   to sit on one line at the full size. */
 .facts{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:24px;
-  margin:clamp(44px,6vw,72px) 0 0;
-  padding-top:28px;
+  grid-template-columns:repeat(4,auto);
+  justify-content:space-between;
+  gap:28px;
+  margin:clamp(52px,7vw,84px) 0 0;
+  padding-top:36px;
   border-top:1px solid var(--line);
 }
 .facts dt{
-  font-family:var(--mono); font-size:10px;
+  font-family:var(--mono); font-size:11px;
   letter-spacing:.16em; text-transform:uppercase;
-  color:var(--faint); margin-bottom:8px;
+  color:var(--faint); margin-bottom:14px;
 }
-.facts dd{ margin:0; font-size:clamp(15px,1.3vw,19px); letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+/* The values carry the block, so they scale hardest; the labels move a
+   single step so they stay the quiet half of the pair. The vw term is
+   what does the work between the two ends — at the top of the range
+   "Odessa, UA" is the widest value and still clears its column. */
+.facts dd{
+  margin:0;
+  font-size:clamp(26px,2.5vw,38px);
+  line-height:1.05; letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;
+}
 
 .about__media{ margin:0; overflow:hidden; aspect-ratio:3/4; background:var(--bg-2); }
 /* the copy now runs about twice the photo's height, which left the right
@@ -1787,6 +1802,11 @@ body.np-open{ overflow:hidden; }
 @media (max-width:1080px){
   .row{ grid-template-columns:36px 44px minmax(0,1fr) minmax(0,1fr) 74px 22px; }
   .row__role{ display:none; }
+  /* The About copy column is down to ~420px here while the photo still
+     holds its half, which isn't enough for four columns at this size —
+     "Odessa, UA" wrapped and left the row ragged. Two columns from here
+     rather than only below 900px. */
+  .facts{ grid-template-columns:repeat(2,auto); gap:32px 40px; }
 }
 
 @media (max-width:900px){

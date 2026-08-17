@@ -1,0 +1,8 @@
+# The PHP distribution endpoint exists for the IONOS host that serves
+# mstpd.com. Vercel runs api/distro.js instead, and refuses to deploy at
+# all while both api/distro.js and api/distro.php are present — it treats
+# two files whose paths differ only by extension as a conflict.
+api/distro.php
+distro-config.php
+distro-config.example.php
+.htaccess

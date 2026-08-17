@@ -892,6 +892,60 @@
     });
   }
 
+  /* ── distribution modal: repeatable "Featuring" rows ─────
+     Ships as one comma-joined value in a hidden input named "feat" — the
+     server side (api/distro.js and api/distro.php) reads a single string
+     for that key, so the wire format stays put; only how it's built in
+     the UI changes. */
+  const featRows = $('#featRows');
+  const featAdd = $('#featAdd');
+  const featHidden = $('#d-feat');
+  if (featRows && featAdd && featHidden) {
+    const rowTpl = $('.feat-row', featRows).cloneNode(true);
+    rowTpl.querySelector('.feat-row__input').value = '';
+
+    const syncHidden = () => {
+      featHidden.value = $$('.feat-row__input', featRows)
+        .map(i => i.value.trim())
+        .filter(Boolean)
+        .join(', ');
+    };
+    // the remove button only makes sense once there's more than one row
+    const syncRemoveVisibility = () => {
+      const rows = $$('.feat-row', featRows);
+      rows.forEach(r => r.classList.toggle('has-remove', rows.length > 1));
+    };
+
+    featAdd.addEventListener('click', () => {
+      const row = rowTpl.cloneNode(true);
+      featRows.appendChild(row);
+      syncRemoveVisibility();
+      $('.feat-row__input', row).focus();
+    });
+
+    featRows.addEventListener('click', e => {
+      const btn = e.target.closest('.feat-row__remove');
+      if (!btn) return;
+      if ($$('.feat-row', featRows).length <= 1) return;   // always leave one
+      btn.closest('.feat-row').remove();
+      syncRemoveVisibility();
+      syncHidden();
+    });
+
+    featRows.addEventListener('input', e => {
+      if (e.target.classList.contains('feat-row__input')) syncHidden();
+    });
+
+    // extra rows don't survive a reset — the form goes back to its
+    // as-loaded shape, same as the cover note just above
+    featHidden.form.addEventListener('reset', () => setTimeout(() => {
+      $$('.feat-row', featRows).slice(1).forEach(r => r.remove());
+      $('.feat-row__input', featRows).value = '';
+      syncRemoveVisibility();
+      syncHidden();
+    }, 0));
+  }
+
   bindForm($('#distroForm'), {
     // own endpoint rather than Web3Forms: file attachments are a paid
     // feature there, and the cover is the point of this form

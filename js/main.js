@@ -1036,16 +1036,6 @@
     requestAnimationFrame(frame);
   }
 
-  /* ── hero masked heading: media under the letters ───────── */
-  const maskTitle = $('.hero__title');
-  if (maskTitle) {
-    /* The masked text is transparent, so an image that never arrives would
-       erase the name — only switch the fill on once it has decoded. */
-    const photo = new Image();
-    photo.onload = () => maskTitle.classList.add('is-masked');
-    photo.src = 'assets/img/studio-1.jpg';
-  }
-
   /* ── hero slider: autoplay + swipe, story-style bars ───── */
   const slider = $('#heroSlider');
   if (slider) {

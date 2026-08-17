@@ -1,5 +1,8 @@
 /* =========================================================
    Distribution form → email with the cover art attached.
+   The track audio travels as a link, not an attachment — a WAV
+   master runs well past what a Vercel function can receive (see
+   MAX_BYTES below and index.html's "Track audio" field).
 
    Runs on Vercel's Edge runtime purely so `request.formData()`
    is available natively — that keeps the project dependency-free
@@ -11,10 +14,10 @@
 export const config = { runtime: 'edge' };
 
 const MAIL_TO = 'offmstpd@gmail.com';
-/* Resend's shared sender. Works with no DNS setup, but only delivers
-   to the address that owns the Resend account — which is MAIL_TO here.
-   Swap for an address on a verified domain to send anywhere. */
-const MAIL_FROM = 'MSTPD site <onboarding@resend.dev>';
+/* mstpd.com is verified on Resend, so this can send to any recipient —
+   not just the Resend account owner, as the shared onboarding@resend.dev
+   sender is restricted to. */
+const MAIL_FROM = 'MSTPD site <mail@mstpd.com>';
 
 const MAX_BYTES = 4 * 1024 * 1024;          // stays under Vercel's request cap
 const ALLOWED = ['image/jpeg', 'image/png'];
@@ -31,6 +34,7 @@ const FIELDS = [
   ['subgenre',  'Subgenre'],
   ['format',    'Format'],
   ['explicit',  'Explicit'],
+  ['audio',     'Audio (WAV link)'],
 ];
 
 const REQUIRED = ['artist', 'email', 'release', 'performer', 'genre'];
@@ -96,10 +100,17 @@ export default async function handler(request) {
   }
 
   const rows = FIELDS.map(([key, label]) => {
-    const v = value(key) || '—';
+    const v = value(key);
+    /* the audio field is a WAV link, not an attachment (see index.html —
+       a real master runs past Vercel's 4.5 MB function body cap), so make
+       it clickable in the email. Scheme-checked rather than trusted as-is:
+       the browser's type="url" input only validates client-side. */
+    const cell = key === 'audio' && /^https?:\/\//i.test(v)
+      ? `<a href="${escapeHtml(v)}" style="color:#111">${escapeHtml(v)}</a>`
+      : escapeHtml(v || '—');
     return `<tr>
       <td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">${escapeHtml(label)}</td>
-      <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${escapeHtml(v)}</td>
+      <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${cell}</td>
     </tr>`;
   }).join('');
 

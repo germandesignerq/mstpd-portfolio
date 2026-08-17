@@ -63,7 +63,7 @@
     "feat.title": "Три работы,<br>которые стоит включить погромче.",
     "feat.d1": "Мастеринг и сведение для INDABLACK &amp; lyner — заглавный трек совместного релиза.",
     "feat.d2": "Сведение и мастеринг для Šimpanz — заглавный трек его EP «Market» 2026 года.",
-    "feat.d3": "Сведение и мастеринг для INDABLACK — из той же серии синглов 2025 года, что и «No Competition».",
+    "feat.d3": "Сведение и мастеринг для JACO S!CK &amp; youngplayer — открывающий трек его альбома INTUICE 2026 года.",
     "feat.spotify": "Полный трек на Spotify <span aria-hidden=\"true\">↗</span>",
     // credits
     "cred.label": "(03) — Кредиты",
@@ -215,7 +215,7 @@
     "feat.title": "Три роботи,<br>які варто ввімкнути гучніше.",
     "feat.d1": "Мастеринг і зведення для INDABLACK &amp; lyner — головний трек спільного релізу.",
     "feat.d2": "Зведення та мастеринг для Šimpanz — головний трек його EP «Market» 2026 року.",
-    "feat.d3": "Зведення та мастеринг для INDABLACK — з тієї ж серії синглів 2025 року, що й «No Competition».",
+    "feat.d3": "Зведення та мастеринг для JACO S!CK &amp; youngplayer — перший трек його альбому INTUICE 2026 року.",
     "feat.spotify": "Повний трек на Spotify <span aria-hidden=\"true\">↗</span>",
     "cred.label": "(03) — Кредити",
     "cred.title": "Вибрані кредити",

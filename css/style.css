@@ -495,14 +495,18 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 
 /* arrows — desktop affordance, hidden until hover */
 .slider__nav{
+  /* the negative margin is what centres it vertically — derived from the
+     size so the two can't drift apart. transform is spoken for by the
+     reveal and press states, so translateY(-50%) isn't available here */
+  --size:52px;
   position:absolute; top:50%; z-index:3;
-  width:38px; height:38px; margin-top:-19px;
+  width:var(--size); height:var(--size); margin-top:calc(var(--size) / -2);
   display:grid; place-items:center;
   border-radius:50%;
   background:rgba(11,11,12,.45);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
   border:1px solid rgba(242,240,236,.16);
-  color:var(--fg); font-size:20px; line-height:1;
+  color:var(--fg); font-size:32px; line-height:1;
   opacity:0; transform:scale(.9);
   transition:opacity .35s var(--ease), transform .35s var(--ease), background .3s;
 }

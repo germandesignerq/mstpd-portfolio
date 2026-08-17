@@ -931,6 +931,111 @@
     }, { passive: true });
   }
 
+  /* ── hero intro: the name resolving out of a waveform ───── */
+  const waveCanvas = $('#heroWave');
+  const waveTitle  = $('.hero__title');
+  /* document.hidden: rAF does not tick in a background tab, so the intro
+     would never run and the mask would sit there with the name wiped out.
+     A tab opened in the background just gets the name, no intro. */
+  if (waveCanvas && waveTitle && waveCanvas.getContext && !reduced && !document.hidden) {
+    const IDLE     = .38;    // s of wave alone before the playhead starts
+    const SWEEP    = 1.35;   // s for the playhead to cross
+    const COLLAPSE = .16;    // fraction of the width a bar takes to fall away
+    /* Bar count follows the width: at a fixed 96 the bars stop fitting on a
+       phone (they clamp to a 1.5px floor and the row runs past the edge). */
+    let N = 0, peaks = null;
+
+    /* Class goes on now, synchronously: `is-loaded` is only queued for the
+       next frame, so the CSS rise never gets a chance to start. */
+    waveTitle.classList.add('is-emerging');
+
+    const g = waveCanvas.getContext('2d');
+    let w = 0, h = 0;
+    const size = () => {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      w = waveCanvas.clientWidth; h = waveCanvas.clientHeight;
+      if (!w || !h) return false;
+      if (waveCanvas.width !== w * dpr || waveCanvas.height !== h * dpr) {
+        waveCanvas.width = w * dpr; waveCanvas.height = h * dpr;
+      }
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.max(24, Math.min(96, Math.round(w / 5.5)));
+      if (n !== N) { N = n; peaks = seedPeaks('viacheslav-mstpd', N); }
+      return true;
+    };
+
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const start   = performance.now();
+
+    const finish = () => {
+      waveTitle.classList.remove('is-emerging');
+      waveTitle.style.removeProperty('--wave');
+      waveCanvas.style.opacity = '0';
+    };
+    /* The mask must never outlive the animation. If the frame loop stalls
+       part-way — tab hidden mid-intro, a starved rAF — the name would stay
+       half-wiped, so this always finishes the job. setTimeout still fires
+       when rAF does not. */
+    const watchdog = setTimeout(finish, (IDLE + SWEEP) * 1000 + 1500);
+
+    const frame = now => {
+      if (!size()) { requestAnimationFrame(frame); return; }
+      const t = (now - start) / 1000;
+
+      /* Playhead position. Before IDLE the wave just breathes on its own,
+         which is what makes the name look like it comes *out* of it. */
+      const p = t <= IDLE ? 0 : easeOut(Math.min(1, (t - IDLE) / SWEEP));
+      waveTitle.style.setProperty('--wave', p.toFixed(4));
+
+      g.clearRect(0, 0, w, h);
+      const gap = 2;
+      const bw  = Math.max(1.5, (w - gap * (N - 1)) / N);
+      const mid = h / 2;
+
+      for (let i = 0; i < N; i++) {
+        const at = i / (N - 1);
+        /* how far the playhead has moved past this bar, 0→1 */
+        const past = Math.min(1, Math.max(0, (p - at) / COLLAPSE));
+        const live = 1 - easeOut(past);
+        if (live <= 0.001) continue;
+
+        /* breathing while it waits its turn, stilled once the sweep lands */
+        const breathe = 0.82 + 0.18 * Math.sin(t * 3.1 + i * 0.42);
+        const amp = peaks[i] * (h * 0.42) * live * breathe;
+        const bh  = Math.max(1.5, amp * 2);
+        const x   = i * (bw + gap);
+
+        /* the bar under the playhead flares to the accent, like a played
+           bar in the track players; everything ahead of it stays faint */
+        const heat = Math.max(0, 1 - Math.abs(at - p) / 0.05);
+        g.fillStyle = heat > 0 ? C_PLAYED : C_IDLE;
+        g.globalAlpha = live * (heat > 0 ? 0.35 + 0.65 * heat : 0.5);
+        const r = Math.min(bw / 2, 1.5);
+        if (g.roundRect) { g.beginPath(); g.roundRect(x, mid - bh / 2, bw, bh, r); g.fill(); }
+        else g.fillRect(x, mid - bh / 2, bw, bh);
+      }
+
+      /* the playhead itself */
+      if (p > 0 && p < 1) {
+        g.globalAlpha = 1;
+        g.fillStyle = C_PLAYED;
+        g.fillRect(p * w - 0.75, mid - h * 0.34, 1.5, h * 0.68);
+      }
+
+      if (t < IDLE + SWEEP + 0.25) {
+        waveCanvas.style.opacity = t < 0.3 ? String(t / 0.3) : '1';
+        requestAnimationFrame(frame);
+      } else {
+        /* done: drop the mask entirely rather than leave it at 100% */
+        clearTimeout(watchdog);
+        waveTitle.style.setProperty('--wave', '1');
+        waveCanvas.style.opacity = '0';
+        setTimeout(() => { finish(); g.clearRect(0, 0, w, h); }, 460);
+      }
+    };
+    requestAnimationFrame(frame);
+  }
+
   /* ── hero masked heading: media under the letters ───────── */
   const maskTitle = $('.hero__title');
   if (maskTitle) {

@@ -38,7 +38,7 @@
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
 <!-- fills the h1 (see .hero__title.is-masked), so it's needed as early as the portrait -->
 <link rel="preload" as="image" href="assets/img/studio-1.jpg">
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=6">
 
 <!-- Structured data. Every claim here is stated somewhere on the page —
      the packages and their prices come from the Services cards, the credit
@@ -198,10 +198,15 @@
     <div class="hero__text">
       <p class="eyebrow reveal" data-i18n="hero.eyebrow">Sound Engineer / Mixing &amp; Mastering</p>
 
-      <h1 class="hero__title">
-        <span class="line"><span class="reveal-line">Viacheslav</span></span>
-        <span class="line"><span class="reveal-line">MSTPD</span></span>
-      </h1>
+      <!-- the canvas is the intro waveform the name resolves out of; it sits
+           in a wrapper rather than inside the h1 so the heading stays clean -->
+      <div class="hero__titlewrap">
+        <canvas class="hero__wave" id="heroWave" aria-hidden="true"></canvas>
+        <h1 class="hero__title">
+          <span class="line"><span class="reveal-line">Viacheslav</span></span>
+          <span class="line"><span class="reveal-line">MSTPD</span></span>
+        </h1>
+      </div>
 
       <p class="hero__intro reveal" data-i18n="hero.intro">I shape sound into emotion and clarity.</p>
 
@@ -1224,6 +1229,6 @@
 
 <script src="js/i18n.js?v=2"></script>
 <script src="js/credits-extra.js?v=2"></script>
-<script src="js/main.js?v=3"></script>
+<script src="js/main.js?v=4"></script>
 </body>
 </html>

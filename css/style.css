@@ -402,6 +402,39 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .hero__title .line:nth-child(2) .reveal-line{ transition-delay:.09s; }
 .is-loaded .hero__title .reveal-line{ transform:translateY(0); }
 
+/* ── the name resolving out of a waveform ────────────────────────
+   A playhead sweeps the title box and the letters materialise in its
+   wake, the bars collapsing to the centreline behind it — the same
+   read as the players further down the page, which is where the bar
+   idiom and the accent playhead come from.
+
+   The reveal is a mask wipe driven by --wave, which the canvas loop
+   sets every frame, so the edge of the text and the playhead are the
+   same number and cannot drift apart. Feathered by 14% so letters
+   surface through a soft edge instead of a hard cut.
+
+   .is-emerging is added by JS and removed when the intro ends, so
+   without JS (or with reduced motion) there is no mask at all and the
+   name just does its normal rise. It also parks the rise transform:
+   the two entrances must not both play. */
+.hero__title.is-emerging{
+  --wave:0;
+  -webkit-mask-image:linear-gradient(90deg,
+    #000 calc(var(--wave) * 114% - 14%), rgba(0,0,0,0) calc(var(--wave) * 114%));
+  mask-image:linear-gradient(90deg,
+    #000 calc(var(--wave) * 114% - 14%), rgba(0,0,0,0) calc(var(--wave) * 114%));
+}
+.hero__title.is-emerging .reveal-line{ transform:none; transition:none; }
+
+.hero__titlewrap{ position:relative; }
+.hero__wave{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  opacity:0;                 /* the loop fades it in; it can never hide the name */
+  transition:opacity .45s linear;
+}
+
 /* ── masked heading: the studio photo shows through the letters ──
    reactbits.dev/text-animations/masked-heading, rebuilt without gsap.
    The mask-rise above already *is* that component's "rise" entrance —

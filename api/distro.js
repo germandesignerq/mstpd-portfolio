@@ -34,6 +34,8 @@ const FIELDS = [
   ['subgenre',  'Subgenre'],
   ['format',    'Format'],
   ['explicit',  'Explicit'],
+  ['adm',       'Apple Digital Mastering'],
+  ['contact',   'Telegram / Instagram'],
   ['audio',     'Audio (WAV link)'],
 ];
 

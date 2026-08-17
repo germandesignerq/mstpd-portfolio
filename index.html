@@ -1226,6 +1226,21 @@
           <label class="pill-group__btn" for="d-explicit-yes" data-i18n="d.yes">Yes</label>
         </div>
       </div>
+      <div class="field">
+        <label data-i18n="d.adm">Apple Digital Mastering</label>
+        <div class="pill-group" role="radiogroup" aria-label="Apple Digital Mastering">
+          <input class="pill-group__input" type="radio" name="adm" id="d-adm-no" value="No" checked>
+          <label class="pill-group__btn" for="d-adm-no" data-i18n="d.no">No</label>
+          <input class="pill-group__input" type="radio" name="adm" id="d-adm-yes" value="Yes">
+          <label class="pill-group__btn" for="d-adm-yes" data-i18n="d.yes">Yes</label>
+        </div>
+        <p class="field__hint" data-i18n="d.adm_hint">Master to Apple Digital Masters spec, if this is going out on Apple Music.</p>
+      </div>
+      <div class="field">
+        <label for="d-contact" data-i18n="d.contact">Telegram or Instagram</label>
+        <input id="d-contact" name="contact" type="text" placeholder="@handle" data-i18n-ph="d.contact_ph">
+        <p class="field__hint" data-i18n="d.contact_hint">Artist's or manager's handle, in case it's quicker to reach you there.</p>
+      </div>
       <div class="field field--wide">
         <!-- a link, not a file input: a WAV master at 16/24-bit runs
              30-50+ MB, and Vercel hard-caps a function's request body at
@@ -1251,7 +1266,7 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=6"></script>
+<script src="js/i18n.js?v=7"></script>
 <script src="js/credits-extra.js?v=2"></script>
 <script src="js/main.js?v=7"></script>
 </body>

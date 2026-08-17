@@ -3,16 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Viacheslav MSTPD — Sound Engineer / Mixing &amp; Mastering</title>
-<meta name="description" content="Independent sound engineer specialising in mixing and mastering. I shape sound into emotion and clarity.">
+<title>Viacheslav MSTPD — Mixing &amp; Mastering Engineer, Odessa</title>
+<meta name="description" content="Independent mixing and mastering engineer in Odessa, working with artists worldwide. Apple Digital Masters certified, 265 credits since 2018.">
+
+<!-- The same site is served from mstpd.com (IONOS) and from the Vercel
+     deployment, so every copy points at mstpd.com as the one to index.
+     Note the .html: /presets is a 404 on IONOS, unlike on Vercel. -->
+<link rel="canonical" href="https://mstpd.com/">
+
 <meta name="theme-color" content="#0A0A0A">
-<meta property="og:title" content="Viacheslav MSTPD — Sound Engineer">
-<meta property="og:description" content="I shape sound into emotion and clarity.">
-<meta property="og:image" content="assets/img/portrait.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Viacheslav MSTPD">
+<meta property="og:url" content="https://mstpd.com/">
+<meta property="og:title" content="Viacheslav MSTPD — Mixing &amp; Mastering Engineer">
+<meta property="og:description" content="Independent mixing and mastering engineer in Odessa, working with artists worldwide. Apple Digital Masters certified, 265 credits since 2018.">
+<!-- absolute, and 1200×630: a relative og:image resolves nowhere for a
+     crawler, and the square portrait was cropped unpredictably -->
+<meta property="og:image" content="https://mstpd.com/assets/img/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Viacheslav MSTPD mixing at the console in his Odessa studio">
+<meta property="og:locale" content="en">
+<meta property="og:locale:alternate" content="ru">
+<meta property="og:locale:alternate" content="uk">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Viacheslav MSTPD — Mixing &amp; Mastering Engineer">
+<meta name="twitter:description" content="Independent mixing and mastering engineer in Odessa. Apple Digital Masters certified, 265 credits since 2018.">
+<meta name="twitter:image" content="https://mstpd.com/assets/img/og-cover.jpg">
+
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
 <!-- fills the h1 (see .hero__title.is-masked), so it's needed as early as the portrait -->
 <link rel="preload" as="image" href="assets/img/studio-1.jpg">
 <link rel="stylesheet" href="css/style.css?v=5">
+
+<!-- Structured data. Every claim here is stated somewhere on the page —
+     the packages and their prices come from the Services cards, the credit
+     count from the hero, the certification from About — so the markup and
+     the visible content can't drift apart. Prices are "From", hence
+     priceSpecification rather than a flat price. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://mstpd.com/#viacheslav",
+      "name": "Viacheslav MSTPD",
+      "alternateName": "MSTPD",
+      "jobTitle": "Mixing and Mastering Engineer",
+      "description": "Independent sound engineer specialising in mixing and mastering, with 265 credited releases since 2018.",
+      "url": "https://mstpd.com/",
+      "image": "https://mstpd.com/assets/img/portrait.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Odessa",
+        "addressCountry": "UA"
+      },
+      "knowsAbout": ["Audio mixing", "Audio mastering", "Vocal processing", "Music production"],
+      "sameAs": [
+        "https://open.spotify.com/artist/6JEnUJP5CnZ6MFZFohJNoz",
+        "https://credits.muso.ai/profile/5a71f47b-1722-4e92-a587-620e8ef352de"
+      ]
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://mstpd.com/#studio",
+      "name": "Viacheslav MSTPD — Mixing & Mastering",
+      "description": "Mixing and mastering for artists and labels, delivered remotely worldwide from Odessa.",
+      "url": "https://mstpd.com/",
+      "image": "https://mstpd.com/assets/img/og-cover.jpg",
+      "founder": { "@id": "https://mstpd.com/#viacheslav" },
+      "employee": { "@id": "https://mstpd.com/#viacheslav" },
+      "priceRange": "$50–$150 per song",
+      "areaServed": "Worldwide",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Odessa",
+        "addressCountry": "UA"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Mixing and mastering packages",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": { "@type": "Service", "name": "Mastering", "serviceType": "Audio mastering" },
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 50,
+              "priceCurrency": "USD",
+              "unitText": "per song"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": { "@type": "Service", "name": "Mixing (2-Track)", "serviceType": "Audio mixing" },
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 100,
+              "priceCurrency": "USD",
+              "unitText": "per song"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": { "@type": "Service", "name": "Mixing (Full Stems)", "serviceType": "Audio mixing" },
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 150,
+              "priceCurrency": "USD",
+              "unitText": "per song"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mstpd.com/#website",
+      "url": "https://mstpd.com/",
+      "name": "Viacheslav MSTPD",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://mstpd.com/#viacheslav" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 

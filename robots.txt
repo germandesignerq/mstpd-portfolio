@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Track previews and cover art are pulled from Spotify's CDN at runtime;
+# nothing here needs hiding, so the only real job of this file is the pointer.
+Sitemap: https://mstpd.com/sitemap.xml

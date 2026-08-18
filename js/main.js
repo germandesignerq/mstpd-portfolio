@@ -742,7 +742,45 @@
     focusSelector: '#m-name',
     onOpen: showPackage,
   });
-  bindModal($('#distroModal'), { triggerSelector: '[data-distro-modal]', focusSelector: '#d-artist' });
+  /* ── distribution modal: two steps ────────────────────────
+     Step 1 is the offer, step 2 the form. Toggled with [hidden], which
+     keeps the inactive step out of the tab order without any extra aria
+     bookkeeping. The panel's label follows the visible step's heading,
+     and the panel is scrolled back to the top on each move — otherwise
+     step 2 opens wherever step 1 was left scrolled to. */
+  const distroModal = $('#distroModal');
+  const distroPanel = distroModal && $('.modal__panel', distroModal);
+  const distroSteps = [$('#distroStep1'), $('#distroStep2')];
+  const distroCount = $('#distroStepNow');
+
+  const showDistroStep = n => {
+    if (!distroSteps[0]) return;
+    distroSteps.forEach((s, i) => { if (s) s.hidden = i !== n - 1; });
+    if (distroCount) distroCount.textContent = String(n);
+    if (distroPanel) {
+      distroPanel.setAttribute('aria-labelledby', n === 1 ? 'distroTitle' : 'distroTitle2');
+      distroPanel.scrollTop = 0;
+    }
+  };
+
+  bindModal(distroModal, {
+    triggerSelector: '[data-distro-modal]',
+    // step 1 has nothing to type into, so the first field is only worth
+    // focusing once step 2 is the one on screen
+    onOpen: () => showDistroStep(1),
+  });
+
+  const distroNext = $('#distroNext');
+  const distroBack = $('#distroBack');
+  if (distroNext) distroNext.addEventListener('click', () => {
+    showDistroStep(2);
+    const first = $('#d-artist');
+    if (first) setTimeout(() => first.focus(), 60);
+  });
+  if (distroBack) distroBack.addEventListener('click', () => {
+    showDistroStep(1);
+    if (distroNext) setTimeout(() => distroNext.focus(), 60);
+  });
 
   /* ── forms → Web3Forms ──────────────────────────────────────
      Free access key from web3forms.com — it's meant to live in

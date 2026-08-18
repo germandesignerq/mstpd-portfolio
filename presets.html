@@ -31,7 +31,7 @@
 <meta name="twitter:description" content="Vocal, mixing and mastering preset chains built on real client work.">
 <meta name="twitter:image" content="https://mstpd.com/assets/img/og-cover.jpg">
 
-<link rel="stylesheet" href="css/style.css?v=14">
+<link rel="stylesheet" href="css/style.css?v=15">
 </head>
 <body>
 
@@ -215,8 +215,90 @@
       <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
     </button>
 
-    <h2 class="modal__title" id="distroTitle" data-i18n="d.title">Send it out<br>into the world.</h2>
-    <p class="modal__sub" data-i18n="d.sub">Release details for distribution — I'll confirm before it goes live.</p>
+    <!-- Two steps: the offer, then the form. Both live in the markup and
+         the wizard just toggles them (js/main.js), so the form keeps its
+         ids, its validation and its single submit handler. -->
+    <p class="wizard__count"><span id="distroStepNow">1</span> / 2</p>
+
+    <section class="wizard__step is-current" id="distroStep1">
+      <h2 class="modal__title" id="distroTitle" data-i18n="d.step1_title">Quality World<br>by MSTPD.</h2>
+      <p class="modal__sub" data-i18n="d.step1_sub">Distribution in partnership with <a href="https://www.believe.com" target="_blank" rel="noopener noreferrer">Believe</a>.</p>
+
+      <div class="offer">
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_audio">Audio</span>
+          <ul>
+            <li data-i18n="d.o_audio1">Deliver at high resolution — up to 24-bit / 48 kHz and beyond.</li>
+            <li data-i18n="d.o_audio2">Apple Digital Masters available for the best possible playback quality.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_look">Look</span>
+          <ul>
+            <li data-i18n="d.o_look1">Animated cover art and artist avatars on iTunes, so the release stands out and stays in mind.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_yt">YouTube</span>
+          <ul>
+            <li data-i18n="d.o_yt1">Official channel set up and maintained, to widen the audience and the reach of your work.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_rep">Reporting</span>
+          <ul>
+            <li data-i18n="d.o_rep1">Statistics kept throughout, with reports on request every month.</li>
+            <li data-i18n="d.o_rep2">Payouts every quarter.</li>
+            <li data-i18n="d.o_rep3">Deeper per-track breakdowns of reach on individual platforms.</li>
+            <li class="offer__note" data-i18n="d.o_rep4">Early figures can be requested within the first 7 days of release.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_terms">Terms</span>
+          <ul>
+            <li data-i18n="d.o_terms1">20/80 split, adjustable up to 90/10 in the artist's favour on larger releases actively promoted by the artist and their team.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_svc">Service</span>
+          <ul>
+            <li data-i18n="d.o_svc1">Release credited in full — writers, designers, musicians and everyone else involved.</li>
+            <li data-i18n="d.o_svc2">Pitching support across platforms.</li>
+            <li class="offer__note" data-i18n="d.o_svc3">Pitching currently works for every language except Russian.</li>
+            <li data-i18n="d.o_svc4">Platform profiles edited to fix problems and keep your presentation consistent.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group">
+          <span class="label" data-i18n="d.o_speed">Turnaround</span>
+          <ul>
+            <li data-i18n="d.o_speed1">Tracks delivered within 3 days, allowing for the promo schedule and how urgent the release is.</li>
+          </ul>
+        </div>
+
+        <div class="offer__group offer__group--price">
+          <span class="label" data-i18n="d.o_price">Pricing</span>
+          <ul>
+            <li><b>$15</b> <span data-i18n="d.o_price1">per single</span></li>
+            <li><b>$30</b> <span data-i18n="d.o_price2">per album or EP</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="btn btn--solid wizard__next" type="button" id="distroNext">
+        <span data-i18n="d.next">Next</span>
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+      </button>
+    </section>
+
+    <section class="wizard__step" id="distroStep2" hidden>
+      <h2 class="modal__title" id="distroTitle2" data-i18n="d.title">Send it out<br>into the world.</h2>
+      <p class="modal__sub" data-i18n="d.sub">Release details for distribution — I'll confirm before it goes live.</p>
 
     <form class="form form--grid" id="distroForm" novalidate>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -335,10 +417,15 @@
       </button>
       <p class="form__note" id="distroFormNote" role="status"></p>
     </form>
+
+      <button class="wizard__back" type="button" id="distroBack">
+        <span aria-hidden="true">←</span><span data-i18n="d.back">Back to the terms</span>
+      </button>
+    </section>
   </div>
 </div>
 
-<script src="js/i18n.js?v=13"></script>
-<script src="js/main.js?v=11"></script>
+<script src="js/i18n.js?v=14"></script>
+<script src="js/main.js?v=12"></script>
 </body>
 </html>

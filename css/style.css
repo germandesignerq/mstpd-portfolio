@@ -1453,6 +1453,56 @@ body.modal-open{ overflow:hidden; }
   max-width:38ch;
   color:var(--muted); font-size:17px; line-height:1.55;
 }
+.modal__sub a{ color:var(--fg); text-decoration:underline; text-underline-offset:3px; }
+.modal__sub a:hover{ color:var(--accent); }
+
+/* ── two-step distribution modal ─────────────────────────
+   Steps are toggled with [hidden] rather than a class, so a step that
+   isn't showing is out of the tab order and out of the accessibility
+   tree for free — no aria-hidden bookkeeping, and the form's fields
+   can't be tabbed into from the terms step. */
+.wizard__count{
+  margin:0 0 22px;
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.16em; color:var(--faint);
+}
+.wizard__step[hidden]{ display:none; }
+.wizard__next{ justify-self:start; margin-top:clamp(28px,4vw,40px); }
+
+.wizard__back{
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:26px; padding:0;
+  background:none; border:0;
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  cursor:pointer; transition:color .3s;
+}
+.wizard__back:hover{ color:var(--fg); }
+.wizard__back:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+/* the offer itself: two columns where there's room, since the groups are
+   short and a single column would run the panel very long */
+.offer{ display:grid; gap:clamp(24px,3vw,32px); }
+@media (min-width:760px){
+  .offer{ grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:clamp(32px,4vw,56px); }
+}
+.offer__group .label{ display:block; margin-bottom:12px; color:var(--faint); }
+.offer__group ul{ margin:0; padding:0; list-style:none; display:grid; gap:10px; }
+.offer__group li{
+  position:relative; padding-left:16px;
+  color:var(--muted); font-size:15px; line-height:1.55;
+}
+.offer__group li::before{
+  content:""; position:absolute; left:0; top:.65em;
+  width:5px; height:1px; background:var(--faint);
+}
+/* the "worth knowing" asides read as caveats, not features */
+.offer__note{ color:var(--faint); font-size:14px; }
+.offer__note::before{ background:var(--accent); }
+
+.offer__group--price li{ color:var(--fg); font-size:17px; }
+.offer__group--price b{ font-weight:500; font-variant-numeric:tabular-nums; }
+.offer__group--price span{ color:var(--muted); font-size:15px; }
 
 /* wider panel for the distribution form — scoped above the mobile
    breakpoint so it can't fight .modal__panel{max-width:none} there */

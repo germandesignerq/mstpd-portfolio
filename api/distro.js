@@ -45,7 +45,10 @@ const FIELDS = [
   ['contact',   'Telegram / Instagram'],
 ];
 
-const REQUIRED = ['artist', 'email', 'release', 'performer', 'genre'];
+/* Email only — it's the reply address. The form stopped requiring the
+   rest, and rejecting here what the browser lets through would just be a
+   worse-timed version of the same refusal. */
+const REQUIRED = ['email'];
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), {

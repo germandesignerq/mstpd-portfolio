@@ -795,7 +795,6 @@
   /* Two or more name parts, each at least two letters. \p{L} so Cyrillic
      and Latin both pass; hyphens and apostrophes are common in surnames
      (Ivanov-Petrov, O'Brien) but can't start or end a part. */
-  const FULL_NAME = /^\p{L}[\p{L}'’-]*\p{L}(?:\s+\p{L}[\p{L}'’-]*\p{L})+$/u;
 
   const bindForm = (form, { requiredFields, validators = {}, buildSubject, buildFields,
                             endpoint, preflight }) => {
@@ -884,7 +883,11 @@
               }),
             });
         const json = await res.json().catch(() => ({}));
-        if (!res.ok || json.success === false) throw new Error(json.message || 'Request failed');
+        if (!res.ok || json.success === false) {
+          const err = new Error(json.message || 'Request failed');
+          err.fromServer = Boolean(json.message);      // a real explanation, not a network blip
+          throw err;
+        }
 
         form.reset();                                  // fires 'reset', which clears the cover note
         $$('.field.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
@@ -893,7 +896,13 @@
         // falling back to mailto would silently drop the attachment, so the
         // file path reports the failure instead of pretending to degrade
         if (endpoint) {
-          say(T('js.cant_send_direct', 'Couldn\'t send. Please email offmstpd@gmail.com directly.'), 'error');
+          /* Show what the endpoint actually said when it said something —
+             the browser stopped checking file sizes, so "Track is larger
+             than 28 MB" now only exists server-side, and burying it under
+             a generic line would leave no way to tell what went wrong. */
+          say(err.fromServer
+            ? err.message
+            : T('js.cant_send_direct', 'Couldn\'t send. Please email offmstpd@gmail.com directly.'), 'error');
         } else {
           say(T('js.cant_send_mailto', 'Couldn\'t send. Opening your mail client instead…'), 'error');
           setTimeout(() => mailtoFallback(subject, fields), 800);
@@ -927,20 +936,12 @@
   bindForm($('#modalForm'), enquiry);
   bindForm($('#contactForm'), enquiry);
 
-  /* ── cover art: reported, not policed ──────────────────────
-     The square / 3000px / JPEG-only rules used to block a submit. They
-     don't any more — whatever gets attached goes through, and the note
-     just says what it is so the dimensions are visible on both ends.
-     The one thing still refused is a file too large to leave in an
-     email at all, which isn't a rule about the artwork. */
-  const COVER_MAX_BYTES = 4 * 1024 * 1024;
-
-  const coverInput = $('#d-cover');
-  const coverNote = $('#coverNote');
-  /* held as a producer, not a string, so the message resolves in the
-     language active when it's shown — not the one active when it was set */
-  let coverProblem = null;
-
+  /* ── attached files: reported, never refused ───────────────
+     Nothing here blocks a submit. The notes just read back what was
+     attached — dimensions for the cover, bit depth and sample rate for
+     the track — so both sides can see what came through. The size
+     ceilings that do exist live in the backends, because they're limits
+     on what an email can carry rather than rules about the files. */
   const readSize = file => new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
@@ -949,62 +950,37 @@
     img.src = url;
   });
 
-  if (coverInput && coverNote) {
-    const noteState = (text, state) => {
-      coverNote.textContent = text;
-      coverNote.classList.toggle('is-ok', state === 'ok');
-      coverNote.classList.toggle('is-error', state === 'error');
-    };
+  const fileSize = bytes => bytes >= 1048576
+    ? `${(bytes / 1048576).toFixed(1)} MB`
+    : `${Math.round(bytes / 1024)} KB`;
 
-    const clearCover = () => {
-      coverProblem = null;
-      noteState('', null);
-    };
-    coverInput.form.addEventListener('reset', () => setTimeout(clearCover, 0));
+  const coverInput = $('#d-cover');
+  const coverNote = $('#coverNote');
+  if (coverInput && coverNote) {
+    coverInput.form.addEventListener('reset', () => setTimeout(() => {
+      coverNote.textContent = '';
+      coverNote.classList.remove('is-ok');
+    }, 0));
 
     coverInput.addEventListener('change', async () => {
       const file = coverInput.files && coverInput.files[0];
-      if (!file) return clearCover();
+      if (!file) { coverNote.textContent = ''; coverNote.classList.remove('is-ok'); return; }
 
-      if (file.size > COVER_MAX_BYTES) {
-        const mb = (file.size / 1048576).toFixed(1);
-        coverProblem = () => T('js.cover_size', 'Cover is {mb} MB — the limit is 4 MB. Save it as JPEG.', { mb });
-        return noteState(coverProblem(), 'error');
-      }
-      coverProblem = null;
-
-      // dimensions are shown, never enforced; an unreadable file just gets no numbers
+      // an image the browser can't decode simply gets no dimensions
       let size = null;
-      try { size = await readSize(file); } catch { /* not an image the browser can decode */ }
-      const kb = `${Math.round(file.size / 1024)} KB`;
-      noteState(size ? `${file.name} — ${size.w}×${size.h}, ${kb}` : `${file.name} — ${kb}`, 'ok');
-
-      // a submit may have been refused over this file; stop nagging now it's fixed
-      const formNote = $('.form__note', coverInput.form);
-      if (formNote && formNote.classList.contains('is-error')) {
-        formNote.textContent = '';
-        formNote.classList.remove('is-error');
-      }
+      try { size = await readSize(file); } catch { /* not decodable */ }
+      coverNote.textContent = size
+        ? `${file.name} — ${size.w}×${size.h}, ${fileSize(file.size)}`
+        : `${file.name} — ${fileSize(file.size)}`;
+      coverNote.classList.add('is-ok');
     });
   }
 
-  /* ── track audio: WAV checked in the browser before sending ──
-     The spec the form asks for lives in the file's own header, so it's
-     read rather than trusted: 44 bytes in are the sample rate and bit
-     depth, and a wrong file is caught while the visitor can still swap
-     it. The size ceiling is what an email can actually carry — Resend
-     tops out at 40 MB *after* base64, which inflates by a third, so the
-     raw file has to stay near 28. */
-  const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
-  const AUDIO_BITS = [16, 24];
-  const AUDIO_RATES = [44100, 48000];
-
-  const audioInput = $('#d-audio');
-  const audioNote = $('#audioNote');
-  let audioProblem = null;                 // optional field: no file is fine
-
-  /* Walks the RIFF chunk list rather than assuming "fmt " sits at byte 12
-     — plenty of encoders write a JUNK or LIST block ahead of it. */
+  /* Reads the WAV's own header for the note — the sample rate and bit
+     depth are ~44 bytes in. Walks the RIFF chunk list rather than
+     assuming "fmt " sits at byte 12: plenty of encoders write a JUNK or
+     LIST block ahead of it. Nothing is rejected on what it finds; the
+     numbers are just shown. */
   const readWavSpec = async file => {
     const buf = await file.slice(0, 65536).arrayBuffer();
     if (buf.byteLength < 44) return null;
@@ -1029,52 +1005,25 @@
     return null;
   };
 
+  const audioInput = $('#d-audio');
+  const audioNote = $('#audioNote');
   if (audioInput && audioNote) {
-    const noteState = (text, state) => {
-      audioNote.textContent = text;
-      audioNote.classList.toggle('is-ok', state === 'ok');
-      audioNote.classList.toggle('is-error', state === 'error');
-    };
-    const clearAudio = () => { audioProblem = null; noteState('', null); };
-    audioInput.form.addEventListener('reset', () => setTimeout(clearAudio, 0));
+    audioInput.form.addEventListener('reset', () => setTimeout(() => {
+      audioNote.textContent = '';
+      audioNote.classList.remove('is-ok');
+    }, 0));
 
     audioInput.addEventListener('change', async () => {
       const file = audioInput.files && audioInput.files[0];
-      if (!file) return clearAudio();
+      if (!file) { audioNote.textContent = ''; audioNote.classList.remove('is-ok'); return; }
 
-      // held as producers so the message resolves in the language shown
-      const refuse = msgFn => { audioProblem = msgFn; noteState(msgFn(), 'error'); };
-
-      if (file.size > AUDIO_MAX_BYTES) {
-        const mb = (file.size / 1048576).toFixed(1);
-        return refuse(() => T('js.audio_size', 'Track is {mb} MB — the limit is 28 MB.', { mb }));
-      }
-
-      let spec;
-      try { spec = await readWavSpec(file); }
-      catch { spec = null; }
-
-      if (!spec) return refuse(() => T('js.audio_notwav', 'That file could not be read as a WAV.'));
-      if (!AUDIO_BITS.includes(spec.bits)) {
-        return refuse(() => T('js.audio_bits', 'WAV must be 16 or 24-bit — this one is {bits}-bit.', { bits: spec.bits }));
-      }
-      if (!AUDIO_RATES.includes(spec.rate)) {
-        const khz = (spec.rate / 1000).toFixed(1).replace(/\.0$/, '');
-        return refuse(() => T('js.audio_rate', 'WAV must be 44.1 or 48 kHz — this one is {khz} kHz.', { khz }));
-      }
-
-      audioProblem = null;
-      const khz = (spec.rate / 1000).toFixed(1).replace(/\.0$/, '');
-      const size = file.size >= 1048576
-        ? `${(file.size / 1048576).toFixed(1)} MB`
-        : `${Math.round(file.size / 1024)} KB`;
-      noteState(`${file.name} — ${spec.bits}-bit, ${khz} kHz, ${size}`, 'ok');
-
-      const formNote = $('.form__note', audioInput.form);
-      if (formNote && formNote.classList.contains('is-error')) {
-        formNote.textContent = '';
-        formNote.classList.remove('is-error');
-      }
+      let spec = null;
+      try { spec = await readWavSpec(file); } catch { /* not a WAV we can read */ }
+      const khz = spec ? (spec.rate / 1000).toFixed(1).replace(/\.0$/, '') : null;
+      audioNote.textContent = spec
+        ? `${file.name} — ${spec.bits}-bit, ${khz} kHz, ${fileSize(file.size)}`
+        : `${file.name} — ${fileSize(file.size)}`;
+      audioNote.classList.add('is-ok');
     });
   }
 
@@ -1140,15 +1089,12 @@
     // own endpoint rather than Web3Forms: file attachments are a paid
     // feature there, and the cover is the point of this form
     endpoint: '/api/distro',
-    // cover first: it's the required one, so it's the more useful complaint
-    preflight: () => (coverProblem && coverProblem()) || (audioProblem && audioProblem()),
-    requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],
-    validators: {
-      artist: {
-        test: v => FULL_NAME.test(v),
-        message: () => T('js.artist_fullname', 'Artist name: please give the full legal name, first and last.'),
-      },
-    },
+    /* Email only. Everything else — the artist's legal name, the release
+       title, the file formats — is left to whoever fills this in; a form
+       that argues with you is worse than one that takes what it's given
+       and lets the reply sort out the rest. Email is the exception
+       because it's the address the reply goes to. */
+    requiredFields: ['email'],
     // the endpoint composes the mail itself; these only feed the
     // mailto fallback, which the file path never takes
     buildSubject: data => `Distribution — ${data.get('artist')} — ${data.get('release')}`,

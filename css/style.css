@@ -1014,16 +1014,110 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   color:var(--fg);
   font-size:15px; line-height:1.6;
 }
-/* the plaque that leads somewhere: copy and button sit side by side once
-   there's room, and stack below that rather than squeezing the button */
-.svc-offer--action{
-  margin-top:clamp(14px,1.8vw,20px);
-  display:flex; flex-wrap:wrap; align-items:center;
-  gap:clamp(18px,2.4vw,32px);
+/* ── distribution panel ────────────────────────────────────
+   The section's closing move, so it's built to stop the scroll rather
+   than match the offer plaque above it: darker ground, its own heading,
+   a turning accent ring and a marquee of where the release ends up. */
+.distro-cta{
+  position:relative;
+  margin-top:clamp(20px,2.6vw,32px);
+  border-radius:22px;
+  overflow:hidden;                     /* clips both the ring and the marquee */
+  background:
+    radial-gradient(120% 140% at 8% 0%, rgba(217,88,60,.18), transparent 58%),
+    linear-gradient(180deg, #141212, var(--bg-2));
+  isolation:isolate;
 }
-.svc-offer--action p{ margin:0; flex:1 1 32ch; }
-.svc-offer--action b{ font-weight:500; color:var(--fg); }
-.svc-offer--action .btn{ flex:0 0 auto; }
+
+/* The ring. A conic gradient can't be rotated in place, so a square
+   pseudo-element carries it and turns instead — square, or the corners
+   would lag behind the sides. The mask then keeps only a 1px frame of
+   it, which is what reads as a travelling highlight along the border.
+   Masking beats animating a border colour: it can light one edge at a
+   time, and it needs no @property. */
+.distro-cta__ring{
+  position:absolute; inset:0; z-index:0;
+  border-radius:inherit;
+  padding:1px;
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  overflow:hidden;
+}
+.distro-cta__ring::before{
+  content:""; position:absolute;
+  top:50%; left:50%;
+  width:170%; aspect-ratio:1;
+  margin:-85% 0 0 -85%;
+  background:conic-gradient(from 0deg,
+    rgba(217,88,60,0) 0deg, rgba(217,88,60,.95) 55deg,
+    rgba(242,240,236,.55) 100deg, rgba(217,88,60,0) 190deg, rgba(217,88,60,0) 360deg);
+  animation:distro-turn 7s linear infinite;
+}
+@keyframes distro-turn{ to{ transform:rotate(360deg); } }
+
+/* a resting outline, so the panel still reads as bordered between passes */
+.distro-cta::after{
+  content:""; position:absolute; inset:0; z-index:0;
+  border:1px solid rgba(217,88,60,.28);
+  border-radius:inherit; pointer-events:none;
+}
+
+.distro-cta__body{
+  position:relative; z-index:1;
+  padding:clamp(30px,4vw,54px) clamp(24px,3.4vw,54px) clamp(24px,3vw,40px);
+  max-width:62ch;
+}
+.distro-cta__body .label{ display:block; margin-bottom:clamp(14px,1.8vw,20px); }
+
+.distro-cta__title{
+  margin:0 0 clamp(14px,1.8vw,20px);
+  font-size:clamp(26px,3.4vw,46px);
+  line-height:1.05; letter-spacing:-.04em; font-weight:500;
+}
+.distro-cta__text{
+  margin:0 0 clamp(22px,2.6vw,30px);
+  color:var(--muted); font-size:clamp(15px,1.35vw,18px); line-height:1.6;
+}
+.distro-cta__text b{ font-weight:500; color:var(--fg); }
+
+.distro-cta__facts{
+  display:flex; flex-wrap:wrap; gap:10px 12px;
+  margin:0 0 clamp(24px,3vw,34px); padding:0; list-style:none;
+}
+.distro-cta__facts li{
+  padding:8px 14px;
+  border:1px solid var(--line); border-radius:100px;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+}
+.distro-cta__btn{ justify-self:start; }
+
+/* Marquee of platforms. The list is in the markup twice, so shifting by
+   half its width lands exactly where it started and the loop has no seam. */
+.distro-cta__marquee{
+  position:relative; z-index:1;
+  border-top:1px solid var(--line-soft);
+  padding:16px 0;
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image:linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.distro-cta__track{
+  display:flex; width:max-content; gap:34px;
+  animation:distro-marquee 34s linear infinite;
+}
+.distro-cta__track span{
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--faint);
+  white-space:nowrap;
+}
+@keyframes distro-marquee{ to{ transform:translateX(calc(-50% - 17px)); } }
+
+@media (prefers-reduced-motion:reduce){
+  .distro-cta__ring::before,
+  .distro-cta__track{ animation:none; }
+}
 
 /* ── presets ───────────────────────────────────────────── */
 .preset-grid{

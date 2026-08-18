@@ -49,6 +49,7 @@ const EXTRA = [
   ['contact',   'Telegram / Instagram'],
   ['producer',  'Producer'],
   ['adm',       'Apple Digital Mastering'],
+  ['snippet',   'TikTok / Instagram start'],
 ];
 
 /* Email only — it's the reply address. The form stopped requiring the

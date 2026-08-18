@@ -139,6 +139,16 @@ $fileNote = fn($name, $size) => $name
 $coverNote = $fileNote($coverName, $coverSize);
 $audioNote = $fileNote($audioName, $audioSize);
 
+/* Lyrics sit below the table, not in it: they run to dozens of lines,
+   which a two-column row would squeeze. pre-wrap is what keeps the line
+   breaks — escaping alone leaves them to collapse as HTML whitespace. */
+$lyrics = $value('lyrics');
+$lyricsBlock = $lyrics === '' ? '' :
+    '<div style="margin-top:26px;border-top:1px solid #e6e3de;padding-top:18px">'
+    . '<p style="margin:0 0 10px;color:#8b8780;font:12px ui-monospace,monospace">Lyrics</p>'
+    . '<div style="white-space:pre-wrap;color:#111;font:15px/1.55 -apple-system,Segoe UI,sans-serif">' . $escape($lyrics) . '</div>'
+    . '</div>';
+
 $html = '<div style="font:15px -apple-system,Segoe UI,sans-serif;color:#111">'
     . '<p style="margin:0 0 20px">New release submitted for distribution.</p>'
     . '<table style="border-collapse:collapse">' . $rows
@@ -146,7 +156,7 @@ $html = '<div style="font:15px -apple-system,Segoe UI,sans-serif;color:#111">'
     . '<td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">' . $audioNote . '</td></tr>'
     . '<tr><td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">Cover art</td>'
     . '<td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">' . $coverNote . '</td></tr>'
-    . '</table></div>';
+    . '</table>' . $lyricsBlock . '</div>';
 
 $payload = [
     'from' => MAIL_FROM,

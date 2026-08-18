@@ -1275,13 +1275,14 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .form__submit{ justify-self:start; margin-top:8px; }
 
-/* Featuring: a variable number of rows, each a name + a remove control.
-   Not `.field > input` — these sit inside .feat-rows, a level deeper, so
+/* A variable number of name rows, each with a remove control — used by
+   both Featuring and Producers, hence the neutral name.
+   Not `.field > input` — these sit inside .multi, a level deeper, so
    the direct-child rule above doesn't reach them and the sizing/underline
    is repeated by hand instead of leaning on it. */
-.feat-rows{ display:grid; gap:8px; }
-.feat-row{ display:flex; align-items:center; gap:10px; }
-.feat-row__input{
+.multi{ display:grid; gap:8px; }
+.multi__row{ display:flex; align-items:center; gap:10px; }
+.multi__input{
   flex:1 1 auto; min-width:0;
   background:transparent;
   border:0; border-bottom:1px solid var(--line);
@@ -1291,11 +1292,11 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   border-radius:0;
   transition:border-color .4s;
 }
-.feat-row__input::placeholder{ color:var(--faint); }
-.feat-row__input:focus{ outline:none; border-bottom-color:var(--fg); }
+.multi__input::placeholder{ color:var(--faint); }
+.multi__input:focus{ outline:none; border-bottom-color:var(--fg); }
 
 /* hidden on the one row a fresh form starts with — nothing to remove yet */
-.feat-row__remove{
+.multi__remove{
   display:none;
   flex:0 0 auto;
   align-items:center; justify-content:center;
@@ -1307,12 +1308,12 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   cursor:pointer;
   transition:color .3s, border-color .3s;
 }
-.feat-row.has-remove .feat-row__remove{ display:inline-flex; }
-.feat-row__remove svg{ width:9px; height:9px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; }
-.feat-row__remove:hover{ color:var(--accent); border-color:var(--accent); }
-.feat-row__remove:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.multi__row.has-remove .multi__remove{ display:inline-flex; }
+.multi__remove svg{ width:9px; height:9px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; }
+.multi__remove:hover{ color:var(--accent); border-color:var(--accent); }
+.multi__remove:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
 
-.feat-add{
+.multi__add{
   justify-self:start;
   display:inline-flex; align-items:center; gap:6px;
   padding:0; margin-top:2px;
@@ -1322,9 +1323,9 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   cursor:pointer;
   transition:color .3s, filter .3s;
 }
-.feat-add span[aria-hidden]{ font-size:15px; line-height:1; }
-.feat-add:hover{ filter:brightness(1.15); }
-.feat-add:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.multi__add span[aria-hidden]{ font-size:15px; line-height:1; }
+.multi__add:hover{ filter:brightness(1.15); }
+.multi__add:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
 .pill-group{ display:flex; flex-wrap:wrap; gap:10px; }
 .pill-group__input{

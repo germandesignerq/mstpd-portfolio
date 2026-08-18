@@ -1078,59 +1078,63 @@
     });
   }
 
-  /* ── distribution modal: repeatable "Featuring" rows ─────
-     Ships as one comma-joined value in a hidden input named "feat" — the
-     server side (api/distro.js and api/distro.php) reads a single string
-     for that key, so the wire format stays put; only how it's built in
-     the UI changes. */
-  const featRows = $('#featRows');
-  const featAdd = $('#featAdd');
-  const featHidden = $('#d-feat');
-  if (featRows && featAdd && featHidden) {
-    const rowTpl = $('.feat-row', featRows).cloneNode(true);
-    rowTpl.querySelector('.feat-row__input').value = '';
+  /* ── repeatable name rows — Featuring, Producers ─────────
+     One row per person, added and removed with the buttons, synced into
+     a hidden input as a comma-joined string. The server side reads a
+     single value per field either way (api/distro.js, api/distro.php),
+     so the wire format never changed — only how the UI builds it. */
+  const bindNameRows = (wrap, addBtn, hidden) => {
+    if (!wrap || !addBtn || !hidden) return;
 
-    const syncHidden = () => {
-      featHidden.value = $$('.feat-row__input', featRows)
+    const sync = () => {
+      hidden.value = $$('.multi__input', wrap)
         .map(i => i.value.trim())
         .filter(Boolean)
         .join(', ');
     };
     // the remove button only makes sense once there's more than one row
     const syncRemoveVisibility = () => {
-      const rows = $$('.feat-row', featRows);
+      const rows = $$('.multi__row', wrap);
       rows.forEach(r => r.classList.toggle('has-remove', rows.length > 1));
     };
 
-    featAdd.addEventListener('click', () => {
-      const row = rowTpl.cloneNode(true);
-      featRows.appendChild(row);
+    addBtn.addEventListener('click', () => {
+      /* cloned from the live first row rather than a template kept from
+         load, so a row added after a language switch carries the
+         placeholder in the language now showing — i18n only knows about
+         the elements that existed when it captured them */
+      const row = $('.multi__row', wrap).cloneNode(true);
+      $('.multi__input', row).value = '';
+      wrap.appendChild(row);
       syncRemoveVisibility();
-      $('.feat-row__input', row).focus();
+      $('.multi__input', row).focus();
     });
 
-    featRows.addEventListener('click', e => {
-      const btn = e.target.closest('.feat-row__remove');
+    wrap.addEventListener('click', e => {
+      const btn = e.target.closest('.multi__remove');
       if (!btn) return;
-      if ($$('.feat-row', featRows).length <= 1) return;   // always leave one
-      btn.closest('.feat-row').remove();
+      if ($$('.multi__row', wrap).length <= 1) return;   // always leave one
+      btn.closest('.multi__row').remove();
       syncRemoveVisibility();
-      syncHidden();
+      sync();
     });
 
-    featRows.addEventListener('input', e => {
-      if (e.target.classList.contains('feat-row__input')) syncHidden();
+    wrap.addEventListener('input', e => {
+      if (e.target.classList.contains('multi__input')) sync();
     });
 
     // extra rows don't survive a reset — the form goes back to its
     // as-loaded shape, same as the cover note just above
-    featHidden.form.addEventListener('reset', () => setTimeout(() => {
-      $$('.feat-row', featRows).slice(1).forEach(r => r.remove());
-      $('.feat-row__input', featRows).value = '';
+    hidden.form.addEventListener('reset', () => setTimeout(() => {
+      $$('.multi__row', wrap).slice(1).forEach(r => r.remove());
+      $('.multi__input', wrap).value = '';
       syncRemoveVisibility();
-      syncHidden();
+      sync();
     }, 0));
-  }
+  };
+
+  bindNameRows($('#featRows'), $('#featAdd'), $('#d-feat'));
+  bindNameRows($('#producerRows'), $('#producerAdd'), $('#d-producer'));
 
   bindForm($('#distroForm'), {
     // own endpoint rather than Web3Forms: file attachments are a paid

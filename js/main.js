@@ -1221,6 +1221,27 @@
     requestAnimationFrame(frame);
   }
 
+  /* ── distribution panel: spotlight under the pointer ────── */
+  const distroCta = $('.distro-cta');
+  if (distroCta && matchMedia('(hover: hover)').matches) {
+    /* Coalesced into a frame: pointermove fires far more often than the
+       screen refreshes, and each write invalidates the gradient. The CSS
+       fades the layer in on :hover, so nothing here has to track enter
+       and leave. */
+    let px = 0, py = 0, queued = false;
+    const paint = () => {
+      queued = false;
+      distroCta.style.setProperty('--sx', `${px}px`);
+      distroCta.style.setProperty('--sy', `${py}px`);
+    };
+    distroCta.addEventListener('pointermove', e => {
+      const r = distroCta.getBoundingClientRect();
+      px = e.clientX - r.left;
+      py = e.clientY - r.top;
+      if (!queued) { queued = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+  }
+
   /* ── hero slider: autoplay + swipe, story-style bars ───── */
   const slider = $('#heroSlider');
   if (slider) {

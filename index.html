@@ -36,7 +36,7 @@
 <meta name="twitter:image" content="https://mstpd.com/assets/img/og-cover.jpg">
 
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
-<link rel="stylesheet" href="css/style.css?v=21">
+<link rel="stylesheet" href="css/style.css?v=22">
 
 <!-- Structured data. Every claim here is stated somewhere on the page —
      the packages and their prices come from the Services cards, the credit
@@ -937,23 +937,31 @@
     <div class="distro-cta reveal">
       <span class="distro-cta__ring" aria-hidden="true"></span>
 
+      <span class="distro-cta__spot" aria-hidden="true"></span>
+
+      <!-- two columns above 900px purely to keep the panel short: stacked,
+           the same content runs half the viewport tall -->
       <div class="distro-cta__body">
-        <span class="label" data-i18n="svc.distro_label">(06) — Distribution</span>
-        <h3 class="distro-cta__title" data-i18n="svc.distro_title">Mixed, mastered —<br>now get it out there.</h3>
-        <p class="distro-cta__text" data-i18n="svc.distro">I release it for you, in partnership with <b>Believe</b>. Your track lands on
-          every platform that matters, mastered to spec and reported on properly.</p>
+        <div class="distro-cta__lead">
+          <span class="label" data-i18n="svc.distro_label">(06) — Distribution</span>
+          <h3 class="distro-cta__title" data-i18n="svc.distro_title">Mixed, mastered —<br>now get it out there.</h3>
+          <p class="distro-cta__text" data-i18n="svc.distro">I release it for you, in partnership with <b>Believe</b>. Your track lands on
+            every platform that matters, mastered to spec and reported on properly.</p>
+        </div>
 
-        <ul class="distro-cta__facts">
-          <li data-i18n="svc.distro_f1">Believe partner</li>
-          <li data-i18n="svc.distro_f2">Apple Digital Masters</li>
-          <li data-i18n="svc.distro_f3">Quarterly payouts</li>
-          <li data-i18n="svc.distro_f4">From $15 a single</li>
-        </ul>
+        <div class="distro-cta__aside">
+          <ul class="distro-cta__facts">
+            <li data-i18n="svc.distro_f1">Believe partner</li>
+            <li data-i18n="svc.distro_f2">Apple Digital Masters</li>
+            <li data-i18n="svc.distro_f3">Quarterly payouts</li>
+            <li data-i18n="svc.distro_f4">From $15 a single</li>
+          </ul>
 
-        <button class="btn btn--solid distro-cta__btn" type="button" data-distro-modal>
-          <span data-i18n="svc.distro_cta">Distribution terms</span>
-          <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
-        </button>
+          <button class="btn btn--solid distro-cta__btn" type="button" data-distro-modal>
+            <span data-i18n="svc.distro_cta">Distribution terms</span>
+            <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+          </button>
+        </div>
       </div>
 
       <!-- decorative: the same list twice, so the loop has no seam -->
@@ -1433,6 +1441,6 @@
 
 <script src="js/i18n.js?v=23"></script>
 <script src="js/credits-extra.js?v=2"></script>
-<script src="js/main.js?v=16"></script>
+<script src="js/main.js?v=17"></script>
 </body>
 </html>

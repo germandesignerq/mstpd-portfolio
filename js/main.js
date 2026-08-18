@@ -889,20 +889,19 @@
   bindForm($('#modalForm'), enquiry);
   bindForm($('#contactForm'), enquiry);
 
-  /* ── cover art: checked in the browser before it can be submitted ──
-     Distributors want a square master; 3000px is the size Apple asks
-     for. Verified here so a wrong file is caught while the visitor can
-     still fix it, rather than after the release is in the queue. */
-  const COVER_MIN = 3000;
+  /* ── cover art: reported, not policed ──────────────────────
+     The square / 3000px / JPEG-only rules used to block a submit. They
+     don't any more — whatever gets attached goes through, and the note
+     just says what it is so the dimensions are visible on both ends.
+     The one thing still refused is a file too large to leave in an
+     email at all, which isn't a rule about the artwork. */
   const COVER_MAX_BYTES = 4 * 1024 * 1024;
-  const COVER_TYPES = ['image/jpeg', 'image/png'];
 
   const coverInput = $('#d-cover');
   const coverNote = $('#coverNote');
   /* held as a producer, not a string, so the message resolves in the
      language active when it's shown — not the one active when it was set */
-  const NO_COVER = () => T('js.cover_attach', 'Attach the track cover.');
-  let coverProblem = NO_COVER;
+  let coverProblem = null;
 
   const readSize = file => new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -920,7 +919,7 @@
     };
 
     const clearCover = () => {
-      coverProblem = NO_COVER;
+      coverProblem = null;
       noteState('', null);
     };
     coverInput.form.addEventListener('reset', () => setTimeout(clearCover, 0));
@@ -929,29 +928,18 @@
       const file = coverInput.files && coverInput.files[0];
       if (!file) return clearCover();
 
-      const reject = msgFn => { coverProblem = msgFn; noteState(msgFn(), 'error'); };
-
-      if (!COVER_TYPES.includes(file.type)) {
-        return reject(() => T('js.cover_type', 'Cover must be a JPEG or PNG.'));
-      }
       if (file.size > COVER_MAX_BYTES) {
         const mb = (file.size / 1048576).toFixed(1);
-        return reject(() => T('js.cover_size', 'Cover is {mb} MB — the limit is 4 MB. Save it as JPEG.', { mb }));
+        coverProblem = () => T('js.cover_size', 'Cover is {mb} MB — the limit is 4 MB. Save it as JPEG.', { mb });
+        return noteState(coverProblem(), 'error');
       }
-
-      let size;
-      try { size = await readSize(file); }
-      catch { return reject(() => T('js.cover_unreadable', 'That file could not be read as an image.')); }
-
-      if (size.w !== size.h) {
-        return reject(() => T('js.cover_square', 'Cover must be square — this one is {w}×{h}.', { w: size.w, h: size.h }));
-      }
-      if (size.w < COVER_MIN) {
-        return reject(() => T('js.cover_min', 'Cover must be at least {min}×{min} — this one is {w}×{h}.', { min: COVER_MIN, w: size.w, h: size.h }));
-      }
-
       coverProblem = null;
-      noteState(`${file.name} — ${size.w}×${size.h}, ${Math.round(file.size / 1024)} KB`, 'ok');
+
+      // dimensions are shown, never enforced; an unreadable file just gets no numbers
+      let size = null;
+      try { size = await readSize(file); } catch { /* not an image the browser can decode */ }
+      const kb = `${Math.round(file.size / 1024)} KB`;
+      noteState(size ? `${file.name} — ${size.w}×${size.h}, ${kb}` : `${file.name} — ${kb}`, 'ok');
 
       // a submit may have been refused over this file; stop nagging now it's fixed
       const formNote = $('.form__note', coverInput.form);

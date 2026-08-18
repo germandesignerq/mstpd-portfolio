@@ -24,7 +24,6 @@ const MAIL_TO = 'offmstpd@gmail.com';
 const MAIL_FROM = 'MSTPD site <mail@mstpd.com>';
 
 const MAX_BYTES = 4 * 1024 * 1024;          // stays under Vercel's request cap
-const ALLOWED = ['image/jpeg', 'image/png'];
 /* Resend allows 40 MB per email *after* base64, which inflates by a third,
    so the raw file has to stay near 28 — same number the browser enforces. */
 const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
@@ -90,22 +89,19 @@ export default async function handler(request) {
   const missing = REQUIRED.filter(k => !value(k));
   if (missing.length) return json({ success: false, message: 'Please fill in every required field.' }, 400);
 
-  /* Both files are optional here — the browser already enforces the
-     dimension and format rules, and a submission shouldn't be lost if
-     it can't. */
+  /* Both files are optional. The cover's format and dimensions aren't
+     policed — only its size, which is about what an email can carry
+     rather than anything to do with the artwork. */
   const cover = form.get('cover');
   const attachments = [];
   if (cover && typeof cover === 'object' && cover.size > 0) {
-    if (!ALLOWED.includes(cover.type)) {
-      return json({ success: false, message: 'Cover must be a JPEG or PNG.' }, 400);
-    }
     if (cover.size > MAX_BYTES) {
       return json({ success: false, message: 'Cover is larger than 4 MB.' }, 400);
     }
     attachments.push({
       filename: cover.name || 'cover.jpg',
       content: toBase64(await cover.arrayBuffer()),
-      content_type: cover.type,
+      content_type: cover.type || 'application/octet-stream',
     });
   }
 

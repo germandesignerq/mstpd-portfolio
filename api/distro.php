@@ -42,7 +42,6 @@ const MAIL_TO = 'offmstpd@gmail.com';
 const MAIL_FROM = 'MSTPD site <mail@mstpd.com>';
 
 const MAX_BYTES = 4 * 1024 * 1024;
-const ALLOWED = ['image/jpeg', 'image/png'];
 /* Resend allows 40 MB per email *after* base64, which inflates by a third,
    so the raw file has to stay near 28 — same number the browser enforces. */
 const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
@@ -80,8 +79,9 @@ if (!empty($_FILES['audio']) && $_FILES['audio']['error'] === UPLOAD_ERR_INI_SIZ
     respond(['success' => false, 'message' => 'The track is larger than this server accepts.'], 413);
 }
 
-/* Both files are optional here — the browser already enforces the format
-   rules, and a submission shouldn't be lost if it can't. */
+/* Both files are optional. The cover's format and dimensions aren't
+   policed — only its size, which is about what an email can carry rather
+   than anything to do with the artwork. */
 $attachments = [];
 $coverName = null;
 $coverSize = 0;
@@ -90,13 +90,12 @@ if (!empty($_FILES['cover']) && $_FILES['cover']['error'] === UPLOAD_ERR_OK && $
     $coverName = $cover['name'];
     $coverSize = $cover['size'];
 
-    $type = (function_exists('mime_content_type') ? mime_content_type($cover['tmp_name']) : null) ?: $cover['type'];
-    if (!in_array($type, ALLOWED, true)) {
-        respond(['success' => false, 'message' => 'Cover must be a JPEG or PNG.'], 400);
-    }
     if ($cover['size'] > MAX_BYTES) {
         respond(['success' => false, 'message' => 'Cover is larger than 4 MB.'], 400);
     }
+
+    $type = (function_exists('mime_content_type') ? mime_content_type($cover['tmp_name']) : null)
+        ?: ($cover['type'] ?: 'application/octet-stream');
 
     $attachments[] = [
         'filename' => $coverName ?: 'cover.jpg',

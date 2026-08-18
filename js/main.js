@@ -962,6 +962,96 @@
     });
   }
 
+  /* ── track audio: WAV checked in the browser before sending ──
+     The spec the form asks for lives in the file's own header, so it's
+     read rather than trusted: 44 bytes in are the sample rate and bit
+     depth, and a wrong file is caught while the visitor can still swap
+     it. The size ceiling is what an email can actually carry — Resend
+     tops out at 40 MB *after* base64, which inflates by a third, so the
+     raw file has to stay near 28. */
+  const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
+  const AUDIO_BITS = [16, 24];
+  const AUDIO_RATES = [44100, 48000];
+
+  const audioInput = $('#d-audio');
+  const audioNote = $('#audioNote');
+  let audioProblem = null;                 // optional field: no file is fine
+
+  /* Walks the RIFF chunk list rather than assuming "fmt " sits at byte 12
+     — plenty of encoders write a JUNK or LIST block ahead of it. */
+  const readWavSpec = async file => {
+    const buf = await file.slice(0, 65536).arrayBuffer();
+    if (buf.byteLength < 44) return null;
+    const view = new DataView(buf);
+    const tag = o => String.fromCharCode(view.getUint8(o), view.getUint8(o + 1), view.getUint8(o + 2), view.getUint8(o + 3));
+    if (tag(0) !== 'RIFF' || tag(8) !== 'WAVE') return null;
+
+    let off = 12;
+    while (off + 8 <= buf.byteLength) {
+      const id = tag(off);
+      const size = view.getUint32(off + 4, true);
+      if (id === 'fmt ') {
+        if (off + 24 > buf.byteLength) return null;
+        return {
+          channels: view.getUint16(off + 10, true),
+          rate: view.getUint32(off + 12, true),
+          bits: view.getUint16(off + 22, true),
+        };
+      }
+      off += 8 + size + (size % 2);        // chunks are word-aligned
+    }
+    return null;
+  };
+
+  if (audioInput && audioNote) {
+    const noteState = (text, state) => {
+      audioNote.textContent = text;
+      audioNote.classList.toggle('is-ok', state === 'ok');
+      audioNote.classList.toggle('is-error', state === 'error');
+    };
+    const clearAudio = () => { audioProblem = null; noteState('', null); };
+    audioInput.form.addEventListener('reset', () => setTimeout(clearAudio, 0));
+
+    audioInput.addEventListener('change', async () => {
+      const file = audioInput.files && audioInput.files[0];
+      if (!file) return clearAudio();
+
+      // held as producers so the message resolves in the language shown
+      const refuse = msgFn => { audioProblem = msgFn; noteState(msgFn(), 'error'); };
+
+      if (file.size > AUDIO_MAX_BYTES) {
+        const mb = (file.size / 1048576).toFixed(1);
+        return refuse(() => T('js.audio_size', 'Track is {mb} MB — the limit is 28 MB.', { mb }));
+      }
+
+      let spec;
+      try { spec = await readWavSpec(file); }
+      catch { spec = null; }
+
+      if (!spec) return refuse(() => T('js.audio_notwav', 'That file could not be read as a WAV.'));
+      if (!AUDIO_BITS.includes(spec.bits)) {
+        return refuse(() => T('js.audio_bits', 'WAV must be 16 or 24-bit — this one is {bits}-bit.', { bits: spec.bits }));
+      }
+      if (!AUDIO_RATES.includes(spec.rate)) {
+        const khz = (spec.rate / 1000).toFixed(1).replace(/\.0$/, '');
+        return refuse(() => T('js.audio_rate', 'WAV must be 44.1 or 48 kHz — this one is {khz} kHz.', { khz }));
+      }
+
+      audioProblem = null;
+      const khz = (spec.rate / 1000).toFixed(1).replace(/\.0$/, '');
+      const size = file.size >= 1048576
+        ? `${(file.size / 1048576).toFixed(1)} MB`
+        : `${Math.round(file.size / 1024)} KB`;
+      noteState(`${file.name} — ${spec.bits}-bit, ${khz} kHz, ${size}`, 'ok');
+
+      const formNote = $('.form__note', audioInput.form);
+      if (formNote && formNote.classList.contains('is-error')) {
+        formNote.textContent = '';
+        formNote.classList.remove('is-error');
+      }
+    });
+  }
+
   /* ── distribution modal: repeatable "Featuring" rows ─────
      Ships as one comma-joined value in a hidden input named "feat" — the
      server side (api/distro.js and api/distro.php) reads a single string
@@ -1020,7 +1110,8 @@
     // own endpoint rather than Web3Forms: file attachments are a paid
     // feature there, and the cover is the point of this form
     endpoint: '/api/distro',
-    preflight: () => coverProblem && coverProblem(),
+    // cover first: it's the required one, so it's the more useful complaint
+    preflight: () => (coverProblem && coverProblem()) || (audioProblem && audioProblem()),
     requiredFields: ['artist', 'email', 'release', 'performer', 'genre'],
     validators: {
       artist: {

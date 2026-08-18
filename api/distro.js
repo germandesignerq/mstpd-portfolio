@@ -1,12 +1,16 @@
 /* =========================================================
-   Distribution form → email with the cover art attached.
-   The track audio travels as a link, not an attachment — a WAV
-   master runs well past what a Vercel function can receive (see
-   MAX_BYTES below and index.html's "Track audio" field).
+   Distribution form → email with the cover art and the track
+   attached.
 
    Runs on Vercel's Edge runtime purely so `request.formData()`
    is available natively — that keeps the project dependency-free
    and with no build step, same as the rest of the site.
+
+   NOTE on the track: Vercel caps a function's request body at
+   4.5 MB on every plan, so a real WAV only gets through on the
+   PHP host (api/distro.php), where the ceiling is whatever that
+   server's post_max_size allows. Here anything larger is refused
+   by the platform before this code runs at all.
 
    Needs one environment variable in the Vercel project:
      RESEND_API_KEY — from resend.com
@@ -21,6 +25,9 @@ const MAIL_FROM = 'MSTPD site <mail@mstpd.com>';
 
 const MAX_BYTES = 4 * 1024 * 1024;          // stays under Vercel's request cap
 const ALLOWED = ['image/jpeg', 'image/png'];
+/* Resend allows 40 MB per email *after* base64, which inflates by a third,
+   so the raw file has to stay near 28 — same number the browser enforces. */
+const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
 
 /* Labels double as the running order of the email body. */
 const FIELDS = [
@@ -36,7 +43,6 @@ const FIELDS = [
   ['explicit',  'Explicit'],
   ['adm',       'Apple Digital Mastering'],
   ['contact',   'Telegram / Instagram'],
-  ['audio',     'Audio (WAV link)'],
 ];
 
 const REQUIRED = ['artist', 'email', 'release', 'performer', 'genre'];
@@ -83,8 +89,9 @@ export default async function handler(request) {
   const missing = REQUIRED.filter(k => !value(k));
   if (missing.length) return json({ success: false, message: 'Please fill in every required field.' }, 400);
 
-  /* Cover art is optional here — the browser already enforces the
-     dimension rules, and a submission shouldn't be lost if it can't. */
+  /* Both files are optional here — the browser already enforces the
+     dimension and format rules, and a submission shouldn't be lost if
+     it can't. */
   const cover = form.get('cover');
   const attachments = [];
   if (cover && typeof cover === 'object' && cover.size > 0) {
@@ -101,28 +108,39 @@ export default async function handler(request) {
     });
   }
 
+  const audio = form.get('audio');
+  if (audio && typeof audio === 'object' && audio.size > 0) {
+    if (audio.size > AUDIO_MAX_BYTES) {
+      return json({ success: false, message: 'Track is larger than 28 MB.' }, 400);
+    }
+    attachments.push({
+      filename: audio.name || 'track.wav',
+      content: toBase64(await audio.arrayBuffer()),
+      content_type: audio.type || 'audio/wav',
+    });
+  }
+
   const rows = FIELDS.map(([key, label]) => {
     const v = value(key);
-    /* the audio field is a WAV link, not an attachment (see index.html —
-       a real master runs past Vercel's 4.5 MB function body cap), so make
-       it clickable in the email. Scheme-checked rather than trusted as-is:
-       the browser's type="url" input only validates client-side. */
-    const cell = key === 'audio' && /^https?:\/\//i.test(v)
-      ? `<a href="${escapeHtml(v)}" style="color:#111">${escapeHtml(v)}</a>`
-      : escapeHtml(v || '—');
     return `<tr>
       <td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">${escapeHtml(label)}</td>
-      <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${cell}</td>
+      <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${escapeHtml(v || '—')}</td>
     </tr>`;
   }).join('');
 
-  const coverNote = attachments.length
-    ? `${escapeHtml(cover.name)} — attached (${Math.round(cover.size / 1024)} KB)`
+  const fileNote = f => (f && typeof f === 'object' && f.size > 0)
+    ? `${escapeHtml(f.name)} — attached (${Math.round(f.size / 1024)} KB)`
     : 'not provided';
+  const coverNote = fileNote(cover);
+  const audioNote = fileNote(audio);
 
   const html = `<div style="font:15px -apple-system,Segoe UI,sans-serif;color:#111">
     <p style="margin:0 0 20px">New release submitted for distribution.</p>
     <table style="border-collapse:collapse">${rows}
+      <tr>
+        <td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">Track audio</td>
+        <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${audioNote}</td>
+      </tr>
       <tr>
         <td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">Cover art</td>
         <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${coverNote}</td>

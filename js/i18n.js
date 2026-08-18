@@ -127,7 +127,7 @@
     "m.pkg_label": "Выбранный пакет",
     // distro modal
     "d.step1_title": "Quality World<br>by MSTPD.",
-    "d.step1_sub": "Дистрибуция в партнёрстве с <a href=\"https://www.believe.com\" target=\"_blank\" rel=\"noopener noreferrer\">Believe</a>.",
+    "d.step1_sub": "Дистрибуция в партнёрстве с",
     "d.o_audio": "Звук",
     "d.o_audio1": "Загружайте файлы в высоком разрешении — до 24 бит / 48 кГц и выше.",
     "d.o_audio2": "Возможность использовать Apple Digital Masters для максимального качества звука.",
@@ -314,7 +314,7 @@
     "np.copied": "Посилання скопійовано",
     "m.pkg_label": "Обраний пакет",
     "d.step1_title": "Quality World<br>by MSTPD.",
-    "d.step1_sub": "Дистрибуція у партнерстві з <a href=\"https://www.believe.com\" target=\"_blank\" rel=\"noopener noreferrer\">Believe</a>.",
+    "d.step1_sub": "Дистрибуція у партнерстві з",
     "d.o_audio": "Звук",
     "d.o_audio1": "Завантажуйте файли у високій роздільності — до 24 біт / 48 кГц і вище.",
     "d.o_audio2": "Можливість використати Apple Digital Masters для максимальної якості звуку.",

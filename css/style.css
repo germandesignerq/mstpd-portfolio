@@ -1455,6 +1455,20 @@ body.modal-open{ overflow:hidden; }
 }
 .modal__sub a{ color:var(--fg); text-decoration:underline; text-underline-offset:3px; }
 .modal__sub a:hover{ color:var(--accent); }
+/* pulled in when the partner logo follows and the two should read as one */
+.modal__sub--tight{ margin-bottom:14px; }
+
+/* Believe's own mark, same file the About badges use. Left at its
+   supplied colours — it's someone else's logo, so it gets a hover on
+   opacity rather than a recolour. */
+.offer__partner{
+  display:inline-block;
+  margin:0 0 clamp(28px,3.6vw,38px);
+  transition:opacity .3s;
+}
+.offer__partner img{ display:block; width:132px; height:auto; }
+.offer__partner:hover{ opacity:.72; }
+.offer__partner:focus-visible{ outline:2px solid var(--accent); outline-offset:6px; }
 
 /* ── two-step distribution modal ─────────────────────────
    Steps are toggled with [hidden] rather than a class, so a step that

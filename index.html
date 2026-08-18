@@ -36,7 +36,7 @@
 <meta name="twitter:image" content="https://mstpd.com/assets/img/og-cover.jpg">
 
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
-<link rel="stylesheet" href="css/style.css?v=15">
+<link rel="stylesheet" href="css/style.css?v=16">
 
 <!-- Structured data. Every claim here is stated somewhere on the page —
      the packages and their prices come from the Services cards, the credit
@@ -1156,7 +1156,11 @@
 
     <section class="wizard__step is-current" id="distroStep1">
       <h2 class="modal__title" id="distroTitle" data-i18n="d.step1_title">Quality World<br>by MSTPD.</h2>
-      <p class="modal__sub" data-i18n="d.step1_sub">Distribution in partnership with <a href="https://www.believe.com" target="_blank" rel="noopener noreferrer">Believe</a>.</p>
+      <!-- the logo carries the link, so the word isn't one too -->
+      <p class="modal__sub modal__sub--tight" data-i18n="d.step1_sub">Distribution in partnership with</p>
+      <a class="offer__partner" href="https://www.believe.com" target="_blank" rel="noopener noreferrer">
+        <img src="assets/img/believe.png" alt="Believe" width="819" height="195" loading="lazy">
+      </a>
 
       <div class="offer">
         <div class="offer__group">
@@ -1359,7 +1363,7 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=14"></script>
+<script src="js/i18n.js?v=15"></script>
 <script src="js/credits-extra.js?v=2"></script>
 <script src="js/main.js?v=12"></script>
 </body>

@@ -1014,6 +1014,16 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   color:var(--fg);
   font-size:15px; line-height:1.6;
 }
+/* the plaque that leads somewhere: copy and button sit side by side once
+   there's room, and stack below that rather than squeezing the button */
+.svc-offer--action{
+  margin-top:clamp(14px,1.8vw,20px);
+  display:flex; flex-wrap:wrap; align-items:center;
+  gap:clamp(18px,2.4vw,32px);
+}
+.svc-offer--action p{ margin:0; flex:1 1 32ch; }
+.svc-offer--action b{ font-weight:500; color:var(--fg); }
+.svc-offer--action .btn{ flex:0 0 auto; }
 
 /* ── presets ───────────────────────────────────────────── */
 .preset-grid{

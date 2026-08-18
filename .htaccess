@@ -1,0 +1,5 @@
+# Lets js/main.js keep posting to /api/distro unchanged — same path
+# Vercel routes to the Edge function, Apache here rewrites to the PHP port.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api/distro/?$ api/distro.php [L,QSA]

@@ -100,73 +100,66 @@
     counters.forEach(el => countObs.observe(el));
   }
 
-  /* ── featured cards: play count on the meta line ───────── */
-  const playCards = $$('.feature[data-plays]');
-  if (playCards.length) {
-    /* Built here rather than written into the markup so the number is
-       grouped and the word translated for whichever language is active —
-       and so a card with no figure yet simply carries no data-plays and
-       gets no chip, instead of an empty one. */
-    const renderPlays = () => {
-      playCards.forEach(card => {
+  /* ── featured cards: hover badges on the meta line ─────────
+     One small icon per fact, each opening a tooltip. Built from data
+     attributes rather than written into the markup, so the numbers get
+     grouped and the wording translated for whichever language is showing,
+     and a card with no figures carries no badges at all. */
+  const badgeCards = $$('.feature[data-chart], .feature[data-plays]');
+  if (badgeCards.length) {
+    /* The seal is the one already used for "Verified credits" in the
+       socials list, so the mark means the same thing in both places. */
+    const ICONS = {
+      chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 2.6 14 4.6 16.7 3.8 17.7 6.4 20.3 7.4 19.6 10 21.4 12 19.6 14 20.3 16.6 17.7 17.6 16.7 20.2 14 19.4 12 21.4 10 19.4 7.3 20.2 6.3 17.6 3.7 16.6 4.4 14Z"/><path d="M8.4 12.3 10.6 14.5 15.4 9.5"/></svg>',
+      plays: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.6"/><path d="M12 7.7v.1"/></svg>',
+    };
+
+    /* A <button>, not a decorated span: that makes the tooltip reachable
+       by keyboard and openable by tap, since a touch device has no hover
+       to give. */
+    const badge = (meta, kind, id, text) => {
+      let el = $(`.feature__badge--${kind}`, meta);
+      if (!el) {
+        el = document.createElement('button');
+        el.className = `feature__badge feature__badge--${kind}`;
+        el.type = 'button';
+        el.innerHTML = ICONS[kind];                  // static markup, no data in it
+        const tip = document.createElement('span');
+        tip.className = 'feature__tip';
+        tip.id = id;
+        tip.setAttribute('role', 'tooltip');
+        el.appendChild(tip);
+        el.setAttribute('aria-describedby', id);
+        meta.prepend(el);                            // first, so tooltips open inward
+      }
+      // textContent, not innerHTML: chart names and counts are data
+      $('.feature__tip', el).textContent = text;
+      el.setAttribute('aria-label', text);
+    };
+
+    const render = () => {
+      badgeCards.forEach((card, i) => {
+        const meta = $('.feature__meta', card);
+        if (!meta) return;
+
+        // prepended, so plays is built first to leave the seal leading
         const n = parseInt(card.dataset.plays, 10);
-        if (!Number.isFinite(n)) return;
-        const meta = $('.feature__meta', card);
-        if (!meta) return;
-        let chip = $('.feature__plays', meta);
-        if (!chip) {
-          chip = document.createElement('span');
-          chip.className = 'feature__plays';
-          meta.appendChild(chip);
+        if (Number.isFinite(n)) {
+          const lang = document.documentElement.lang || 'en';
+          badge(meta, 'plays', `playsTip${i}`, T('js.plays', '{n} plays', { n: n.toLocaleString(lang) }));
         }
-        const lang = document.documentElement.lang || 'en';
-        chip.textContent = T('js.plays', '{n} plays', { n: n.toLocaleString(lang) });
-      });
-    };
-    renderPlays();
-    document.addEventListener('langchange', renderPlays);
-  }
 
-  /* ── featured cards: chart badge with a tooltip ────────── */
-  const chartCards = $$('.feature[data-chart]');
-  if (chartCards.length) {
-    /* The same seal used for "Verified credits" in the socials list, so
-       the mark means the same thing in both places. */
-    const SEAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 2.6 14 4.6 16.7 3.8 17.7 6.4 20.3 7.4 19.6 10 21.4 12 19.6 14 20.3 16.6 17.7 17.6 16.7 20.2 14 19.4 12 21.4 10 19.4 7.3 20.2 6.3 17.6 3.7 16.6 4.4 14Z"/><path d="M8.4 12.3 10.6 14.5 15.4 9.5"/></svg>';
-
-    const renderChart = () => {
-      chartCards.forEach((card, i) => {
         const chart = (card.dataset.chart || '').trim();
-        const pos = parseInt(card.dataset.chartPos, 10);
-        if (!chart) return;
-        const meta = $('.feature__meta', card);
-        if (!meta) return;
-
-        const text = Number.isFinite(pos)
-          ? T('js.chart_pos', '#{pos} in {chart}', { pos, chart })
-          : chart;
-
-        let badge = $('.feature__chart', meta);
-        if (!badge) {
-          badge = document.createElement('button');
-          badge.className = 'feature__chart';
-          badge.type = 'button';
-          badge.innerHTML = SEAL;                    // static markup, no data in it
-          const tip = document.createElement('span');
-          tip.className = 'feature__tip';
-          tip.id = `chartTip${i}`;
-          tip.setAttribute('role', 'tooltip');
-          badge.appendChild(tip);
-          badge.setAttribute('aria-describedby', tip.id);
-          meta.prepend(badge);                       // first, so the tooltip opens inward
+        if (chart) {
+          const pos = parseInt(card.dataset.chartPos, 10);
+          badge(meta, 'chart', `chartTip${i}`, Number.isFinite(pos)
+            ? T('js.chart_pos', '#{pos} in {chart}', { pos, chart })
+            : chart);
         }
-        // textContent, not innerHTML: chart names are data
-        $('.feature__tip', badge).textContent = text;
-        badge.setAttribute('aria-label', text);
       });
     };
-    renderChart();
-    document.addEventListener('langchange', renderChart);
+    render();
+    document.addEventListener('langchange', render);
   }
 
   /* ── work rows: thumbnail that follows the cursor ─────── */
@@ -501,7 +494,7 @@
     card.addEventListener('click', e => {
       // leave the waveform (seek), the Spotify link, the chart badge (its
       // tap is what opens the tooltip on touch) and the button itself alone
-      if (e.target.closest('[data-wave], .feature__out, .feature__chart, .player__btn')) return;
+      if (e.target.closest('[data-wave], .feature__out, .feature__badge, .player__btn')) return;
       btn.click();
     });
   });

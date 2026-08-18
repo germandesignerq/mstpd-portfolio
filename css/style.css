@@ -679,57 +679,34 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .feature__meta span:first-child{ color:var(--fg); }
 
-/* Play count, revealed by hovering the meta line. Rendered only when the
-   card carries a data-plays value (js/main.js), so a track with no figure
-   simply has no chip rather than an empty one.
+/* Meta-line badges — one icon per fact, each opening a tooltip. Built
+   from data-chart / data-plays (js/main.js), so a track with neither
+   carries no badges.
 
-   It collapses via max-width rather than display:none so the reveal can
-   animate, and the gap is folded into the chip's own padding — a flex gap
-   can't be transitioned, so leaving one would reserve a visible hole
-   next to the year while the chip is closed. */
-.feature__plays{
-  display:inline-flex; align-items:center;
-  max-width:0; overflow:hidden;
-  margin-left:-18px;            /* cancels .feature__meta's gap while closed */
-  opacity:0;
-  white-space:nowrap;
-  color:var(--accent);
-  transition:max-width .5s var(--ease), opacity .35s, margin-left .5s var(--ease);
-}
-@media (hover: hover){
-  .feature:hover .feature__plays,
-  .feature__meta:focus-within .feature__plays{
-    max-width:22ch; margin-left:0; opacity:1;
-  }
-}
-/* no hover to give: touch devices get it outright */
-@media (hover: none){
-  .feature__plays{ max-width:22ch; margin-left:0; opacity:1; }
-}
-
-/* Chart badge — the verified seal from the socials list, reused so the
-   mark reads the same everywhere. Rendered from data-chart (js/main.js),
-   so a track that hasn't charted simply has no badge.
-
-   A <button>, not a bare span: that makes the tooltip reachable by
+   Buttons, not decorated spans: that makes the tooltips reachable by
    keyboard and openable by tap, since a touch device has no hover to
-   give. It sits first in the meta line and the tooltip is anchored to
-   its left edge, so the tooltip always opens into the card's own width
-   — body has overflow-x:hidden, and a centred one would be cut off at
-   the viewport edge on a phone. */
-.feature__chart{
+   give. They sit first in the meta line and each tooltip is anchored to
+   its own left edge, so it always opens into the card's own width — body
+   has overflow-x:hidden, and a centred tooltip on a badge near the end
+   of the line would be clipped at the viewport edge on a phone. */
+.feature__badge{
   position:relative;
   display:inline-flex; align-items:center;
   padding:0; border:0; background:none;
-  color:var(--accent);
   cursor:help; line-height:0;
-  transition:transform .3s var(--ease);
+  transition:transform .3s var(--ease), color .3s;
 }
-.feature__chart svg{ width:14px; height:14px; }
-.feature__chart:hover{ transform:scale(1.12); }
-.feature__chart:focus-visible{
+.feature__badge svg{ width:14px; height:14px; }
+.feature__badge:hover{ transform:scale(1.12); }
+.feature__badge:focus-visible{
   outline:2px solid var(--accent); outline-offset:4px; border-radius:50%;
 }
+/* the seal marks an achievement, so it carries the accent outright; the
+   play count is just a figure and only warms up on hover */
+.feature__badge--chart{ color:var(--accent); }
+.feature__badge--plays{ color:var(--muted); }
+.feature__badge--plays:hover,
+.feature__badge--plays:focus-visible{ color:var(--accent); }
 
 .feature__tip{
   position:absolute; bottom:calc(100% + 12px); left:0;
@@ -746,8 +723,8 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   transition:opacity .3s, transform .3s var(--ease);
   z-index:5;
 }
-.feature__chart:hover .feature__tip,
-.feature__chart:focus-visible .feature__tip{
+.feature__badge:hover .feature__tip,
+.feature__badge:focus-visible .feature__tip{
   opacity:1; transform:translateY(0);
 }
 .feature__title{

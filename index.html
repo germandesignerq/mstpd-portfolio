@@ -1242,9 +1242,23 @@
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="field">
-        <label for="d-artist"><span class="field__num" aria-hidden="true">01</span><span data-i18n="d.artist">Artist's full name</span></label>
-        <input id="d-artist" name="artist" type="text" autocomplete="name" placeholder="Full name" data-i18n-ph="d.artist_ph">
-        <p class="field__hint" data-i18n="d.artist_hint">Full legal name the artist is registered under.</p>
+        <!-- same repeatable-rows pattern as Featuring and Producers: a
+             release can be registered to more than one artist -->
+        <label id="d-artist-label"><span class="field__num" aria-hidden="true">01</span><span data-i18n="d.artist">Artist's full name</span></label>
+        <div class="multi" id="artistRows" role="group" aria-labelledby="d-artist-label">
+          <div class="multi__row">
+            <input class="multi__input" type="text" autocomplete="name" placeholder="Full name" data-i18n-ph="d.artist_ph" aria-label="Artist name">
+            <button class="multi__remove" type="button" aria-label="Remove">
+              <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="multi__add" type="button" id="artistAdd">
+          <span aria-hidden="true">+</span><span data-i18n="d.artist_add">Add artist</span>
+        </button>
+        <!-- rows sync into this; both backends still read one "artist" string -->
+        <input type="hidden" name="artist" id="d-artist">
+        <p class="field__hint" data-i18n="d.artist_hint">Full legal name each artist is registered under.</p>
       </div>
 <div class="field">
         <label for="d-release"><span class="field__num" aria-hidden="true">02</span><span data-i18n="d.release">Release title</span></label>
@@ -1273,7 +1287,7 @@
           </div>
         </div>
         <button class="multi__add" type="button" id="featAdd">
-          <span aria-hidden="true">+</span><span data-i18n="d.feat_add">Add artist</span>
+          <span aria-hidden="true">+</span><span data-i18n="d.feat_add">Add guest</span>
         </button>
         <!-- rows sync into this; api/distro.js and api/distro.php both
              read a single comma-joined "feat" string, so the wire format
@@ -1382,8 +1396,8 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=20"></script>
+<script src="js/i18n.js?v=21"></script>
 <script src="js/credits-extra.js?v=2"></script>
-<script src="js/main.js?v=15"></script>
+<script src="js/main.js?v=16"></script>
 </body>
 </html>

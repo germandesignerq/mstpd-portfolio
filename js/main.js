@@ -1075,6 +1075,7 @@
     }, 0));
   };
 
+  bindNameRows($('#artistRows'), $('#artistAdd'), $('#d-artist'));
   bindNameRows($('#featRows'), $('#featAdd'), $('#d-feat'));
   bindNameRows($('#producerRows'), $('#producerAdd'), $('#d-producer'));
 

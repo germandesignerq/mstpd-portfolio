@@ -37,6 +37,7 @@ const FIELDS = [
   ['version',   'Version / subtitle'],
   ['performer', 'Main performer(s)'],
   ['feat',      'Featuring'],
+  ['producer',  'Producer'],
   ['genre',     'Genre'],
   ['subgenre',  'Subgenre'],
   ['format',    'Format'],

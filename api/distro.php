@@ -47,20 +47,26 @@ const MAX_BYTES = 4 * 1024 * 1024;
 const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
 
 /* Labels double as the running order of the email body. */
-const FIELDS = [
-    ['artist',    'Artist (legal name)'],
+/* Two groups so the email reads in the same order as the form: the ten
+   numbered fields the release brief asks for, then everything added on
+   top of it. The cover is number 10 and slots between them, because it's
+   an attachment rather than a text value. */
+const NUMBERED = [
+    ['artist',    '01 Artist (legal name)'],
+    ['release',   '02 Release'],
+    ['version',   '03 Version / subtitle'],
+    ['performer', '04 Main performer(s)'],
+    ['feat',      '05 Featuring'],
+    ['genre',     '06 Genre'],
+    ['subgenre',  '07 Subgenre'],
+    ['format',    '08 Format'],
+    ['explicit',  '09 Explicit'],
+];
+const EXTRA = [
     ['email',     'Email'],
-    ['release',   'Release'],
-    ['version',   'Version / subtitle'],
-    ['performer', 'Main performer(s)'],
-    ['feat',      'Featuring'],
-    ['producer',  'Producer'],
-    ['genre',     'Genre'],
-    ['subgenre',  'Subgenre'],
-    ['format',    'Format'],
-    ['explicit',  'Explicit'],
-    ['adm',       'Apple Digital Mastering'],
     ['contact',   'Telegram / Instagram'],
+    ['producer',  'Producer'],
+    ['adm',       'Apple Digital Mastering'],
 ];
 
 /* Email only — it's the reply address. The form stopped requiring the
@@ -127,14 +133,19 @@ if (!empty($_FILES['audio']) && $_FILES['audio']['error'] === UPLOAD_ERR_OK && $
 
 $escape = fn($s) => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 
-$rows = '';
-foreach (FIELDS as [$key, $label]) {
-    $v = $value($key);
-    $rows .= '<tr>'
-        . '<td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">' . $escape($label) . '</td>'
-        . '<td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">' . $escape($v !== '' ? $v : '—') . '</td>'
-        . '</tr>';
-}
+$row = fn($label, $cell) => '<tr>'
+    . '<td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">' . $escape($label) . '</td>'
+    . '<td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">' . $cell . '</td>'
+    . '</tr>';
+
+$textRows = function (array $list) use ($value, $escape, $row) {
+    $out = '';
+    foreach ($list as [$key, $label]) {
+        $v = $value($key);
+        $out .= $row($label, $escape($v !== '' ? $v : '—'));
+    }
+    return $out;
+};
 
 $fileNote = fn($name, $size) => $name
     ? $escape($name) . ' — attached (' . round($size / 1024) . ' KB)'
@@ -154,11 +165,11 @@ $lyricsBlock = $lyrics === '' ? '' :
 
 $html = '<div style="font:15px -apple-system,Segoe UI,sans-serif;color:#111">'
     . '<p style="margin:0 0 20px">New release submitted for distribution.</p>'
-    . '<table style="border-collapse:collapse">' . $rows
-    . '<tr><td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">Track audio</td>'
-    . '<td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">' . $audioNote . '</td></tr>'
-    . '<tr><td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">Cover art</td>'
-    . '<td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">' . $coverNote . '</td></tr>'
+    . '<table style="border-collapse:collapse">'
+    . $textRows(NUMBERED)
+    . $row('10 Cover art', $coverNote)
+    . $textRows(EXTRA)
+    . $row('Track audio', $audioNote)
     . '</table>' . $lyricsBlock . '</div>';
 
 $payload = [

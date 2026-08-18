@@ -31,7 +31,7 @@
 <meta name="twitter:description" content="Vocal, mixing and mastering preset chains built on real client work.">
 <meta name="twitter:image" content="https://mstpd.com/assets/img/og-cover.jpg">
 
-<link rel="stylesheet" href="css/style.css?v=17">
+<link rel="stylesheet" href="css/style.css?v=18">
 </head>
 <body>
 
@@ -308,33 +308,28 @@
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="field">
-        <label for="d-artist" data-i18n="d.artist">Artist's full name</label>
+        <label for="d-artist"><span class="field__num" aria-hidden="true">01</span><span data-i18n="d.artist">Artist's full name</span></label>
         <input id="d-artist" name="artist" type="text" autocomplete="name" placeholder="Full name" data-i18n-ph="d.artist_ph">
         <p class="field__hint" data-i18n="d.artist_hint">Full legal name the artist is registered under.</p>
       </div>
-      <div class="field">
-        <label for="d-mail" data-i18n="form.email">Email</label>
-        <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
-        <p class="field__hint" data-i18n="d.email_hint">So I can reply about the release.</p>
-      </div>
-      <div class="field">
-        <label for="d-release" data-i18n="d.release">Release title</label>
+<div class="field">
+        <label for="d-release"><span class="field__num" aria-hidden="true">02</span><span data-i18n="d.release">Release title</span></label>
         <input id="d-release" name="release" type="text" placeholder="Track or album title" data-i18n-ph="d.release_ph">
       </div>
-      <div class="field">
-        <label for="d-version" data-i18n="d.version">Version / subtitle</label>
+<div class="field">
+        <label for="d-version"><span class="field__num" aria-hidden="true">03</span><span data-i18n="d.version">Version / subtitle</span></label>
         <input id="d-version" name="version" type="text" placeholder="Remix, Live, Deluxe…">
         <p class="field__hint" data-i18n="d.version_hint">E.g. Remix, Live, Deluxe, Anniversary — leave blank if none.</p>
       </div>
-      <div class="field">
-        <label for="d-performer" data-i18n="d.performer">Main performer(s)</label>
+<div class="field">
+        <label for="d-performer"><span class="field__num" aria-hidden="true">04</span><span data-i18n="d.performer">Main performer(s)</span></label>
         <input id="d-performer" name="performer" type="text" placeholder="Artist name(s)" data-i18n-ph="d.performer_ph">
         <p class="field__hint" data-i18n="d.performer_hint">List everyone if it's a collab — the release will appear on every artist's profile.</p>
       </div>
-      <div class="field">
+<div class="field">
         <!-- no `for`: the label covers a variable set of rows, not one
              input, so the group carries the association instead -->
-        <label id="d-feat-label" data-i18n="d.feat">Featuring</label>
+        <label id="d-feat-label"><span class="field__num" aria-hidden="true">05</span><span data-i18n="d.feat">Featuring</span></label>
         <div class="multi" id="featRows" role="group" aria-labelledby="d-feat-label">
           <div class="multi__row">
             <input class="multi__input" type="text" placeholder="feat. …" aria-label="Featured artist">
@@ -352,7 +347,49 @@
         <input type="hidden" name="feat" id="d-feat">
         <p class="field__hint" data-i18n="d.feat_hint">Guest artists, if any — leave blank if none.</p>
       </div>
-      <div class="field">
+<div class="field">
+        <label for="d-genre"><span class="field__num" aria-hidden="true">06</span><span data-i18n="d.genre">Genre</span></label>
+        <input id="d-genre" name="genre" type="text" placeholder="e.g. Hip-Hop" data-i18n-ph="d.genre_ph">
+      </div>
+<div class="field">
+        <label for="d-subgenre"><span class="field__num" aria-hidden="true">07</span><span data-i18n="d.subgenre">Subgenre</span></label>
+        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap" data-i18n-ph="d.subgenre_ph">
+      </div>
+<div class="field">
+        <label><span class="field__num" aria-hidden="true">08</span><span data-i18n="d.format">Format</span></label>
+        <div class="pill-group" role="radiogroup" aria-label="Format">
+          <input class="pill-group__input" type="radio" name="format" id="d-format-single" value="Single" checked>
+          <label class="pill-group__btn" for="d-format-single" data-i18n="d.single">Single</label>
+          <input class="pill-group__input" type="radio" name="format" id="d-format-album" value="Album">
+          <label class="pill-group__btn" for="d-format-album" data-i18n="d.album">Album</label>
+        </div>
+      </div>
+<div class="field">
+        <label><span class="field__num" aria-hidden="true">09</span><span data-i18n="d.explicit">Explicit content</span></label>
+        <div class="pill-group" role="radiogroup" aria-label="Explicit content">
+          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-no" value="No" checked>
+          <label class="pill-group__btn" for="d-explicit-no" data-i18n="d.no">No</label>
+          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-yes" value="Yes">
+          <label class="pill-group__btn" for="d-explicit-yes" data-i18n="d.yes">Yes</label>
+        </div>
+      </div>
+<div class="field field--wide">
+        <label for="d-cover"><span class="field__num" aria-hidden="true">10</span><span data-i18n="d.cover">Track cover</span></label>
+        <input id="d-cover" name="cover" type="file" accept="image/*">
+        <p class="field__hint" data-i18n="d.cover_hint">JPEG, 1440×1440 or 3000×3000&nbsp;px is what stores want — not enforced here. Up to 4&nbsp;MB.</p>
+        <p class="filenote" id="coverNote" role="status"></p>
+      </div>
+<div class="field">
+        <label for="d-mail" data-i18n="form.email">Email</label>
+        <input id="d-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
+        <p class="field__hint" data-i18n="d.email_hint">So I can reply about the release.</p>
+      </div>
+<div class="field">
+        <label for="d-contact" data-i18n="d.contact">Telegram or Instagram</label>
+        <input id="d-contact" name="contact" type="text" placeholder="@handle" data-i18n-ph="d.contact_ph">
+        <p class="field__hint" data-i18n="d.contact_hint">Artist's or manager's handle, in case it's quicker to reach you there.</p>
+      </div>
+<div class="field">
         <!-- same repeatable-rows pattern as Featuring above: a release can
              have several producers, and each row is one full name -->
         <label id="d-producer-label" data-i18n="d.producer">Producers</label>
@@ -371,33 +408,7 @@
         <input type="hidden" name="producer" id="d-producer">
         <p class="field__hint" data-i18n="d.producer_hint">Everyone who made the beat — credited on the release.</p>
       </div>
-      <div class="field">
-        <label for="d-genre" data-i18n="d.genre">Genre</label>
-        <input id="d-genre" name="genre" type="text" placeholder="e.g. Hip-Hop" data-i18n-ph="d.genre_ph">
-      </div>
-      <div class="field">
-        <label for="d-subgenre" data-i18n="d.subgenre">Subgenre</label>
-        <input id="d-subgenre" name="subgenre" type="text" placeholder="e.g. Trap" data-i18n-ph="d.subgenre_ph">
-      </div>
-      <div class="field">
-        <label data-i18n="d.format">Format</label>
-        <div class="pill-group" role="radiogroup" aria-label="Format">
-          <input class="pill-group__input" type="radio" name="format" id="d-format-single" value="Single" checked>
-          <label class="pill-group__btn" for="d-format-single" data-i18n="d.single">Single</label>
-          <input class="pill-group__input" type="radio" name="format" id="d-format-album" value="Album">
-          <label class="pill-group__btn" for="d-format-album" data-i18n="d.album">Album</label>
-        </div>
-      </div>
-      <div class="field">
-        <label data-i18n="d.explicit">Explicit content</label>
-        <div class="pill-group" role="radiogroup" aria-label="Explicit content">
-          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-no" value="No" checked>
-          <label class="pill-group__btn" for="d-explicit-no" data-i18n="d.no">No</label>
-          <input class="pill-group__input" type="radio" name="explicit" id="d-explicit-yes" value="Yes">
-          <label class="pill-group__btn" for="d-explicit-yes" data-i18n="d.yes">Yes</label>
-        </div>
-      </div>
-      <div class="field">
+<div class="field">
         <label data-i18n="d.adm">Apple Digital Mastering</label>
         <div class="pill-group" role="radiogroup" aria-label="Apple Digital Mastering">
           <input class="pill-group__input" type="radio" name="adm" id="d-adm-no" value="No" checked>
@@ -407,27 +418,16 @@
         </div>
         <p class="field__hint" data-i18n="d.adm_hint">Master to Apple Digital Masters spec, if this is going out on Apple Music.</p>
       </div>
-      <div class="field">
-        <label for="d-contact" data-i18n="d.contact">Telegram or Instagram</label>
-        <input id="d-contact" name="contact" type="text" placeholder="@handle" data-i18n-ph="d.contact_ph">
-        <p class="field__hint" data-i18n="d.contact_hint">Artist's or manager's handle, in case it's quicker to reach you there.</p>
-      </div>
-      <div class="field field--wide">
+<div class="field field--wide">
         <label for="d-lyrics" data-i18n="d.lyrics">Lyrics</label>
         <textarea id="d-lyrics" name="lyrics" rows="8" placeholder="Paste the lyrics…" data-i18n-ph="d.lyrics_ph"></textarea>
         <p class="field__hint" data-i18n="d.lyrics_hint">Used for the lyrics on streaming services — leave blank for an instrumental.</p>
       </div>
-      <div class="field field--wide">
+<div class="field field--wide">
         <label for="d-audio" data-i18n="d.audio">Track audio</label>
         <input id="d-audio" name="audio" type="file" accept=".wav,audio/wav,audio/x-wav,audio/wave">
         <p class="field__hint" data-i18n="d.audio_hint">WAV, 16 or 24-bit, 44.1 or 48&nbsp;kHz is what stores want — not enforced here. Up to 28&nbsp;MB.</p>
         <p class="filenote" id="audioNote" role="status"></p>
-      </div>
-      <div class="field field--wide">
-        <label for="d-cover" data-i18n="d.cover">Track cover</label>
-        <input id="d-cover" name="cover" type="file" accept="image/*">
-        <p class="field__hint" data-i18n="d.cover_hint">Square and at least 3000×3000&nbsp;px is what stores want — not enforced here. Up to 4&nbsp;MB.</p>
-        <p class="filenote" id="coverNote" role="status"></p>
       </div>
       <button class="btn btn--solid form__submit" type="submit">
         <span data-i18n="d.send">Send for distribution</span>
@@ -443,7 +443,7 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=18"></script>
+<script src="js/i18n.js?v=19"></script>
 <script src="js/main.js?v=14"></script>
 </body>
 </html>

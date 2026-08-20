@@ -756,11 +756,34 @@
     }
   };
 
+  /* ── one-time form token ──────────────────────────────────
+     The endpoint signs a timestamp and hands it back on GET; the POST is
+     only accepted with a valid, recent one. It costs a real visitor
+     nothing — the fetch happens while they're reading the terms — but a
+     bot posting straight at /api/distro never asked for a token and so
+     never has one, which is exactly how the spam has been arriving.
+     Fetched per opening rather than per page load, so it can't go stale
+     in a tab left open for hours. */
+  const DISTRO_ENDPOINT = '/api/distro';
+  const tokenField = $('#distroFormToken');
+
+  const fetchFormToken = async () => {
+    if (!tokenField) return '';
+    try {
+      const res = await fetch(DISTRO_ENDPOINT, { headers: { Accept: 'application/json' } });
+      const { token } = await res.json();
+      if (token) tokenField.value = token;
+      return tokenField.value;
+    } catch {
+      return tokenField.value;          // keep whatever we already had
+    }
+  };
+
   bindModal(distroModal, {
     triggerSelector: '[data-distro-modal]',
     // step 1 has nothing to type into, so the first field is only worth
     // focusing once step 2 is the one on screen
-    onOpen: () => showDistroStep(1),
+    onOpen: () => { showDistroStep(1); fetchFormToken(); },
   });
 
   const distroNext = $('#distroNext');
@@ -882,6 +905,11 @@
         say(T('js.captcha', 'Please confirm you\'re not a robot.'), 'error');
         return;
       }
+
+      /* One retry if the token fetch failed when the modal opened — a
+         blip there shouldn't cost a real visitor their submission. */
+      const tokenInput = $('input[name="formtoken"]', form);
+      if (tokenInput && !tokenInput.value) await fetchFormToken();
 
       const data = new FormData(form);
       if (data.get('botcheck')) return;               // honeypot tripped

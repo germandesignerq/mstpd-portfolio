@@ -24,13 +24,33 @@ function respond($body, $status = 200) {
     exit;
 }
 
+$configPath = __DIR__ . '/../../distro-config.php';
+$RESEND_API_KEY = null;
+if (is_file($configPath)) require $configPath;
+
+/* ── one-time form token ───────────────────────────────────
+   A GET hands out a signed timestamp; a POST is only accepted with a
+   valid, recent one. The point is not cryptographic strength — it's that
+   getting a token requires making a request the drive-by spam bots never
+   make: they POST straight here without ever loading the page.
+
+   Signed with $FORM_SECRET when set, otherwise with the Resend key, which
+   is already in the same config — the secret never leaves the server and
+   the token reveals nothing about it, so this needs no new setup. */
+const TOKEN_MIN_AGE = 3;            // seconds; a human can't fill the form faster
+const TOKEN_MAX_AGE = 2 * 60 * 60;  // and shouldn't take longer than this
+
+$formSecret = (!empty($FORM_SECRET) ? $FORM_SECRET : $RESEND_API_KEY) ?: '';
+$signStamp = fn($stamp) => substr(hash_hmac('sha256', (string) $stamp, $formSecret), 0, 32);
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $stamp = time();
+    respond(['token' => $stamp . '.' . $signStamp($stamp)]);
+}
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(['success' => false, 'message' => 'Method not allowed.'], 405);
 }
 
-$configPath = __DIR__ . '/../../distro-config.php';
-$RESEND_API_KEY = null;
-if (is_file($configPath)) require $configPath;
 if (empty($RESEND_API_KEY)) {
     respond(['success' => false, 'message' => 'Mail service is not configured yet.'], 500);
 }
@@ -76,6 +96,15 @@ const EXTRA = [
 const REQUIRED = ['email'];
 
 if (!empty($_POST['botcheck'])) respond(['success' => true]); // honeypot: look successful, send nothing
+
+$parts = explode('.', (string) ($_POST['formtoken'] ?? ''), 2);
+$stamp = $parts[0] ?? '';
+$sig   = $parts[1] ?? '';
+$age   = ctype_digit($stamp) ? time() - (int) $stamp : null;
+if ($age === null || $age < TOKEN_MIN_AGE || $age > TOKEN_MAX_AGE
+    || !hash_equals($signStamp($stamp), $sig)) {   // hash_equals: constant time
+    respond(['success' => false, 'message' => 'This form expired — please reopen it and try again.'], 400);
+}
 
 /* hCaptcha. Only enforced once $HCAPTCHA_SECRET is defined in the same
    config file as the Resend key, so the form keeps working before the keys

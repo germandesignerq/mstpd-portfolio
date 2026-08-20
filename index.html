@@ -1285,6 +1285,9 @@
 
     <form class="form form--grid" id="distroForm" novalidate>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <!-- signed, short-lived, fetched from the endpoint when the modal opens.
+           A bot posting straight at /api/distro never has one. -->
+      <input type="hidden" name="formtoken" id="distroFormToken">
 
       <div class="field">
         <!-- same repeatable-rows pattern as Featuring and Producers: a
@@ -1444,7 +1447,7 @@
 
 <script src="js/i18n.js?v=24"></script>
 <script src="js/credits-extra.js?v=2"></script>
-<script src="js/main.js?v=19"></script>
+<script src="js/main.js?v=20"></script>
 <!-- renders hCaptcha. Loaded after main.js on purpose: main.js stamps the
      distribution widget with its own site key first, and this script is what
      pulls in hcaptcha api.js, which renders every widget it finds. -->

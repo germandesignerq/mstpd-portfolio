@@ -57,6 +57,44 @@ const EXTRA = [
    worse-timed version of the same refusal. */
 const REQUIRED = ['email'];
 
+/* ── one-time form token ───────────────────────────────────
+   A GET hands out a signed timestamp; a POST is only accepted with a
+   valid, recent one. The point is not cryptographic strength — it's that
+   getting a token requires making a request the drive-by spam bots never
+   make: they POST straight here without ever loading the page.
+
+   Signed with FORM_SECRET when set, otherwise with the Resend key, which
+   is already configured on both hosts — the secret never leaves the
+   server and the token reveals nothing about it, so this needs no new
+   configuration to start working. */
+const TOKEN_MIN_AGE = 3 * 1000;             // a human can't fill the form faster
+const TOKEN_MAX_AGE = 2 * 60 * 60 * 1000;   // and shouldn't take longer than this
+
+const formSecret = () => process.env.FORM_SECRET || process.env.RESEND_API_KEY || '';
+
+const signStamp = async stamp => {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw', enc.encode(formSecret()), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(String(stamp)));
+  return [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+};
+
+const tokenValid = async token => {
+  const [stamp, sig] = String(token || '').split('.');
+  if (!stamp || !sig || !/^\d+$/.test(stamp)) return false;
+
+  const age = Date.now() - Number(stamp);
+  if (age < TOKEN_MIN_AGE || age > TOKEN_MAX_AGE) return false;
+
+  const expected = await signStamp(stamp);
+  // length-independent compare, so a mismatch tells nothing by how long it took
+  if (expected.length !== sig.length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ sig.charCodeAt(i);
+  return diff === 0;
+};
+
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
@@ -80,6 +118,11 @@ const toBase64 = buffer => {
 };
 
 export default async function handler(request) {
+  // the page asks for a token here as the modal opens
+  if (request.method === 'GET') {
+    const stamp = Date.now();
+    return json({ token: `${stamp}.${await signStamp(stamp)}` });
+  }
   if (request.method !== 'POST') return json({ success: false, message: 'Method not allowed.' }, 405);
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -93,6 +136,10 @@ export default async function handler(request) {
   }
 
   if (form.get('botcheck')) return json({ success: true });   // honeypot: look successful, send nothing
+
+  if (!(await tokenValid(form.get('formtoken')))) {
+    return json({ success: false, message: 'This form expired — please reopen it and try again.' }, 400);
+  }
 
   /* hCaptcha. Only enforced once HCAPTCHA_SECRET is set, so the form keeps
      working before the keys exist — but note that until then this endpoint

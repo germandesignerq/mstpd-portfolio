@@ -19,3 +19,8 @@ $RESEND_API_KEY = 're_...';
    Secret key from https://dashboard.hcaptcha.com — the matching *site*
    key goes in js/main.js as HCAPTCHA_SITE_KEY. */
 $HCAPTCHA_SECRET = '';
+
+/* Optional. Signs the one-time form token. Leave it out and the Resend
+   key above is used instead, which works fine — set this only if you'd
+   rather the two secrets be separate. */
+$FORM_SECRET = '';

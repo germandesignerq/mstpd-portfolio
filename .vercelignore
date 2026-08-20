@@ -6,3 +6,6 @@ api/distro.php
 distro-config.php
 distro-config.example.php
 .htaccess
+
+# Local preview server only — nothing should serve it as a static file.
+serve.js

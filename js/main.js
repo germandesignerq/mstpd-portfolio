@@ -819,7 +819,7 @@
      in client-side code) and put the matching secret in the backend as
      HCAPTCHA_SECRET; until then the widget below falls back to the shared
      key, which makes it real in the browser but unverifiable server-side. */
-  const HCAPTCHA_SITE_KEY = '';
+  const HCAPTCHA_SITE_KEY = '5f5c8836-fac4-4eea-89e0-b65887000d0a';
 
   /* Set before the Web3Forms script loads hcaptcha api.js — that script
      renders every .h-captcha it finds, and one without a key errors. */

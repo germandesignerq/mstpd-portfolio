@@ -1382,10 +1382,18 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   margin:0;
   font-size:13px; line-height:1.5; color:var(--faint);
 }
-/* hCaptcha renders its own iframe here; this only reserves the room and
-   spans the full width of the two-column distribution grid */
+/* hCaptcha renders its own iframe in here — fixed-size and cross-origin, so
+   its own colors and corners are outside our reach. What's left within our
+   control is the frame around it: matched to the site's own dark-card
+   palette and hairline border rather than left bare, so a foreign box on
+   flat black reads as a placed component instead of a stuck-on iframe. */
 .captcha{ margin-top:4px; }
 .captcha:empty{ display:none; }          /* no widget until a key exists */
+.captcha:not(:empty){
+  display:flex; width:fit-content; margin:4px auto 0;
+  padding:14px 18px; background:var(--bg-2);
+  border:1px solid var(--line); border-radius:16px;
+}
 .form--grid .captcha{ grid-column:1 / -1; }
 
 .form__submit{ justify-self:start; margin-top:8px; }

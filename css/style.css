@@ -435,6 +435,28 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   line-height:1.45;
   letter-spacing:-.025em;
   color:var(--fg);
+  text-wrap:balance;   /* no single orphan word stranded on its own line */
+}
+/* Same gradient-wipe idiom as the title's waveform reveal (.is-emerging
+   above), just driven by a plain transition instead of a canvas-synced
+   custom property — this text doesn't need frame-accurate sync to
+   anything, so a toggled class is enough. Overrides .reveal's generic
+   rise: the wipe carries the motion here instead of a translateY. */
+.hero__intro.reveal{
+  transform:none;
+  -webkit-mask-image:linear-gradient(90deg, #000 0, #000 33%, transparent 67%, transparent);
+  mask-image:linear-gradient(90deg, #000 0, #000 33%, transparent 67%, transparent);
+  -webkit-mask-size:300% 100%;
+  mask-size:300% 100%;
+  -webkit-mask-position:100% 0;
+  mask-position:100% 0;
+  transition:opacity .9s ease,
+    -webkit-mask-position 1.05s var(--ease) .1s,
+    mask-position 1.05s var(--ease) .1s;
+}
+.hero__intro.reveal.is-in{
+  -webkit-mask-position:0 0;
+  mask-position:0 0;
 }
 .hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:clamp(28px,4vw,48px); }
 
@@ -2066,6 +2088,7 @@ body.np-open{ overflow:hidden; }
     transition-duration:.001ms !important;
   }
   .reveal{ opacity:1; transform:none; }
+  .hero__intro.reveal{ -webkit-mask-image:none; mask-image:none; }
   .hero__title .reveal-line{ transform:none; }
   .hero__media img{ opacity:1; transform:none; }
   .hero__foot{ opacity:1; transform:none; }

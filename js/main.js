@@ -785,9 +785,45 @@
   const MAIL_TO = 'offmstpd@gmail.com';
   const keyReady = /^[0-9a-f-]{30,}$/i.test(FORM_ACCESS_KEY);
 
-  /* Two or more name parts, each at least two letters. \p{L} so Cyrillic
-     and Latin both pass; hyphens and apostrophes are common in surnames
-     (Ivanov-Petrov, O'Brien) but can't start or end a part. */
+  /* ── hCaptcha ───────────────────────────────────────────────
+     The enquiry forms carry data-captcha="true" and nothing else: the
+     Web3Forms script stamps its own shared site key on those and verifies
+     the token at their end, so they need no credentials from us.
+
+     The distribution form posts to our own endpoint instead, so it can't
+     borrow that — it needs its own key pair. Paste the site key here (it
+     is public, meant to sit in client-side code) and put the secret in
+     the backend as HCAPTCHA_SECRET. Leave it empty and the widget simply
+     never appears and nothing is enforced, so the form keeps working. */
+  const HCAPTCHA_SITE_KEY = '';
+
+  const captchaHost = $('#distroCaptcha');
+  if (captchaHost && HCAPTCHA_SITE_KEY) {
+    /* Set before the Web3Forms script loads hcaptcha api.js — that script
+       renders every .h-captcha it finds, and one without a key errors. */
+    captchaHost.className = 'h-captcha captcha';
+    captchaHost.dataset.sitekey = HCAPTCHA_SITE_KEY;
+    captchaHost.dataset.theme = 'dark';
+  }
+
+  /* the token lands in a textarea hCaptcha injects into the form */
+  const captchaToken = form => {
+    const el = $('textarea[name="h-captcha-response"]', form);
+    return el ? el.value : '';
+  };
+  const captchaPresent = form => !!$('.h-captcha', form);
+  /* Reset by widget id, not a bare reset(): several widgets share the page
+     and a bare call has no way to know which one this form owns. Auto-render
+     doesn't expose the id as an attribute, but it names the response
+     textarea after it — h-captcha-response-<id>. */
+  const CAPTCHA_FIELD = 'h-captcha-response';
+  const resetCaptcha = form => {
+    const el = $(`textarea[name="${CAPTCHA_FIELD}"]`, form);
+    if (!window.hcaptcha || !el) return;
+    const id = el.id.startsWith(`${CAPTCHA_FIELD}-`) ? el.id.slice(CAPTCHA_FIELD.length + 1) : '';
+    try { id ? window.hcaptcha.reset(id) : window.hcaptcha.reset(); }
+    catch { /* not rendered yet */ }
+  };
 
   const bindForm = (form, { requiredFields, validators = {}, buildSubject, buildFields,
                             endpoint, preflight }) => {
@@ -840,6 +876,13 @@
       const blocker = preflight && preflight();
       if (blocker) { say(blocker, 'error'); return; }
 
+      /* Say so here rather than letting the server bounce it: the visitor
+         can see the widget sitting right there unsolved. */
+      if (captchaPresent(form) && !captchaToken(form)) {
+        say(T('js.captcha', 'Please confirm you\'re not a robot.'), 'error');
+        return;
+      }
+
       const data = new FormData(form);
       if (data.get('botcheck')) return;               // honeypot tripped
       const subject = buildSubject(data);
@@ -872,6 +915,9 @@
                 subject,
                 from_name: 'mstpd.com',
                 replyto: data.get('email') || undefined,
+                /* the endpoint path sends FormData, which already carries
+                   the textarea; the JSON path has to pass it by hand */
+                'h-captcha-response': captchaToken(form) || undefined,
                 ...fields,
               }),
             });
@@ -883,9 +929,15 @@
         }
 
         form.reset();                                  // fires 'reset', which clears the cover note
+        resetCaptcha(form);                            // the token was single-use
         $$('.field.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
         say(T('js.sent', 'Sent — I\'ll get back to you shortly.'), 'ok');
       } catch (err) {
+        /* If the server answered at all it has already spent the token, so
+           the widget has to be reset or the retry is refused for the wrong
+           reason. A network failure never reached it, so leave that alone. */
+        if (err.fromServer) resetCaptcha(form);
+
         // falling back to mailto would silently drop the attachment, so the
         // file path reports the failure instead of pretending to degrade
         if (endpoint) {

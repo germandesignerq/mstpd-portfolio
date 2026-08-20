@@ -77,6 +77,33 @@ const REQUIRED = ['email'];
 
 if (!empty($_POST['botcheck'])) respond(['success' => true]); // honeypot: look successful, send nothing
 
+/* hCaptcha. Only enforced once $HCAPTCHA_SECRET is defined in the same
+   config file as the Resend key, so the form keeps working before the keys
+   exist — but note that until then this endpoint is open to a direct POST,
+   which is how the spam was arriving: a bot that never loads the page
+   simply omits the honeypot and sails through. The token is what can't be
+   faked without a browser. */
+if (!empty($HCAPTCHA_SECRET)) {
+    $token = trim($_POST['h-captcha-response'] ?? '');
+    if ($token === '') {
+        respond(['success' => false, 'message' => "Please confirm you're not a robot."], 400);
+    }
+
+    $vch = curl_init('https://api.hcaptcha.com/siteverify');
+    curl_setopt_array($vch, [
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POSTFIELDS => http_build_query(['secret' => $HCAPTCHA_SECRET, 'response' => $token]),
+    ]);
+    $vres = curl_exec($vch);
+    curl_close($vch);
+    $verify = json_decode($vres ?: '', true);
+
+    if (empty($verify['success'])) {
+        respond(['success' => false, 'message' => 'Captcha check failed — please try again.'], 400);
+    }
+}
+
 $value = fn($k) => trim($_POST[$k] ?? '');
 
 $missing = array_filter(REQUIRED, fn($k) => $value($k) === '');

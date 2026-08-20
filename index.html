@@ -36,7 +36,7 @@
 <meta name="twitter:image" content="https://mstpd.com/assets/img/og-cover.jpg">
 
 <link rel="preload" as="image" href="assets/img/portrait.jpg">
-<link rel="stylesheet" href="css/style.css?v=22">
+<link rel="stylesheet" href="css/style.css?v=23">
 
 <!-- Structured data. Every claim here is stated somewhere on the page —
      the packages and their prices come from the Services cards, the credit
@@ -1043,6 +1043,7 @@
             <label for="c-msg" data-i18n="form.msg">Message</label>
             <textarea id="c-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
           </div>
+          <div class="h-captcha captcha" data-captcha="true" data-theme="dark"></div>
           <button class="btn btn--solid form__submit" type="submit">
             <span data-i18n="form.send">Send enquiry</span>
             <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
@@ -1175,6 +1176,7 @@
         <label for="m-msg" data-i18n="form.msg">Message</label>
         <textarea id="m-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
       </div>
+      <div class="h-captcha captcha" data-captcha="true" data-theme="dark"></div>
       <button class="btn btn--solid form__submit" type="submit">
         <span data-i18n="form.send">Send enquiry</span>
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
@@ -1425,6 +1427,7 @@
         <p class="field__hint" data-i18n="d.audio_hint">WAV, 16 or 24-bit, 44.1 or 48&nbsp;kHz is what stores want — not enforced here. Up to 28&nbsp;MB.</p>
         <p class="filenote" id="audioNote" role="status"></p>
       </div>
+      <div class="captcha" id="distroCaptcha"></div>
       <button class="btn btn--solid form__submit" type="submit">
         <span data-i18n="d.send">Send for distribution</span>
         <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
@@ -1439,8 +1442,12 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=23"></script>
+<script src="js/i18n.js?v=24"></script>
 <script src="js/credits-extra.js?v=2"></script>
-<script src="js/main.js?v=17"></script>
+<script src="js/main.js?v=19"></script>
+<!-- renders hCaptcha. Loaded after main.js on purpose: main.js stamps the
+     distribution widget with its own site key first, and this script is what
+     pulls in hcaptcha api.js, which renders every widget it finds. -->
+<script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>

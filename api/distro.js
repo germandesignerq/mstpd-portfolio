@@ -94,6 +94,27 @@ export default async function handler(request) {
 
   if (form.get('botcheck')) return json({ success: true });   // honeypot: look successful, send nothing
 
+  /* hCaptcha. Only enforced once HCAPTCHA_SECRET is set, so the form keeps
+     working before the keys exist — but note that until then this endpoint
+     is open to a direct POST, which is how the spam was arriving: a bot
+     that never loads the page simply omits the honeypot and sails through.
+     The token is what can't be faked without a browser. */
+  const hcaptchaSecret = process.env.HCAPTCHA_SECRET;
+  if (hcaptchaSecret) {
+    const token = (form.get('h-captcha-response') || '').toString();
+    if (!token) return json({ success: false, message: 'Please confirm you\'re not a robot.' }, 400);
+
+    const verify = await fetch('https://api.hcaptcha.com/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: hcaptchaSecret, response: token }),
+    }).then(r => r.json()).catch(() => null);
+
+    if (!verify || verify.success !== true) {
+      return json({ success: false, message: 'Captcha check failed — please try again.' }, 400);
+    }
+  }
+
   const value = k => (form.get(k) || '').toString().trim();
 
   const missing = REQUIRED.filter(k => !value(k));

@@ -1382,6 +1382,12 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   margin:0;
   font-size:13px; line-height:1.5; color:var(--faint);
 }
+/* hCaptcha renders its own iframe here; this only reserves the room and
+   spans the full width of the two-column distribution grid */
+.captcha{ margin-top:4px; }
+.captcha:empty{ display:none; }          /* no widget until a key exists */
+.form--grid .captcha{ grid-column:1 / -1; }
+
 .form__submit{ justify-self:start; margin-top:8px; }
 
 /* A variable number of name rows, each with a remove control — used by

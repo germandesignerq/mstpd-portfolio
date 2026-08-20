@@ -13,3 +13,9 @@
    https://resend.com. */
 
 $RESEND_API_KEY = 're_...';
+
+/* Optional. Set this and the distribution form starts requiring an
+   hCaptcha token; leave it out and nothing is enforced.
+   Secret key from https://dashboard.hcaptcha.com — the matching *site*
+   key goes in js/main.js as HCAPTCHA_SITE_KEY. */
+$HCAPTCHA_SECRET = '';

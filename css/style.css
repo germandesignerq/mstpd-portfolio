@@ -1609,9 +1609,9 @@ body.modal-open{ overflow:hidden; }
    the button said the same thing at 13px, easy to miss once the fields
    beside it are all empty again. This takes the space the form had
    instead, so the confirmation is what's left to read. */
-.modal__success{ padding:4px 0; }
+.modal__success{ padding:4px 0; text-align:center; }
 .modal__success-icon{
-  display:grid; place-items:center;
+  display:inline-grid; place-items:center;
   width:52px; height:52px; margin-bottom:22px;
   border-radius:50%;
   background:rgba(217,88,60,.12);
@@ -1623,13 +1623,13 @@ body.modal-open{ overflow:hidden; }
   stroke-linecap:round; stroke-linejoin:round;
 }
 .modal__success-title{
-  margin:0; max-width:32ch;
+  margin:0 auto; max-width:32ch;
   font-size:clamp(20px,3vw,24px);
   line-height:1.35; letter-spacing:-.02em; font-weight:500;
   color:var(--fg);
 }
 .modal__success-sub{
-  margin:10px 0 0; max-width:34ch;
+  margin:10px auto 0; max-width:34ch;
   color:var(--muted); font-size:16px; line-height:1.55;
 }
 .modal__success-link{ margin-top:26px; }

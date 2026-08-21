@@ -1026,29 +1026,41 @@
       </div>
 
       <div class="contact__right reveal">
-        <p class="contact__formlead" data-i18n="con.formlead">Name, email, and what you need — I'll reply within a day.</p>
+        <div id="contactBody">
+          <p class="contact__formlead" data-i18n="con.formlead">Name, email, and what you need — I'll reply within a day.</p>
 
-        <form class="form" id="contactForm" novalidate>
-          <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <form class="form" id="contactForm" novalidate>
+            <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-          <div class="field">
-            <label for="c-name" data-i18n="form.name">Name</label>
-            <input id="c-name" name="name" type="text" autocomplete="name" required placeholder="Your name" data-i18n-ph="form.name_ph">
-          </div>
-          <div class="field">
-            <label for="c-mail" data-i18n="form.email">Email</label>
-            <input id="c-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
-          </div>
-          <div class="field">
-            <label for="c-msg" data-i18n="form.msg">Message</label>
-            <textarea id="c-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
-          </div>
-          <button class="btn btn--solid form__submit" type="submit">
-            <span data-i18n="form.send">Send enquiry</span>
-            <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
-          </button>
-          <p class="form__note" id="contactFormNote" role="status"></p>
-        </form>
+            <div class="field">
+              <label for="c-name" data-i18n="form.name">Name</label>
+              <input id="c-name" name="name" type="text" autocomplete="name" required placeholder="Your name" data-i18n-ph="form.name_ph">
+            </div>
+            <div class="field">
+              <label for="c-mail" data-i18n="form.email">Email</label>
+              <input id="c-mail" name="email" type="email" autocomplete="email" required placeholder="you@label.com">
+            </div>
+            <div class="field">
+              <label for="c-msg" data-i18n="form.msg">Message</label>
+              <textarea id="c-msg" name="message" rows="4" required placeholder="Artist, number of tracks, deadline, reference…" data-i18n-ph="form.msg_ph"></textarea>
+            </div>
+            <button class="btn btn--solid form__submit" type="submit">
+              <span data-i18n="form.send">Send enquiry</span>
+              <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>
+            </button>
+            <p class="form__note" id="contactFormNote" role="status"></p>
+          </form>
+        </div>
+
+        <!-- swapped in for the body above once the send succeeds -->
+        <div class="modal__success" id="contactSuccess" hidden role="status">
+          <span class="modal__success-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 12"><path d="M1 6l5 5L15 1"/></svg>
+          </span>
+          <p class="modal__success-title" data-i18n="js.sent">Sent — I'll get back to you shortly.</p>
+          <p class="modal__success-sub" data-i18n="js.success_sub">While you wait, take a look at some of my work.</p>
+          <a class="btn btn--ghost modal__success-link" href="#work"><span data-i18n="hero.view_work">View work</span></a>
+        </div>
       </div>
     </div>
   </div>
@@ -1469,7 +1481,7 @@
 
 <script src="js/i18n.js?v=24"></script>
 <script src="js/credits-extra.js?v=2"></script>
-<script src="js/main.js?v=25"></script>
+<script src="js/main.js?v=26"></script>
 <!-- Only the distribution form carries a captcha now, on our own key —
      nothing on the page still needs Web3Forms' loader, which only existed
      to auto-detect data-captcha="true" and pull in hCaptcha's own script

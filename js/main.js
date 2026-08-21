@@ -1023,8 +1023,6 @@
       Message: data.get('message'),
     }),
   };
-  /* the inline Contact form has nothing to swap to — it just keeps the
-     small note. The modal has room for a real confirmation screen. */
   const modalBody = $('#modalBody');
   const modalSuccess = $('#modalSuccess');
   bindForm($('#modalForm'), {
@@ -1034,7 +1032,18 @@
       if (modalSuccess) modalSuccess.hidden = false;
     },
   });
-  bindForm($('#contactForm'), enquiry);
+
+  // same swap as the modal, just with nothing to reset it on reopen —
+  // there's no reopening, it's a static section, so it stays sent
+  const contactBody = $('#contactBody');
+  const contactSuccess = $('#contactSuccess');
+  bindForm($('#contactForm'), {
+    ...enquiry,
+    onSuccess: () => {
+      if (contactBody) contactBody.hidden = true;
+      if (contactSuccess) contactSuccess.hidden = false;
+    },
+  });
 
   /* ── attached files: reported, never refused ───────────────
      Nothing here blocks a submit. The notes just read back what was

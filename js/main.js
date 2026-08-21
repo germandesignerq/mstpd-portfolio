@@ -966,6 +966,7 @@
         if (!res.ok || json.success === false) {
           const err = new Error(json.message || 'Request failed');
           err.fromServer = Boolean(json.message);      // a real explanation, not a network blip
+          err.status = res.status;
           throw err;
         }
 
@@ -989,10 +990,17 @@
           /* Show what the endpoint actually said when it said something —
              the browser stopped checking file sizes, so "Track is larger
              than 28 MB" now only exists server-side, and burying it under
-             a generic line would leave no way to tell what went wrong. */
+             a generic line would leave no way to tell what went wrong.
+             A 413 with no JSON body is the platform itself rejecting an
+             oversized request before our own code ever runs (Vercel caps
+             every request at 4.5 MB) — worth naming specifically, since
+             otherwise "couldn't send" reads like a mystery rather than
+             what it actually is: try a smaller file. */
           say(err.fromServer
             ? err.message
-            : T('js.cant_send_direct', 'Couldn\'t send. Please email offmstpd@gmail.com directly.'), 'error');
+            : err.status === 413
+              ? T('js.file_too_large', 'That file is too large for this server to accept — try a smaller one.')
+              : T('js.cant_send_direct', 'Couldn\'t send. Please email offmstpd@gmail.com directly.'), 'error');
         } else {
           say(T('js.cant_send_mailto', 'Couldn\'t send. Opening your mail client instead…'), 'error');
           setTimeout(() => mailtoFallback(subject, fields), 800);

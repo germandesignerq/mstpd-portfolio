@@ -710,6 +710,15 @@
     });
   };
 
+  /* "View work" on a success screen is a plain <a href="#work">, so it has
+     to close its modal itself — otherwise the page is still locked behind
+     the overlay when the anchor jump happens. */
+  $$('.modal__success-link').forEach(a => a.addEventListener('click', () => {
+    openModals.forEach(m => { m.classList.remove('is-open'); m.setAttribute('aria-hidden', 'true'); });
+    openModals.clear();
+    document.body.classList.remove('modal-open');
+  }));
+
   /* the same modal serves the generic "get in touch" CTAs and the
      Services cards — the package block only appears for the latter */
   const pkgPick = $('#pkgPick');

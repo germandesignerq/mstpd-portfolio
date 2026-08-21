@@ -1419,6 +1419,12 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .form--grid .captcha{ grid-column:1 / -1; }
 
 .form__submit{ justify-self:start; margin-top:8px; }
+/* Distribution only, and only mobile/tablet — its own field runs
+   full-width there (single column below the grid's 700px breakpoint),
+   so a left-pinned pill sits oddly off to one side under it. */
+@media (max-width:900px){
+  .form--grid .form__submit{ justify-self:center; }
+}
 
 /* A variable number of name rows, each with a remove control — used by
    both Featuring and Producers, hence the neutral name.

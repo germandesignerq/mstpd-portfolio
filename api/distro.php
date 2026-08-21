@@ -1,17 +1,18 @@
 <?php
-/* Distribution form → email with the cover art and the track attached.
+/* Distribution form → email with the cover art attached and a link to
+   the track.
 
    PHP port of api/distro.js — shared hosts without a persistent Node
    runtime (e.g. IONOS Web Hosting) can't run the Vercel Edge function,
    so this calls the same Resend HTTP API via curl instead of fetch.
-   The JSON contract matches distro.js exactly, so js/main.js needs no changes.
+   The JSON contract matches distro.js exactly, so js/main.js needs no
+   per-host branching.
 
-   This is the backend that can actually take a WAV: Vercel refuses any
-   request body over 4.5 MB on every plan, while here the ceiling is this
-   server's own post_max_size / upload_max_filesize. If a submission with
-   a track comes back empty-handed, those two are the first thing to
-   check — PHP discards an oversized upload before this script runs, so
-   the check below reports it rather than sending a half-empty email.
+   The track itself never reaches this script: the browser uploads it
+   straight to Vercel Blob before submitting (js/main.js, api/blob-upload.js
+   on the Vercel host — mstpd.com has no Blob store of its own, so this
+   page's JS calls that endpoint cross-origin just for the upload token).
+   This only ever sees the resulting URL, as a plain POST field.
 
    Needs RESEND_API_KEY, defined in a config file kept OUTSIDE the web
    root (see distro-config.example.php for the expected path/format). */
@@ -62,9 +63,6 @@ const MAIL_TO = 'offmstpd@gmail.com';
 const MAIL_FROM = 'MSTPD site <mail@mstpd.com>';
 
 const MAX_BYTES = 4 * 1024 * 1024;
-/* Resend allows 40 MB per email *after* base64, which inflates by a third,
-   so the raw file has to stay near 28 — same number the browser enforces. */
-const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
 
 /* Labels double as the running order of the email body. */
 /* Two groups so the email reads in the same order as the form: the ten
@@ -138,14 +136,7 @@ $value = fn($k) => trim($_POST[$k] ?? '');
 $missing = array_filter(REQUIRED, fn($k) => $value($k) === '');
 if ($missing) respond(['success' => false, 'message' => 'Please fill in every required field.'], 400);
 
-/* An upload larger than post_max_size arrives with $_POST and $_FILES both
-   empty, and an oversized single file arrives as UPLOAD_ERR_INI_SIZE — say
-   so rather than quietly mailing a submission with no track in it. */
-if (!empty($_FILES['audio']) && $_FILES['audio']['error'] === UPLOAD_ERR_INI_SIZE) {
-    respond(['success' => false, 'message' => 'The track is larger than this server accepts.'], 413);
-}
-
-/* Both files are optional. The cover's format and dimensions aren't
+/* The cover's format and dimensions aren't
    policed — only its size, which is about what an email can carry rather
    than anything to do with the artwork. */
 $attachments = [];
@@ -170,24 +161,6 @@ if (!empty($_FILES['cover']) && $_FILES['cover']['error'] === UPLOAD_ERR_OK && $
     ];
 }
 
-$audioName = null;
-$audioSize = 0;
-if (!empty($_FILES['audio']) && $_FILES['audio']['error'] === UPLOAD_ERR_OK && $_FILES['audio']['size'] > 0) {
-    $audio = $_FILES['audio'];
-    $audioName = $audio['name'];
-    $audioSize = $audio['size'];
-
-    if ($audio['size'] > AUDIO_MAX_BYTES) {
-        respond(['success' => false, 'message' => 'Track is larger than 28 MB.'], 400);
-    }
-
-    $attachments[] = [
-        'filename' => $audioName ?: 'track.wav',
-        'content' => base64_encode(file_get_contents($audio['tmp_name'])),
-        'content_type' => 'audio/wav',
-    ];
-}
-
 $escape = fn($s) => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 
 $row = fn($label, $cell) => '<tr>'
@@ -204,11 +177,17 @@ $textRows = function (array $list) use ($value, $escape, $row) {
     return $out;
 };
 
-$fileNote = fn($name, $size) => $name
-    ? $escape($name) . ' — attached (' . round($size / 1024) . ' KB)'
+$coverNote = $coverName
+    ? $escape($coverName) . ' — attached (' . round($coverSize / 1024) . ' KB)'
     : 'not provided';
-$coverNote = $fileNote($coverName, $coverSize);
-$audioNote = $fileNote($audioName, $audioSize);
+
+/* Uploaded client-side straight to Vercel Blob — see the note at the top
+   of the file. A link rather than an attachment, so there's no size
+   ceiling worth naming here at all. */
+$audioUrl = $value('audioUrl');
+$audioNote = $audioUrl !== ''
+    ? '<a href="' . $escape($audioUrl) . '">' . $escape($audioUrl) . '</a>'
+    : 'not provided';
 
 /* Lyrics sit below the table, not in it: they run to dozens of lines,
    which a two-column row would squeeze. pre-wrap is what keeps the line

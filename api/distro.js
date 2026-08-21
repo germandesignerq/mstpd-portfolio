@@ -1,16 +1,17 @@
 /* =========================================================
-   Distribution form → email with the cover art and the track
-   attached.
+   Distribution form → email with the cover art attached and a
+   link to the track.
 
    Runs on Vercel's Edge runtime purely so `request.formData()`
    is available natively — that keeps the project dependency-free
    and with no build step, same as the rest of the site.
 
-   NOTE on the track: Vercel caps a function's request body at
-   4.5 MB on every plan, so a real WAV only gets through on the
-   PHP host (api/distro.php), where the ceiling is whatever that
-   server's post_max_size allows. Here anything larger is refused
-   by the platform before this code runs at all.
+   NOTE on the track: it never reaches this function's body at all.
+   Vercel caps every request at 4.5 MB regardless of what the code
+   does with it, so a real WAV can't ride along as a form field —
+   the browser uploads it straight to Vercel Blob before submitting
+   (see api/blob-upload.js and js/main.js), and this only receives
+   the resulting URL as a plain text field.
 
    Needs one environment variable in the Vercel project:
      RESEND_API_KEY — from resend.com
@@ -24,9 +25,6 @@ const MAIL_TO = 'offmstpd@gmail.com';
 const MAIL_FROM = 'MSTPD site <mail@mstpd.com>';
 
 const MAX_BYTES = 4 * 1024 * 1024;          // stays under Vercel's request cap
-/* Resend allows 40 MB per email *after* base64, which inflates by a third,
-   so the raw file has to stay near 28 — same number the browser enforces. */
-const AUDIO_MAX_BYTES = 28 * 1024 * 1024;
 
 /* Labels double as the running order of the email body. */
 /* Two groups so the email reads in the same order as the form: the ten
@@ -167,9 +165,9 @@ export default async function handler(request) {
   const missing = REQUIRED.filter(k => !value(k));
   if (missing.length) return json({ success: false, message: 'Please fill in every required field.' }, 400);
 
-  /* Both files are optional. The cover's format and dimensions aren't
-     policed — only its size, which is about what an email can carry
-     rather than anything to do with the artwork. */
+  /* The cover is optional, and its format and dimensions aren't policed —
+     only its size, which is about what an email can carry rather than
+     anything to do with the artwork. */
   const cover = form.get('cover');
   const attachments = [];
   if (cover && typeof cover === 'object' && cover.size > 0) {
@@ -183,29 +181,23 @@ export default async function handler(request) {
     });
   }
 
-  const audio = form.get('audio');
-  if (audio && typeof audio === 'object' && audio.size > 0) {
-    if (audio.size > AUDIO_MAX_BYTES) {
-      return json({ success: false, message: 'Track is larger than 28 MB.' }, 400);
-    }
-    attachments.push({
-      filename: audio.name || 'track.wav',
-      content: toBase64(await audio.arrayBuffer()),
-      content_type: audio.type || 'audio/wav',
-    });
-  }
-
   const row = (label, cell) => `<tr>
       <td style="padding:6px 16px 6px 0;color:#8b8780;font:12px ui-monospace,monospace;white-space:nowrap;vertical-align:top">${escapeHtml(label)}</td>
       <td style="padding:6px 0;color:#111;font:15px -apple-system,Segoe UI,sans-serif">${cell}</td>
     </tr>`;
   const textRows = list => list.map(([key, label]) => row(label, escapeHtml(value(key) || '—'))).join('');
 
-  const fileNote = f => (f && typeof f === 'object' && f.size > 0)
-    ? `${escapeHtml(f.name)} — attached (${Math.round(f.size / 1024)} KB)`
+  const coverNote = (cover && typeof cover === 'object' && cover.size > 0)
+    ? `${escapeHtml(cover.name)} — attached (${Math.round(cover.size / 1024)} KB)`
     : 'not provided';
-  const coverNote = fileNote(cover);
-  const audioNote = fileNote(audio);
+
+  /* Uploaded client-side straight to Vercel Blob — see the note at the top
+     of the file. A link rather than an attachment, so there's no size
+     ceiling worth naming here at all. */
+  const audioUrl = value('audioUrl');
+  const audioNote = audioUrl
+    ? `<a href="${escapeHtml(audioUrl)}">${escapeHtml(audioUrl)}</a>`
+    : 'not provided';
 
   /* Lyrics sit below the table, not in it: they run to dozens of lines,
      which a two-column row would squeeze. pre-wrap is what keeps the line

@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "Dependency exists only for api/blob-upload.js — the site itself is still plain HTML/CSS/JS, no build step.",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
+}

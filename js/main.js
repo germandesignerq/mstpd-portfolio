@@ -908,8 +908,9 @@
       });
       if (!ok) { say(reason || T('js.fill_required', 'Please fill in the required fields.'), 'error'); return; }
 
-      // gate for things a per-field rule can't express, e.g. image dimensions
-      const blocker = preflight && preflight();
+      // gate for things a per-field rule can't express — an in-flight
+      // upload to wait for, an image dimension, etc.
+      const blocker = preflight && await preflight();
       if (blocker) { say(blocker, 'error'); return; }
 
       /* Say so here rather than letting the server bounce it: the visitor
@@ -1133,25 +1134,73 @@
     return null;
   };
 
+  /* ── track upload: straight to Vercel Blob, not through either
+     backend ──────────────────────────────────────────────────
+     Vercel caps every function's request body at 4.5 MB regardless
+     of what the code does with it — a real WAV never survived that
+     as a form field. So the browser uploads it directly to Vercel
+     Blob the moment it's picked, and the form only ever carries the
+     resulting link (#d-audioUrl). Shared by both hosts: mstpd.com has
+     no Blob store of its own, so this calls the Vercel deployment's
+     token endpoint cross-origin too — see api/blob-upload.js. */
+  const BLOB_TOKEN_ENDPOINT = 'https://mstpd-portfolio.vercel.app/api/blob-upload';
+  const BLOB_CLIENT_SDK = 'https://esm.sh/@vercel/blob@2.8.0/client';
+  let blobUploadFn = null;
+  const loadBlobUpload = () => {
+    if (!blobUploadFn) blobUploadFn = import(/* webpackIgnore: true */ BLOB_CLIENT_SDK).then(m => m.upload);
+    return blobUploadFn;
+  };
+
   const audioInput = $('#d-audio');
   const audioNote = $('#audioNote');
+  const audioUrlField = $('#d-audioUrl');
+  let audioUpload = null;    // the in-flight/most recent upload promise
   if (audioInput && audioNote) {
+    let audioGen = 0;        // guards against a stale upload finishing after a newer pick
+
     audioInput.form.addEventListener('reset', () => setTimeout(() => {
+      audioGen++;
       audioNote.textContent = '';
-      audioNote.classList.remove('is-ok');
+      audioNote.classList.remove('is-ok', 'is-error');
+      if (audioUrlField) audioUrlField.value = '';
+      audioUpload = null;
     }, 0));
 
-    audioInput.addEventListener('change', async () => {
+    audioInput.addEventListener('change', () => {
+      const gen = ++audioGen;
       const file = audioInput.files && audioInput.files[0];
-      if (!file) { audioNote.textContent = ''; audioNote.classList.remove('is-ok'); return; }
+      audioNote.classList.remove('is-ok', 'is-error');
+      if (audioUrlField) audioUrlField.value = '';
+      if (!file) { audioNote.textContent = ''; audioUpload = null; return; }
 
-      let spec = null;
-      try { spec = await readWavSpec(file); } catch { /* not a WAV we can read */ }
-      const khz = spec ? (spec.rate / 1000).toFixed(1).replace(/\.0$/, '') : null;
-      audioNote.textContent = spec
-        ? `${file.name} — ${spec.bits}-bit, ${khz} kHz, ${fileSize(file.size)}`
-        : `${file.name} — ${fileSize(file.size)}`;
-      audioNote.classList.add('is-ok');
+      audioUpload = (async () => {
+        let spec = null;
+        try { spec = await readWavSpec(file); } catch { /* not a WAV we can read */ }
+        const khz = spec ? (spec.rate / 1000).toFixed(1).replace(/\.0$/, '') : null;
+        const label = spec
+          ? `${file.name} — ${spec.bits}-bit, ${khz} kHz, ${fileSize(file.size)}`
+          : `${file.name} — ${fileSize(file.size)}`;
+
+        if (gen !== audioGen) return;
+        audioNote.textContent = `${label} — ${T('d.audio_uploading', 'uploading…')}`;
+
+        const upload = await loadBlobUpload();
+        const blob = await upload(file.name, file, {
+          access: 'public',
+          handleUploadUrl: BLOB_TOKEN_ENDPOINT,
+        });
+
+        if (gen !== audioGen) return;
+        if (audioUrlField) audioUrlField.value = blob.url;
+        audioNote.textContent = label;
+        audioNote.classList.add('is-ok');
+      })().catch(err => {
+        if (gen === audioGen) {
+          audioNote.textContent = T('d.audio_upload_failed', 'Upload failed — try attaching it again.');
+          audioNote.classList.add('is-error');
+        }
+        throw err;
+      });
     });
   }
 
@@ -1232,6 +1281,13 @@
       'Email': data.get('email'),
       'Release': data.get('release'),
     }),
+    // the track uploads in the background from the moment it's picked;
+    // this only has to wait for it if it's still going when Send is hit
+    preflight: async () => {
+      if (!audioUpload) return null;
+      try { await audioUpload; return null; }
+      catch { return T('d.audio_upload_failed', 'Upload failed — try attaching it again.'); }
+    },
     onSuccess: () => showDistroStep(3),
   });
 

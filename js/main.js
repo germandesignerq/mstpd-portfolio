@@ -818,39 +818,19 @@
   const keyReady = /^[0-9a-f-]{30,}$/i.test(FORM_ACCESS_KEY);
 
   /* ── hCaptcha ───────────────────────────────────────────────
-     The enquiry forms carry data-captcha="true" and nothing else: the
-     Web3Forms script stamps its own shared site key on those and verifies
-     the token at their end, so they need no credentials from us.
-
-     The distribution form posts to our own endpoint instead, so it can't
-     borrow that for verification — checking a token needs the secret it
-     was signed with. Paste the site key here (it is public, meant to sit
-     in client-side code) and put the matching secret in the backend as
-     HCAPTCHA_SECRET; until then the widget below falls back to the shared
-     key, which makes it real in the browser but unverifiable server-side. */
+     Only the distribution form carries one — it posts to our own
+     endpoint, verified server-side against HCAPTCHA_SECRET. The site key
+     is public by design (meant to sit in client-side code); the matching
+     secret lives only in the backend. Set before hCaptcha's own api.js
+     (loaded at the bottom of the page) does its auto-render pass, which
+     is what turns a keyless div into an error instead of a widget. */
   const HCAPTCHA_SITE_KEY = '5f5c8836-fac4-4eea-89e0-b65887000d0a';
 
-  /* Set before the Web3Forms script loads hcaptcha api.js — that script
-     renders every .h-captcha it finds, and one without a key errors. */
   const captchaHost = $('#distroCaptcha');
-  if (captchaHost) {
+  if (captchaHost && HCAPTCHA_SITE_KEY) {
     captchaHost.className = 'h-captcha captcha';
     captchaHost.dataset.theme = 'dark';
-
-    if (HCAPTCHA_SITE_KEY) {
-      captchaHost.dataset.sitekey = HCAPTCHA_SITE_KEY;
-    } else {
-      /* No key of our own yet, so borrow the one the Web3Forms script
-         stamps on data-captcha elements. Worth being clear about what
-         that buys: the widget is real and the browser won't submit until
-         it's solved, which raises the cost of driving this form in a
-         headless browser — but our endpoint cannot verify a token signed
-         with someone else's secret, so a request that skips the page
-         entirely is still stopped by the signed formtoken above, not by
-         this. Fill in HCAPTCHA_SITE_KEY and set HCAPTCHA_SECRET on the
-         backends and it becomes server-verified. */
-      captchaHost.dataset.captcha = 'true';
-    }
+    captchaHost.dataset.sitekey = HCAPTCHA_SITE_KEY;
   }
 
   /* the token lands in a textarea hCaptcha injects into the form */

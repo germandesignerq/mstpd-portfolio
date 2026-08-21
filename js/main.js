@@ -733,7 +733,12 @@
   bindModal($('#contactModal'), {
     triggerSelector: '[data-contact-modal]',
     focusSelector: '#m-name',
-    onOpen: showPackage,
+    onOpen: trigger => {
+      showPackage(trigger);
+      // otherwise a second booking opens straight into the last one's confirmation
+      if (modalBody) modalBody.hidden = false;
+      if (modalSuccess) modalSuccess.hidden = true;
+    },
   });
   /* ── distribution modal: two steps ────────────────────────
      Step 1 is the offer, step 2 the form. Toggled with [hidden], which
@@ -743,15 +748,19 @@
      step 2 opens wherever step 1 was left scrolled to. */
   const distroModal = $('#distroModal');
   const distroPanel = distroModal && $('.modal__panel', distroModal);
-  const distroSteps = [$('#distroStep1'), $('#distroStep2')];
+  // step 3 is the confirmation screen — reuses the [hidden] toggle, but
+  // isn't really "3 / 2" so it gets no number and no aria-labelledby
+  const distroSteps = [$('#distroStep1'), $('#distroStep2'), $('#distroStep3')];
   const distroCount = $('#distroStepNow');
+  const distroCountWrap = distroCount && distroCount.closest('.wizard__count');
 
   const showDistroStep = n => {
     if (!distroSteps[0]) return;
     distroSteps.forEach((s, i) => { if (s) s.hidden = i !== n - 1; });
-    if (distroCount) distroCount.textContent = String(n);
+    if (distroCountWrap) distroCountWrap.hidden = n > 2;
+    if (n <= 2 && distroCount) distroCount.textContent = String(n);
     if (distroPanel) {
-      distroPanel.setAttribute('aria-labelledby', n === 1 ? 'distroTitle' : 'distroTitle2');
+      if (n <= 2) distroPanel.setAttribute('aria-labelledby', n === 1 ? 'distroTitle' : 'distroTitle2');
       distroPanel.scrollTop = 0;
     }
   };
@@ -864,7 +873,7 @@
   };
 
   const bindForm = (form, { requiredFields, validators = {}, buildSubject, buildFields,
-                            endpoint, preflight }) => {
+                            endpoint, preflight, onSuccess }) => {
     if (!form) return;
     const note = $('.form__note', form);
     const submit = $('button[type="submit"]', form);
@@ -975,6 +984,10 @@
         resetCaptcha(form);                            // the token was single-use
         $$('.field.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
         say(T('js.sent', 'Sent — I\'ll get back to you shortly.'), 'ok');
+        /* The note above is 13px under the button, easy to miss once the
+           fields it sat beside are all empty again — worth more than that
+           for something the visitor is waiting to hear back on. */
+        if (onSuccess) onSuccess();
       } catch (err) {
         /* If the server answered at all it has already spent the token, so
            the widget has to be reset or the retry is refused for the wrong
@@ -1021,7 +1034,17 @@
       Message: data.get('message'),
     }),
   };
-  bindForm($('#modalForm'), enquiry);
+  /* the inline Contact form has nothing to swap to — it just keeps the
+     small note. The modal has room for a real confirmation screen. */
+  const modalBody = $('#modalBody');
+  const modalSuccess = $('#modalSuccess');
+  bindForm($('#modalForm'), {
+    ...enquiry,
+    onSuccess: () => {
+      if (modalBody) modalBody.hidden = true;
+      if (modalSuccess) modalSuccess.hidden = false;
+    },
+  });
   bindForm($('#contactForm'), enquiry);
 
   /* ── attached files: reported, never refused ───────────────
@@ -1192,6 +1215,7 @@
       'Email': data.get('email'),
       'Release': data.get('release'),
     }),
+    onSuccess: () => showDistroStep(3),
   });
 
   /* ── hero parallax (desktop, motion allowed) ──────────── */

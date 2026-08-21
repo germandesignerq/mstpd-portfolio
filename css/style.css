@@ -1604,6 +1604,31 @@ body.modal-open{ overflow:hidden; }
 /* pulled in when the partner logo follows and the two should read as one */
 .modal__sub--tight{ margin-bottom:14px; }
 
+/* ── modal success state ────────────────────────────────
+   Swapped in for the form once a send succeeds — the .form__note above
+   the button said the same thing at 13px, easy to miss once the fields
+   beside it are all empty again. This takes the space the form had
+   instead, so the confirmation is what's left to read. */
+.modal__success{ padding:4px 0; }
+.modal__success-icon{
+  display:grid; place-items:center;
+  width:52px; height:52px; margin-bottom:22px;
+  border-radius:50%;
+  background:rgba(217,88,60,.12);
+  border:1px solid rgba(217,88,60,.4);
+}
+.modal__success-icon svg{
+  width:18px; height:14px;
+  fill:none; stroke:var(--accent); stroke-width:1.8;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.modal__success-title{
+  margin:0; max-width:32ch;
+  font-size:clamp(20px,3vw,24px);
+  line-height:1.35; letter-spacing:-.02em; font-weight:500;
+  color:var(--fg);
+}
+
 /* Believe's own mark, same file the About badges use. Left at its
    supplied colours — it's someone else's logo, so it gets a hover on
    opacity rather than a recolour. */

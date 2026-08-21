@@ -1634,6 +1634,37 @@ body.modal-open{ overflow:hidden; }
 }
 .modal__success-link{ margin-top:26px; }
 
+/* ── toast ──────────────────────────────────────────────
+   Used by the inline Contact form only — it has no modal to swap out
+   for a confirmation screen, and doing that in-page left an empty gap
+   next to the rest of the column. This floats over the page instead and
+   clears itself, so the form is right there again for a second message. */
+.toast{
+  position:fixed; left:50%; bottom:32px; z-index:400;
+  display:flex; align-items:center; gap:12px;
+  max-width:min(90vw, 420px);
+  padding:14px 22px 14px 16px;
+  background:var(--bg-2); border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+  opacity:0; transform:translate(-50%, 16px);
+  transition:opacity .4s var(--ease), transform .4s var(--ease);
+  pointer-events:none;
+}
+.toast.is-in{ opacity:1; transform:translate(-50%, 0); }
+.toast__icon{
+  display:grid; place-items:center; flex:none;
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(217,88,60,.12);
+  border:1px solid rgba(217,88,60,.4);
+}
+.toast__icon svg{
+  width:12px; height:9px;
+  fill:none; stroke:var(--accent); stroke-width:2;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.toast__text{ color:var(--fg); font-size:14px; font-weight:500; line-height:1.4; }
+
 /* Believe's own mark, same file the About badges use. Left at its
    supplied colours — it's someone else's logo, so it gets a hover on
    opacity rather than a recolour. */

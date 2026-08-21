@@ -1033,16 +1033,27 @@
     },
   });
 
-  // same swap as the modal, just with nothing to reset it on reopen —
-  // there's no reopening, it's a static section, so it stays sent
-  const contactBody = $('#contactBody');
-  const contactSuccess = $('#contactSuccess');
+  /* The inline form has no modal to swap out for a confirmation screen —
+     doing that in-page left an empty gap beside the rest of the column.
+     A toast instead, and the form (already emptied by form.reset()) is
+     right there again for a second message. */
+  const toast = $('#toast');
+  const toastText = $('#toastText');
+  let toastTimer = null;
+  const showToast = message => {
+    if (!toast) return;
+    clearTimeout(toastTimer);
+    toastText.textContent = message;
+    toast.hidden = false;
+    requestAnimationFrame(() => toast.classList.add('is-in'));
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('is-in');
+      setTimeout(() => { toast.hidden = true; }, 450);   // matches the CSS transition
+    }, 4000);
+  };
   bindForm($('#contactForm'), {
     ...enquiry,
-    onSuccess: () => {
-      if (contactBody) contactBody.hidden = true;
-      if (contactSuccess) contactSuccess.hidden = false;
-    },
+    onSuccess: () => showToast(T('js.sent', 'Sent — I\'ll get back to you shortly.')),
   });
 
   /* ── attached files: reported, never refused ───────────────
